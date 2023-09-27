@@ -20,12 +20,11 @@ class AuthService {
     });
   }
 
-  async refreshTokens(accessToken: string, refreshToken: string): Promise<RefreshTokensResponse> {
+  async refreshTokens(refreshToken: string): Promise<RefreshTokensResponse> {
     return wetch<RefreshTokensResponse>('/auth/refresh', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        "Authorization": `Bearer ${accessToken}`,
       },
       body: JSON.stringify({ token: refreshToken }),
     });

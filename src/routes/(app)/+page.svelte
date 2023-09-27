@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/ui/button/button.svelte';
+	import { authStore } from '$lib/stores/auth.store';
 	import { theme } from '$lib/stores/theme.store';
 </script>
 
