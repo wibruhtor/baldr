@@ -1,8 +1,8 @@
 <script lang="ts">
 	import SessionsControl from '$lib/components/page/sessions/sessions-control.svelte';
-	import type { Session } from '$lib/service/sessions.service';
+	import type { PageData } from './$types';
 
-	export let data: { sessions: Session[] };
+	export let data: PageData;
 </script>
 
 <section class="container">

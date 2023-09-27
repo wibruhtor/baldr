@@ -2,7 +2,6 @@
 	import { Eye, EyeOff } from 'lucide-svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import CardContent from '$lib/components/ui/card/card-content.svelte';
-	import CardDescription from '$lib/components/ui/card/card-description.svelte';
 	import CardHeader from '$lib/components/ui/card/card-header.svelte';
 	import CardTitle from '$lib/components/ui/card/card-title.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
@@ -10,7 +9,6 @@
 	import Label from '$lib/components/ui/label/label.svelte';
 	import { sessionsService, type Session } from '$lib/service/sessions.service';
 	import { UAParser } from 'ua-parser-js';
-	import { browser, version } from '$app/environment';
 	import CardFooter from '$lib/components/ui/card/card-footer.svelte';
 	import { authStore } from '$lib/stores/auth.store';
 	import { createEventDispatcher } from 'svelte';
@@ -50,15 +48,16 @@
 	</CardHeader>
 	<CardContent class="grid grid-cols-1 gap-4">
 		<div class="flex flex-col gap-2">
-			<Label for="name">ID</Label>
+			<Label for="id">ID</Label>
 			<div class="flex gap-2">
-				<Input name="id" value={session.id} readonly />
+				<Input id="id" name="id" value={session.id} readonly />
 			</div>
 		</div>
 		<div class="flex flex-col gap-2">
-			<Label for="name">IP</Label>
+			<Label for="ip">IP</Label>
 			<div class="flex gap-2">
 				<Input
+					id="ip"
 					name="ip"
 					class="w-0 flex-1"
 					value={session.ip}
@@ -74,33 +73,52 @@
 				</Button>
 			</div>
 		</div>
+		<div class="flex flex-col gap-2">
+			<Label for="user-agent">User Agent</Label>
+			<Input id="user-agent" name="user-agent" value={session.userAgent} readonly />
+		</div>
 		{#if ua.browser.name}
 			<div class="flex flex-col gap-2">
-				<Label for="name">Браузер</Label>
+				<Label for="browser">Браузер</Label>
 				{#if ua.browser.version}
-					<Input name="browser" value={`${ua.browser.name}/${ua.browser.version}`} readonly />
+					<Input
+						id="browser"
+						name="browser"
+						value={`${ua.browser.name}/${ua.browser.version}`}
+						readonly
+					/>
 				{:else}
-					<Input name="browser" value={ua.browser.name} readonly />
+					<Input id="browser" name="browser" value={ua.browser.name} readonly />
 				{/if}
 			</div>
 		{/if}
 		{#if ua.os.name}
 			<div class="flex flex-col gap-2">
-				<Label for="name">Операционная система</Label>
+				<Label for="os">Операционная система</Label>
 				{#if ua.os.version}
-					<Input name="browser" value={`${ua.os.name} ${ua.os.version}`} readonly />
+					<Input id="os" name="os" value={`${ua.os.name} ${ua.os.version}`} readonly />
 				{:else}
-					<Input name="browser" value={ua.os.name} readonly />
+					<Input id="os" name="os" value={ua.os.name} readonly />
 				{/if}
 			</div>
 		{/if}
 		<div class="flex flex-col gap-2">
-			<Label for="name">Авторизован</Label>
-			<Input name="authorizedAt" value={dtf.format(new Date(session.authorizedAt))} readonly />
+			<Label for="authorizedAt">Авторизован</Label>
+			<Input
+				id="authorizedAt"
+				name="authorizedAt"
+				value={dtf.format(new Date(session.authorizedAt))}
+				readonly
+			/>
 		</div>
 		<div class="flex flex-col gap-2">
-			<Label for="name">Последнее обновление</Label>
-			<Input name="refreshedAt" value={dtf.format(new Date(session.refreshedAt))} readonly />
+			<Label for="refreshedAt">Последнее обновление</Label>
+			<Input
+				id="refreshedAt"
+				name="refreshedAt"
+				value={dtf.format(new Date(session.refreshedAt))}
+				readonly
+			/>
 		</div>
 	</CardContent>
 	{#if session.id != $authStore.sessionId}

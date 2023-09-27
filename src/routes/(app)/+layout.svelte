@@ -1,9 +1,10 @@
 <script lang="ts">
 	import Header from '$lib/components/layout/header/header.svelte';
 	import { authStore } from '$lib/stores/auth.store';
+	import type { LayoutData } from './$types';
 	import '../../app.css';
 
-	export let data: { accessToken: string | null; refreshToken: string | null };
+	export let data: LayoutData;
 
 	if (data.accessToken && data.refreshToken) {
 		authStore.set(data.accessToken, data.refreshToken);
