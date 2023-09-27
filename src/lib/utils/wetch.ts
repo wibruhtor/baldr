@@ -1,7 +1,7 @@
+import { browser } from '$app/environment';
 import { AppError } from '$lib/utils/app-error';
 
-const origin =
-	typeof window === 'undefined' ? 'http://localhost:8000' : 'http://api.wibruhtor.localhost';
+const origin = browser ? 'http://api.wibruhtor.localhost' : 'http://localhost:8000';
 
 export const wetch = async <T = void>(path: string, init?: RequestInit): Promise<T> => {
 	const r = await fetch(`${origin}${path}`, {

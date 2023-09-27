@@ -1,7 +1,8 @@
+import { browser } from '$app/environment';
 import { writable } from 'svelte/store';
 
 export const writableLocalStorage = <T>(initialState: T, key: string) => {
-	if (typeof window === 'undefined') {
+	if (!browser) {
 		return writable(initialState);
 	}
 	const item = localStorage.getItem(key);

@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 import { Buffer } from 'buffer';
 import { protectedRoutes } from '$lib/utils/protectionRoutes';
 import { goto } from '$app/navigation';
+import { browser } from '$app/environment';
 
 export type AuthStore = {
 	isLoggedIn: boolean;
@@ -27,7 +28,7 @@ const createAuthStore = () => {
 	return {
 		subscribe,
 		set(accessToken: string, refreshToken: string, withSet: boolean = false) {
-			if (typeof window !== 'undefined' && withSet) {
+			if (browser && withSet) {
 				fetch('/api/auth/token', {
 					method: 'POST',
 					headers: {
@@ -42,7 +43,7 @@ const createAuthStore = () => {
 			set({ isLoggedIn: true, accessToken, refreshToken, sessionId: jti, userId: sub, username });
 		},
 		clear() {
-			if (typeof window !== 'undefined') {
+			if (browser) {
 				fetch('/api/auth/token', { method: 'DELETE' });
 				for (const i in protectedRoutes) {
 					const r = protectedRoutes[i];
