@@ -1,10 +1,9 @@
-import type { Handle } from "@sveltejs/kit";
+import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const theme = event.cookies.get("theme") || 'system';
+	const theme = event.cookies.get('theme') || 'system';
 
-  return await resolve(event, {
-    transformPageChunk: ({ html }) =>
-      html.replace('%baldr.theme%', theme),
-  });
+	return await resolve(event, {
+		transformPageChunk: ({ html }) => html.replace('%baldr.theme%', theme),
+	});
 };
