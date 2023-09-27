@@ -47,9 +47,14 @@
 <Card>
 	<CardHeader>
 		<CardTitle>Cессия</CardTitle>
-		<CardDescription>{session.id}</CardDescription>
 	</CardHeader>
 	<CardContent class="grid grid-cols-1 gap-4">
+		<div class="flex flex-col gap-2">
+			<Label for="name">ID</Label>
+			<div class="flex gap-2">
+				<Input name="id" value={session.id} readonly />
+			</div>
+		</div>
 		<div class="flex flex-col gap-2">
 			<Label for="name">IP</Label>
 			<div class="flex gap-2">
