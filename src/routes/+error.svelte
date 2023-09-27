@@ -11,8 +11,8 @@
 	import '../app.css';
 </script>
 
-<section class="container flex justify-center my-12">
-	<Card class="min-w-0 max-w-sm w-full">
+<section class="container my-12">
+	<Card class="min-w-0 max-w-sm w-full mx-auto">
 		<CardHeader>
 			<CardTitle>Что-то пошло не так</CardTitle>
 			<CardDescription>Вся информации ниже</CardDescription>
@@ -32,7 +32,11 @@
 					<div>
 						<h4 class="typography-large">Ошибка</h4>
 						<p class="typography-muted">
-							{$page.error.message}
+							{#if $page.error.message === 'Not Found'}
+								Не найдено
+							{:else}
+								{$page.error.message}
+							{/if}
 						</p>
 					</div>
 				{/if}

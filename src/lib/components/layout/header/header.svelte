@@ -6,7 +6,7 @@
 	<section class="container flex items-center justify-between">
 		<a href="/" class="flex gap-2 items-center">
 			<img src="/favicon.svg" alt="Логотип" width="48" height="48" />
-			<span class="typography-h3">WiBruhTor</span>
+			<h1 class="typography-h3">WiBruhTor</h1>
 		</a>
 		<AuthButton />
 	</section>

@@ -3,15 +3,18 @@ import { AppError } from '$lib/utils/app-error';
 import { error, type Cookies } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = async ({ url, cookies }) => {
-	const accessToken = cookies.get('at') || null;
-	const refreshToken = cookies.get('rt');
 
-	if (!refreshToken) {
-		return { accessToken: null, refreshToken: null };
+export const load: LayoutServerLoad = async ({ url, cookies }) => {
+	let accessToken = cookies.get('at') || null;
+	let refreshToken = cookies.get('rt') || null;
+
+	if (!accessToken && refreshToken) {
+		const data = await refreshTokens(refreshToken, cookies, url);
+		accessToken = data.accessToken;
+		refreshToken = data.refreshToken;
 	}
-	if (!accessToken) {
-		return refreshTokens(refreshToken, cookies, url);
+	if (!refreshToken || !accessToken) {
+		return { accessToken: null, refreshToken: null };
 	}
 
 	return { accessToken, refreshToken };

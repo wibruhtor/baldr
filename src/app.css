@@ -98,7 +98,7 @@
 
 @layer base {
 	* {
-		@apply border-border;
+		@apply border-border transition ease-in-out duration-150;
 	}
 
 	html,

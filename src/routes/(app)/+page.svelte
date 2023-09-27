@@ -1,13 +1,26 @@
 <script lang="ts">
-	import Button from '$lib/components/ui/button/button.svelte';
+	import AuthButton from '$lib/components/layout/header/auth-button.svelte';
+	import Settings from '$lib/components/page/settings.svelte';
+	import CardDescription from '$lib/components/ui/card/card-description.svelte';
+	import CardFooter from '$lib/components/ui/card/card-footer.svelte';
+	import CardHeader from '$lib/components/ui/card/card-header.svelte';
+	import CardTitle from '$lib/components/ui/card/card-title.svelte';
+	import Card from '$lib/components/ui/card/card.svelte';
 	import { authStore } from '$lib/stores/auth.store';
-	import { theme } from '$lib/stores/theme.store';
 </script>
 
 <section class="container">
-	<Button>Кнопка</Button>
-	{$theme}
-	<Button variant="secondary" on:click={() => theme.set('dark')}>Темная</Button>
-	<Button variant="secondary" on:click={() => theme.set('light')}>Светлая</Button>
-	<Button variant="secondary" on:click={() => theme.set('system')}>Системная</Button>
+	{#if $authStore.isLoggedIn}
+		<Settings />
+	{:else}
+		<Card class="min-w-0 max-w-sm w-full mx-auto">
+			<CardHeader>
+				<CardTitle>Авторизация</CardTitle>
+				<CardDescription>Для работы нужно авторизоваться</CardDescription>
+			</CardHeader>
+			<CardFooter>
+				<AuthButton />
+			</CardFooter>
+		</Card>
+	{/if}
 </section>

@@ -1,10 +1,13 @@
 import { writable } from 'svelte/store';
 import { Buffer } from 'buffer';
+import { protectedRoutes } from '$lib/utils/protectionRoutes';
+import { goto } from '$app/navigation';
 
 export type AuthStore = {
 	isLoggedIn: boolean;
 	accessToken: string | null;
 	refreshToken: string | null;
+	sessionId: string | null
 	userId: string | null;
 	username: string | null;
 };
@@ -13,6 +16,7 @@ const initialState: AuthStore = {
 	isLoggedIn: false,
 	accessToken: null,
 	refreshToken: null,
+	sessionId: null,
 	userId: null,
 	username: null,
 };
@@ -33,13 +37,19 @@ const createAuthStore = () => {
 				});
 			}
 			const rawPayload = Buffer.from(accessToken.split('.')[1], 'base64').toString('utf-8');
-			const { sub, username } = JSON.parse(rawPayload);
+			const { jti, sub, username } = JSON.parse(rawPayload);
 
-			set({ isLoggedIn: true, accessToken, refreshToken, userId: sub, username });
+			set({ isLoggedIn: true, accessToken, refreshToken, sessionId: jti, userId: sub, username });
 		},
 		clear() {
 			if (typeof window !== 'undefined') {
 				fetch('/api/auth/token', { method: 'DELETE' });
+				for (const i in protectedRoutes) {
+					const r = protectedRoutes[i];
+					if (location.pathname.startsWith(r)) {
+						goto('/')
+					}
+				}
 			}
 			set(initialState);
 		},
