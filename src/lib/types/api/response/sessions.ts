@@ -1,4 +1,4 @@
-import type { Session } from "$lib/types/api/entity/session";
+import type { Session } from '$lib/types/api/entity/session';
 
 export type AllSessionsResponse = { sessions: Session[] };
 

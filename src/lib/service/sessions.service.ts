@@ -1,4 +1,8 @@
-import type { AllSessionsResponse, DeleteAllSessionsExcludeCurrentResponse, DeleteSessionResponse } from '$lib/types/api/response/sessions';
+import type {
+	AllSessionsResponse,
+	DeleteAllSessionsExcludeCurrentResponse,
+	DeleteSessionResponse,
+} from '$lib/types/api/response/sessions';
 import { wetch } from '$lib/utils/wetch';
 
 class SessionsService {

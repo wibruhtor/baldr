@@ -41,14 +41,16 @@
 		<div class="flex flex-col gap-2">
 			<Label for="name">Название</Label>
 			<Input id="name" name="name" bind:value={name} />
-			{#if !validationResult.success && validationResult.error.issues.find(v => v.path.join('.') === 'name')}
-			<span class="text-xs text-destructive">
-				{validationResult.error.issues.find(v => v.path.join('.') === 'name').message}
-			</span>
+			{#if !validationResult.success && validationResult.error.issues.find((v) => v.path.join('.') === 'name')}
+				<span class="text-xs text-destructive">
+					{validationResult.error.issues.find((v) => v.path.join('.') === 'name').message}
+				</span>
 			{/if}
 		</div>
 	</CardContent>
 	<CardFooter>
-		<Button on:click={handleBanWordFilterClick} disabled={isLoading || !validationResult.success}>Создать</Button>
+		<Button on:click={handleBanWordFilterClick} disabled={isLoading || !validationResult.success}
+			>Создать</Button
+		>
 	</CardFooter>
 </Card>

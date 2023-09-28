@@ -1,8 +1,18 @@
-import type { CreateBanWordFilterRequest, UpdateBanWordFilterRequest, UpdateBanWordsOfFilterRequest } from '$lib/types/api/request/ban-word-filters';
-import type { CreateBanWordFilterResponse, DeleteBanWordFilterResponse, GetAllBanWordFiltersResponse, GetBanWordFilterResponse, GetBanWordsOfFilterResponse, UpdateBanWordFilterResponse, UpdateBanWordsOfFilterResponse } from '$lib/types/api/response/ban-word-filters';
+import type {
+	CreateBanWordFilterRequest,
+	UpdateBanWordFilterRequest,
+	UpdateBanWordsOfFilterRequest,
+} from '$lib/types/api/request/ban-word-filters';
+import type {
+	CreateBanWordFilterResponse,
+	DeleteBanWordFilterResponse,
+	GetAllBanWordFiltersResponse,
+	GetBanWordFilterResponse,
+	GetBanWordsOfFilterResponse,
+	UpdateBanWordFilterResponse,
+	UpdateBanWordsOfFilterResponse,
+} from '$lib/types/api/response/ban-word-filters';
 import { wetch } from '$lib/utils/wetch';
-
-
 
 class BanWordFiltersService {
 	async getAllBanWordFilters(accessToken: string): Promise<GetAllBanWordFiltersResponse> {

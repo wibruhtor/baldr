@@ -1,4 +1,4 @@
-import type { BanWordFilter } from "$lib/types/api/entity/ban-word-filter";
+import type { BanWordFilter } from '$lib/types/api/entity/ban-word-filter';
 
 export type GetAllBanWordFiltersResponse = {
 	filters: BanWordFilter[];

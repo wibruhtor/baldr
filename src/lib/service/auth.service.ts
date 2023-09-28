@@ -1,4 +1,9 @@
-import type { AuthorizeUrlResponse, ExchangeCodeResponse, LogoutResponse, RefreshTokensResponse } from '$lib/types/api/response/auth';
+import type {
+	AuthorizeUrlResponse,
+	ExchangeCodeResponse,
+	LogoutResponse,
+	RefreshTokensResponse,
+} from '$lib/types/api/response/auth';
 import { wetch } from '$lib/utils/wetch';
 
 class AuthService {
