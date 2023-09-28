@@ -1,13 +1,6 @@
+import type { Session } from '$lib/types/api/entity/session';
 import { wetch } from '$lib/utils/wetch';
 
-export type Session = {
-	id: string;
-	userId: string;
-	userAgent: string;
-	ip: string;
-	authorizedAt: string;
-	refreshedAt: string;
-};
 export type AllSessionsResponse = { sessions: Session[] };
 export type DeleteSessionResponse = true;
 export type DeleteAllSessionsExcludeCurrentResponse = true;

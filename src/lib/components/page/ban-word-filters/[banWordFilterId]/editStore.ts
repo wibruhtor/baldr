@@ -1,4 +1,4 @@
-import type { BanWordFilter } from '$lib/service/ban-word-filters.service';
+import type { BanWordFilter } from '$lib/types/api/entity/ban-word-filter';
 import { writable } from 'svelte/store';
 
 export type BanWordFilterEditStore = {

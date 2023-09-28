@@ -5,8 +5,9 @@
 	import CardHeader from '$lib/components/ui/card/card-header.svelte';
 	import CardTitle from '$lib/components/ui/card/card-title.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
-	import { sessionsService, type Session } from '$lib/service/sessions.service';
+	import { sessionsService } from '$lib/service/sessions.service';
 	import { authStore } from '$lib/stores/auth.store';
+	import type { Session } from '$lib/types/api/entity/session';
 
 	export let sessions: Session[];
 

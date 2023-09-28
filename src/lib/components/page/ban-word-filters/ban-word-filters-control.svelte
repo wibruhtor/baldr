@@ -1,7 +1,7 @@
 <script lang="ts">
 	import AddCard from '$lib/components/page/ban-word-filters/add-card.svelte';
 	import BanWordFilterCard from '$lib/components/page/ban-word-filters/ban-word-filter-card.svelte';
-	import type { BanWordFilter } from '$lib/service/ban-word-filters.service';
+	import type { BanWordFilter } from '$lib/types/api/entity/ban-word-filter';
 
 	export let banWordFilters: BanWordFilter[];
 </script>

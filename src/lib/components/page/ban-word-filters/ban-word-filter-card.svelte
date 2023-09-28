@@ -2,7 +2,7 @@
 	import CardHeader from '$lib/components/ui/card/card-header.svelte';
 	import CardTitle from '$lib/components/ui/card/card-title.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
-	import type { BanWordFilter } from '$lib/service/ban-word-filters.service';
+	import type { BanWordFilter } from '$lib/types/api/entity/ban-word-filter';
 
 	export let banWordFilter: BanWordFilter;
 </script>

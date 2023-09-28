@@ -1,10 +1,6 @@
+import type { BanWordFilter } from '$lib/types/api/entity/ban-word-filter';
 import { wetch } from '$lib/utils/wetch';
 
-export type BanWordFilter = {
-	id: string;
-	name: string;
-	userId: string;
-};
 export type GetAllBanWordFiltersResponse = {
 	filters: BanWordFilter[];
 };

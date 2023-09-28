@@ -7,11 +7,12 @@
 	import Card from '$lib/components/ui/card/card.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
-	import { sessionsService, type Session } from '$lib/service/sessions.service';
+	import { sessionsService } from '$lib/service/sessions.service';
 	import { UAParser } from 'ua-parser-js';
 	import CardFooter from '$lib/components/ui/card/card-footer.svelte';
 	import { authStore } from '$lib/stores/auth.store';
 	import { createEventDispatcher } from 'svelte';
+	import type { Session } from '$lib/types/api/entity/session';
 
 	export let session: Session;
 

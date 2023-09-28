@@ -13,8 +13,9 @@
 	import Card from '$lib/components/ui/card/card.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
-	import { banWordFiltersService, type BanWordFilter } from '$lib/service/ban-word-filters.service';
+	import { banWordFiltersService } from '$lib/service/ban-word-filters.service';
 	import { authStore } from '$lib/stores/auth.store';
+	import type { BanWordFilter } from '$lib/types/api/entity/ban-word-filter';
 	import { Eye, EyeOff, Plus, Trash } from 'lucide-svelte';
 
 	export let banWordFilter: BanWordFilter;
