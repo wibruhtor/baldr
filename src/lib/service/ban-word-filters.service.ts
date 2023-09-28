@@ -1,29 +1,8 @@
-import type { BanWordFilter } from '$lib/types/api/entity/ban-word-filter';
+import type { CreateBanWordFilterRequest, UpdateBanWordFilterRequest, UpdateBanWordsOfFilterRequest } from '$lib/types/api/request/ban-word-filters';
+import type { CreateBanWordFilterResponse, DeleteBanWordFilterResponse, GetAllBanWordFiltersResponse, GetBanWordFilterResponse, GetBanWordsOfFilterResponse, UpdateBanWordFilterResponse, UpdateBanWordsOfFilterResponse } from '$lib/types/api/response/ban-word-filters';
 import { wetch } from '$lib/utils/wetch';
 
-export type GetAllBanWordFiltersResponse = {
-	filters: BanWordFilter[];
-};
-export type CreateBanWordFilterRequest = {
-	name: string;
-};
-export type CreateBanWordFilterResponse = BanWordFilter;
-export type GetBanWordFilterResponse = {
-	filter: BanWordFilter;
-	banWords: string[];
-};
-export type UpdateBanWordFilterRequest = {
-	name: string;
-};
-export type UpdateBanWordFilterResponse = BanWordFilter;
-export type DeleteBanWordFilterResponse = true;
-export type GetBanWordsOfFilterResponse = {
-	banWords: string[];
-};
-export type UpdateBanWordsOfFilterRequest = {
-	banWords: string[];
-};
-export type UpdateBanWordsOfFilterResponse = true;
+
 
 class BanWordFiltersService {
 	async getAllBanWordFilters(accessToken: string): Promise<GetAllBanWordFiltersResponse> {

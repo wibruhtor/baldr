@@ -1,9 +1,5 @@
-import type { Session } from '$lib/types/api/entity/session';
+import type { AllSessionsResponse, DeleteAllSessionsExcludeCurrentResponse, DeleteSessionResponse } from '$lib/types/api/response/sessions';
 import { wetch } from '$lib/utils/wetch';
-
-export type AllSessionsResponse = { sessions: Session[] };
-export type DeleteSessionResponse = true;
-export type DeleteAllSessionsExcludeCurrentResponse = true;
 
 class SessionsService {
 	async getAllSesssions(accessToken: string): Promise<AllSessionsResponse> {
