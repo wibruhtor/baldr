@@ -131,6 +131,9 @@
 					{/if}
 				</Button>
 			</div>
+			<p class="typography-muted">
+				Банворд "омлет" будет срабатывать на "о:м\Л%е т" в сообщении "Я сделал о:м\Л%е т"
+			</p>
 			{#each $editStore.banWords as banWord (banWord.id)}
 				<div class="flex gap-2">
 					<Input

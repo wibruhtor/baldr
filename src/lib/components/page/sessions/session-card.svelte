@@ -15,6 +15,8 @@
 
 	export let session: Session;
 
+	let isCurrentSession = session.id == $authStore.sessionId;
+
 	const dispatch = createEventDispatcher();
 
 	const ua = new UAParser(session.userAgent).getResult();
@@ -44,7 +46,13 @@
 
 <Card>
 	<CardHeader>
-		<CardTitle>Cессия</CardTitle>
+		<CardTitle>
+			{#if isCurrentSession}
+				Текущая сессия
+			{:else}
+				Cессия
+			{/if}
+		</CardTitle>
 	</CardHeader>
 	<CardContent class="grid grid-cols-1 gap-4">
 		<div class="flex flex-col gap-2">
@@ -121,7 +129,7 @@
 			/>
 		</div>
 	</CardContent>
-	{#if session.id != $authStore.sessionId}
+	{#if !isCurrentSession}
 		<CardFooter>
 			<Button variant="destructive" disabled={deleteIsLoading} on:click={handleDeleteClick}>
 				Удалить
