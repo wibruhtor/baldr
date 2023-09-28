@@ -3,6 +3,7 @@ import { Buffer } from 'buffer';
 import { protectedRoutes } from '$lib/utils/protectionRoutes';
 import { goto } from '$app/navigation';
 import { browser } from '$app/environment';
+import { authService } from '$lib/service/auth.service';
 
 export type AuthStore = {
 	isLoggedIn: boolean;
@@ -22,8 +23,33 @@ const initialState: AuthStore = {
 	username: null,
 };
 
+const refreshTokens = async (refreshToken: string) => {
+	authService
+		.refreshTokens(refreshToken)
+		.then(({ accessToken, refreshToken }) => {
+			authStore.set(accessToken, refreshToken, true);
+		})
+		.catch((e) => {
+			console.error(e);
+			authStore.clear();
+		});
+};
+
 const createAuthStore = () => {
 	const { set, subscribe } = writable(initialState);
+
+	let timeout: NodeJS.Timeout | null = null;
+
+	subscribe(({ accessToken, refreshToken }) => {
+		if (timeout) clearTimeout(timeout);
+		if (!accessToken || !refreshToken) return;
+		const { exp } = JSON.parse(Buffer.from(accessToken?.split('.')[1], 'base64').toString('utf-8'));
+		const delay = Math.max(new Date(exp * 1000).getTime() - Date.now() - 5000, 10);
+
+		timeout = setTimeout(() => {
+			refreshTokens(refreshToken);
+		}, delay);
+	});
 
 	return {
 		subscribe,
