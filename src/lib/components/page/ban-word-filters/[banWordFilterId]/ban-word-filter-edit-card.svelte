@@ -16,14 +16,18 @@
 	import { banWordFiltersService } from '$lib/service/ban-word-filters.service';
 	import { authStore } from '$lib/stores/auth.store';
 	import type { BanWordFilter } from '$lib/types/api/entity/ban-word-filter';
+	import { UpdateBanWordFilterRequestSchema } from '$lib/types/api/request/ban-word-filters';
 	import { Eye, EyeOff, Plus, Trash } from 'lucide-svelte';
 
 	export let banWordFilter: BanWordFilter;
 	export let banWords: string[];
 
+
 	$: editStore = createBanWordFilterEdit(banWordFilter, banWords);
 	let newBanWord = '';
 	let showNewBanWord = false;
+
+	$: validationResult = UpdateBanWordFilterRequestSchema.safeParse({ name: $editStore.banWordFilter.name });
 
 	let isSaveLoading = false;
 	const handleSaveClick = async () => {
@@ -120,6 +124,11 @@
 				bind:value={$editStore.banWordFilter.name}
 				disabled={isSaveLoading}
 			/>
+			{#if !validationResult.success && validationResult.error.issues.find(v => v.path.join('.') === 'name')}
+			<span class="text-xs text-destructive">
+				{validationResult.error.issues.find(v => v.path.join('.') === 'name').message}
+			</span>
+			{/if}
 		</div>
 		<div class="flex flex-col gap-2">
 			<div class="flex items-center gap-2">
@@ -189,7 +198,7 @@
 	<CardFooter class="flex gap-2">
 		<Button
 			on:click={handleSaveClick}
-			disabled={(!$editStore.isBanWordsChanged && !$editStore.isNameChanged) || isSaveLoading}
+			disabled={(!$editStore.isBanWordsChanged && !$editStore.isNameChanged) || isSaveLoading || !validationResult.success}
 		>
 			Сохранить
 		</Button>
