@@ -8,7 +8,7 @@ export type AuthStore = {
 	isLoggedIn: boolean;
 	accessToken: string | null;
 	refreshToken: string | null;
-	sessionId: string | null
+	sessionId: string | null;
 	userId: string | null;
 	username: string | null;
 };
@@ -48,7 +48,7 @@ const createAuthStore = () => {
 				for (const i in protectedRoutes) {
 					const r = protectedRoutes[i];
 					if (location.pathname.startsWith(r)) {
-						goto('/')
+						goto('/');
 					}
 				}
 			}

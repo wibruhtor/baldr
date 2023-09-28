@@ -7,9 +7,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (!event.cookies.get('at')) {
 		for (const i in protectedRouteIds) {
 			const r = protectedRouteIds[i];
-			console.log(event.route?.id, r, event.route?.id?.startsWith(r))
 			if (event.route?.id?.startsWith(r)) {
-				throw redirect(307, '/')
+				throw redirect(307, '/');
 			}
 		}
 	}

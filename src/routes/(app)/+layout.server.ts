@@ -3,7 +3,6 @@ import { AppError } from '$lib/utils/app-error';
 import { error, type Cookies } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 
-
 export const load: LayoutServerLoad = async ({ url, cookies }) => {
 	let accessToken = cookies.get('at') || null;
 	let refreshToken = cookies.get('rt') || null;
