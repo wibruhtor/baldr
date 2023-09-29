@@ -77,7 +77,8 @@ const refreshTokens = async (
 				maxAge: -1,
 				secure: url.protocol.includes('https'),
 			});
-			throw error(e.getStatus(), { requestId: e.getRequestId(), message: e.getMessage() });
+			if (e.getStatus() !== 403)
+				throw error(e.getStatus(), { requestId: e.getRequestId(), message: e.getMessage() });
 		}
 		return { accessToken: null, refreshToken: null };
 	}
