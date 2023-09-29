@@ -33,19 +33,21 @@ export const createForm = <Data extends Record<string, unknown>>(
 		const result = schema.safeParse(currentData, params?.parseParams);
 
 		if (!result.success) {
-			const errors = structuredClone(currentErrors);
-			result.error.issues.forEach((issue) => {
-				let object: Record<string | number, unknown> = errors;
-				const pathWithoutLast = issue.path.slice(0, issue.path.length - 1);
-				const last = issue.path[issue.path.length - 1];
-				pathWithoutLast.forEach((p) => {
-					object = object[p] as Record<string | number, unknown>;
+			try {
+				const errors = structuredClone(currentErrors);
+				result.error.issues.forEach((issue) => {
+					let object: Record<string | number, unknown> = errors;
+					const pathWithoutLast = issue.path.slice(0, issue.path.length - 1);
+					const last = issue.path[issue.path.length - 1];
+					pathWithoutLast.forEach((p) => {
+						object = object[p] as Record<string | number, unknown>;
+					});
+					if (object != null && last != null) {
+						object[last] = issue.message;
+					}
 				});
-				if (object != null && last != null) {
-					object[last] = issue.message;
-				}
-			});
-			errorsStore.set(errors);
+				errorsStore.set(errors);
+			} catch { /* empty */ }
 		} else {
       errorsStore.set(getNullErrors(data))
     }

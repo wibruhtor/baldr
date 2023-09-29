@@ -194,7 +194,7 @@
 				Банворд "омлет" будет срабатывать на "о:м\Л%е т" в сообщении "Я сделал о:м\Л%е т"
 			</p>
 
-			{#each $wordsData.words as banWord (banWord.id)}
+			{#each $wordsData.words as banWord, index (banWord.id)}
 				<Field let:id>
 					<div class="flex gap-2">
 						<Input
