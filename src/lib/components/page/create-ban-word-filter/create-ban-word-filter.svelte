@@ -15,12 +15,11 @@
 		UpdateBanWordFilterRequestSchema,
 	} from '$lib/types/api/request/ban-word-filters';
 	import { createForm } from '$lib/utils/createForm';
+	import Field from '$lib/components/ui/field/field.svelte';
 </script>
 
 <script lang="ts">
-	const { data, errors, validate } = createForm({ name: '' }, UpdateBanWordFilterRequestSchema, {
-		validateOnUpdate: true,
-	});
+	const { data, errors, validate } = createForm({ name: '' }, UpdateBanWordFilterRequestSchema);
 	let isLoading = false;
 
 	const handleBanWordFilterClick = () => {
@@ -45,20 +44,9 @@
 		<CardTitle>Создание Бан Ворд Фильтра</CardTitle>
 	</CardHeader>
 	<CardContent class="grid grid-cols-1 gap-4">
-		<div class="flex flex-col gap-2">
-			<Label for="ban-word-filter-name">Название</Label>
-			<Input
-				id="ban-word-filter-name"
-				name="ban-word-filter-name"
-				autocomplete="ban-word-filter-name"
-				bind:value={$data.name}
-			/>
-			{#if $errors.name}
-				<span class="text-xs text-destructive">
-					{$errors.name}
-				</span>
-			{/if}
-		</div>
+		<Field label="Название" for="ban-word-filter-name" description={$errors.name} error let:id>
+			<Input {id} name={id} autocomplete={id} bind:value={$data.name} />
+		</Field>
 	</CardContent>
 	<CardFooter>
 		<Button on:click={handleBanWordFilterClick} disabled={isLoading}>Создать</Button>

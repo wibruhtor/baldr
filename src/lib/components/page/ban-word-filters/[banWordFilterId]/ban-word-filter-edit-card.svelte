@@ -1,9 +1,5 @@
 <script lang="ts" context="module">
 	import { goto } from '$app/navigation';
-	import {
-		createBanWordFilterEdit,
-		formatBanWords,
-	} from '$lib/components/page/ban-word-filters/[banWordFilterId]/editStore';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import CardContent from '$lib/components/ui/card/card-content.svelte';
 	import CardDescription from '$lib/components/ui/card/card-description.svelte';
@@ -16,88 +12,131 @@
 	import { banWordFiltersService } from '$lib/service/ban-word-filters.service';
 	import { authStore } from '$lib/stores/auth.store';
 	import type { BanWordFilter } from '$lib/types/api/entity/ban-word-filter';
-	import { UpdateBanWordFilterRequestSchema } from '$lib/types/api/request/ban-word-filters';
+	import {
+		BanWordSchema,
+		UpdateBanWordFilterRequestSchema,
+	} from '$lib/types/api/request/ban-word-filters';
+	import { createForm } from '$lib/utils/createForm';
 	import { Eye, EyeOff, Plus, Trash } from 'lucide-svelte';
+	import Field from '$lib/components/ui/field/field.svelte';
+	import { z } from 'zod';
+	import { hash } from '$lib/utils/hash';
+
+	const NewBanWordSchema = z.object({
+		word: BanWordSchema,
+		show: z.boolean(),
+	});
+
+	const BanWordsSchema = z.object({
+		words: z.array(
+			z.object({
+				id: z.string(),
+				word: BanWordSchema,
+				show: z.boolean(),
+			}),
+		),
+	});
 </script>
 
 <script lang="ts">
 	export let banWordFilter: BanWordFilter;
 	export let banWords: string[];
 
-	let newBanWord = '';
-	let showNewBanWord = false;
+	let showAllBanWords = false;
 	let isSaveLoading = false;
 	let isDeleteLoading = false;
 
-	$: editStore = createBanWordFilterEdit(banWordFilter, banWords);
+	const {
+		data: filterData,
+		errors: filterErrors,
+		validate: filterValidate,
+	} = createForm({ name: banWordFilter.name }, UpdateBanWordFilterRequestSchema);
+	const {
+		data: wordsData,
+		errors: wordsErrors,
+		validate: wordsValidate,
+	} = createForm(
+		{
+			words: banWords.map((word) => ({
+				id: hash(),
+				word,
+				show: false,
+			})),
+		},
+		BanWordsSchema,
+	);
+	const {
+		data: newWordData,
+		errors: newWordErrors,
+		validate: newWordValidate,
+	} = createForm({ word: '', show: false }, NewBanWordSchema);
 
-	$: validationResult = UpdateBanWordFilterRequestSchema.safeParse({
-		name: $editStore.banWordFilter.name,
-	});
+	$: isChanged =
+		$filterData.name !== banWordFilter.name ||
+		!$wordsData.words
+			.map((v) => v.word.toLowerCase().trim())
+			.every((v) => banWords.includes(v.toLowerCase().trim())) ||
+		!banWords
+			.map((v) => v.toLowerCase().trim())
+			.every((v) => $wordsData.words.map((v) => v.word.toLowerCase().trim()).includes(v));
+
+	const handleAddNewClick = () => {
+		if (!newWordValidate()) return;
+		if (
+			$wordsData.words
+				.map((v) => v.word.toLowerCase().trim())
+				.includes($newWordData.word.toLowerCase().trim())
+		) {
+			$newWordErrors.word = 'Бан ворд уже в списке';
+			return;
+		}
+		$wordsData.words = Array.from(
+			new Set([
+				...$wordsData.words,
+				{
+					id: hash(),
+					word: $newWordData.word.toLowerCase().trim(),
+					show: false,
+				},
+			]),
+		);
+		$newWordData.word = '';
+		$newWordErrors.word = null;
+	};
+
+	const handleRemoveBanWordClick = (id: string) => {
+		$wordsData.words = $wordsData.words.filter((v) => v.id !== id);
+	};
 
 	const handleSaveClick = async () => {
+		if (!filterValidate() || !wordsValidate()) return;
 		if (!$authStore.accessToken) return;
 		isSaveLoading = true;
-		if ($editStore.isBanWordsChanged && $editStore.isNameChanged) {
-			const promises = [
-				banWordFiltersService.updateBanWordsOfFilter(
-					banWordFilter.id,
-					{
-						banWords: formatBanWords($editStore.banWords),
-					},
-					$authStore.accessToken,
-				),
-				banWordFiltersService.updateBanWordFilter(
-					banWordFilter.id,
-					{ name: $editStore.banWordFilter.name },
-					$authStore.accessToken,
-				),
-			];
-
-			Promise.all(promises)
-				.then(([_, f]) => {
-					const filter = f as BanWordFilter;
-					banWordFilter = filter;
-					banWords = formatBanWords($editStore.banWords);
-					isSaveLoading = false;
-				})
-				.catch((e) => {
-					console.error(e);
-					isSaveLoading = false;
-				});
-		} else if ($editStore.isBanWordsChanged) {
-			banWordFiltersService
-				.updateBanWordsOfFilter(
-					banWordFilter.id,
-					{
-						banWords: formatBanWords($editStore.banWords),
-					},
-					$authStore.accessToken,
-				)
-				.then(() => {
-					banWords = formatBanWords($editStore.banWords);
-					isSaveLoading = false;
-				})
-				.catch((e) => {
-					console.error(e);
-					isSaveLoading = false;
-				});
-		} else if ($editStore.isNameChanged) {
-			banWordFiltersService
-				.updateBanWordFilter(
-					banWordFilter.id,
-					{ name: $editStore.banWordFilter.name },
-					$authStore.accessToken,
-				)
-				.then((f) => {
-					banWordFilter = f;
-					isSaveLoading = false;
-				})
-				.catch((e) => {
-					console.error(e);
-					isSaveLoading = false;
-				});
+		const [filterResult, wordsResult] = await Promise.allSettled([
+			banWordFiltersService.updateBanWordFilter(
+				banWordFilter.id,
+				{ name: $filterData.name },
+				$authStore.accessToken,
+			),
+			banWordFiltersService.updateBanWordsOfFilter(
+				banWordFilter.id,
+				{
+					banWords: $wordsData.words.map((v) => v.word.toLowerCase().trim()),
+				},
+				$authStore.accessToken,
+			),
+		]);
+		if (filterResult.status === 'fulfilled') {
+			banWordFilter = filterResult.value;
+		} else {
+			console.error(filterResult.reason);
 		}
+		if (wordsResult.status === 'fulfilled') {
+			banWords = $wordsData.words.map((v) => v.word.toLowerCase().trim());
+		} else {
+			console.error(wordsResult.reason);
+		}
+		isSaveLoading = false;
 	};
 
 	const handleDeleteClick = async () => {
@@ -117,32 +156,34 @@
 
 <Card class="min-w-0 max-w-3xl w-full mx-auto">
 	<CardHeader>
-		<CardTitle>Бан Ворд Фильтр</CardTitle>
+		<CardTitle>Бан Ворд Фильтр {isSaveLoading} {isDeleteLoading}</CardTitle>
 		<CardDescription>{banWordFilter.name}</CardDescription>
 	</CardHeader>
 	<CardContent class="grid grid-cols-1 gap-4">
-		<div class="flex flex-col gap-2">
-			<Label for="name">Название</Label>
+		<Field
+			label="Название"
+			for="ban-word-filter-name"
+			description={$filterErrors.name}
+			error
+			let:id
+		>
 			<Input
-				id="name"
-				name="name"
-				bind:value={$editStore.banWordFilter.name}
+				{id}
+				name={id}
+				autocomplete={id}
+				bind:value={$filterData.name}
 				disabled={isSaveLoading}
 			/>
-			{#if !validationResult.success}
-				{@const nameIssue = validationResult.error.issues.find((v) => v.path.join('.') === 'name')}
-				{#if nameIssue}
-					<span class="text-xs text-destructive">
-						{nameIssue.message}
-					</span>
-				{/if}
-			{/if}
-		</div>
+		</Field>
 		<div class="flex flex-col gap-2">
 			<div class="flex items-center gap-2">
 				<Label>Бан Ворды</Label>
-				<Button on:click={() => editStore.toggleAll()} variant="destructive" size="sm">
-					{#if $editStore.isAllVisible}
+				<Button
+					on:click={() => (showAllBanWords = !showAllBanWords)}
+					variant="destructive"
+					size="sm"
+				>
+					{#if showAllBanWords}
 						Скрыть все
 					{:else}
 						Показать все
@@ -152,67 +193,83 @@
 			<p class="typography-muted">
 				Банворд "омлет" будет срабатывать на "о:м\Л%е т" в сообщении "Я сделал о:м\Л%е т"
 			</p>
-			{#each $editStore.banWords as banWord (banWord.id)}
+
+			{#each $wordsData.words as banWord (banWord.id)}
+				<Field let:id>
+					<div class="flex gap-2">
+						<Input
+							{id}
+							name={id}
+							class="w-0 flex-1"
+							bind:value={banWord.word}
+							type={showAllBanWords || banWord.show ? 'text' : 'password'}
+							disabled={isSaveLoading}
+						/>
+						<Button
+							on:click={() => (banWord.show = !banWord.show)}
+							variant="outline"
+							size="icon"
+							disabled={showAllBanWords}
+						>
+							{#if showAllBanWords || banWord.show}
+								<Eye class="h-4 w-4" />
+							{:else}
+								<EyeOff class="h-4 w-4" />
+							{/if}
+						</Button>
+						<Button
+							on:click={() => handleRemoveBanWordClick(banWord.id)}
+							variant="destructive"
+							size="icon"
+							disabled={isSaveLoading}
+						>
+							<Trash class="h-4 w-4" />
+						</Button>
+					</div>
+				</Field>
+			{/each}
+			<Field for="new-ban-word" description={$newWordErrors.word} error let:id>
 				<div class="flex gap-2">
 					<Input
+						{id}
+						name={id}
 						class="w-0 flex-1"
-						bind:value={banWord.word}
-						type={banWord.show ? 'text' : 'password'}
+						bind:value={$newWordData.word}
+						autocomplete={id}
+						type={showAllBanWords || $newWordData.show ? 'text' : 'password'}
 						disabled={isSaveLoading}
 					/>
-					<Button on:click={() => (banWord.show = !banWord.show)} variant="outline" size="icon">
-						{#if banWord.show}
+					<Button
+						on:click={() => ($newWordData.show = !$newWordData.show)}
+						variant="outline"
+						size="icon"
+						disabled={showAllBanWords}
+					>
+						{#if showAllBanWords || $newWordData.show}
 							<Eye class="h-4 w-4" />
 						{:else}
 							<EyeOff class="h-4 w-4" />
 						{/if}
 					</Button>
 					<Button
-						on:click={() => editStore.removeBanWord(banWord.id)}
-						variant="destructive"
+						on:click={handleAddNewClick}
+						variant="outline"
 						size="icon"
+						disabled={isSaveLoading}
 					>
-						<Trash class="h-4 w-4" />
+						<Plus class="h-4 w-4" />
 					</Button>
 				</div>
-			{/each}
-			<div class="flex gap-2">
-				<Input
-					class="w-0 flex-1"
-					bind:value={newBanWord}
-					type={showNewBanWord ? 'text' : 'password'}
-					disabled={isSaveLoading}
-				/>
-				<Button on:click={() => (showNewBanWord = !showNewBanWord)} variant="outline" size="icon">
-					{#if showNewBanWord}
-						<Eye class="h-4 w-4" />
-					{:else}
-						<EyeOff class="h-4 w-4" />
-					{/if}
-				</Button>
-				<Button
-					on:click={() => {
-						editStore.addNewBanWord(newBanWord);
-						newBanWord = '';
-					}}
-					variant="outline"
-					size="icon"
-				>
-					<Plus class="h-4 w-4" />
-				</Button>
-			</div>
+			</Field>
 		</div>
 	</CardContent>
 	<CardFooter class="flex gap-2">
+		<Button on:click={handleSaveClick} disabled={!isChanged || isSaveLoading}>Сохранить</Button>
 		<Button
-			on:click={handleSaveClick}
-			disabled={(!$editStore.isBanWordsChanged && !$editStore.isNameChanged) ||
-				isSaveLoading ||
-				!validationResult.success}
+			on:click={handleDeleteClick}
+			disabled={isDeleteLoading || isSaveLoading}
+			variant="destructive"
 		>
-			Сохранить
-		</Button>
-		<Button on:click={handleDeleteClick} disabled={isDeleteLoading} variant="destructive">
 			Удалить
 		</Button>
 	</CardFooter>
