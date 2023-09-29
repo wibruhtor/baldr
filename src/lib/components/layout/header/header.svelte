@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" context="module">
 	import AuthButton from '$lib/components/layout/header/auth-button.svelte';
 </script>
 

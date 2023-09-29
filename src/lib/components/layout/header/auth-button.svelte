@@ -1,9 +1,11 @@
-<script lang="ts">
+<script lang="ts" context="module">
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { authService } from '$lib/service/auth.service';
 	import { authStore } from '$lib/stores/auth.store';
 	import { onMount } from 'svelte';
+</script>
 
+<script lang="ts">
 	let authUrl = '#';
 
 	onMount(() => {

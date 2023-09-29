@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" context="module">
 	import { Eye, EyeOff } from 'lucide-svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import CardContent from '$lib/components/ui/card/card-content.svelte';
@@ -14,21 +14,22 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Session } from '$lib/types/api/entity/session';
 
-	export let session: Session;
-
-	let isCurrentSession = session.id == $authStore.sessionId;
-
 	const dispatch = createEventDispatcher();
-
-	const ua = new UAParser(session.userAgent).getResult();
-	let showIp = false;
 
 	const dtf = new Intl.DateTimeFormat(undefined, {
 		dateStyle: 'short',
 		timeStyle: 'short',
 	});
+</script>
 
+<script lang="ts">
+	export let session: Session;
+
+	let isCurrentSession = session.id == $authStore.sessionId;
+	let showIp = false;
 	let deleteIsLoading = false;
+	const ua = new UAParser(session.userAgent).getResult();
+
 	const handleDeleteClick = async () => {
 		if (!$authStore.accessToken) return;
 		deleteIsLoading = true;

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" context="module">
 	import { Plus } from 'lucide-svelte';
 	import CardHeader from '$lib/components/ui/card/card-header.svelte';
 	import CardTitle from '$lib/components/ui/card/card-title.svelte';

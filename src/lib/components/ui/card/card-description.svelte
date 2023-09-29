@@ -1,7 +1,9 @@
-<script lang="ts">
+<script lang="ts" context="module">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { cn } from '$lib/utils/shadcn';
+</script>
 
+<script lang="ts">
 	type $$Props = HTMLAttributes<HTMLParagraphElement>;
 
 	let className: $$Props['class'] = undefined;

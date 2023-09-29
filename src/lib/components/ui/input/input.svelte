@@ -1,14 +1,16 @@
-<script lang="ts">
+<script lang="ts" context="module">
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { cn } from '$lib/utils/shadcn';
 	import type { InputEvents } from './input.types';
+</script>
 
+<script lang="ts">
 	type $$Props = HTMLInputAttributes;
 	type $$Events = InputEvents;
 
 	let className: $$Props['class'] = undefined;
-	export let value: $$Props['value'] = undefined;
 	export { className as class };
+	export let value: $$Props['value'] = undefined;
 </script>
 
 <input

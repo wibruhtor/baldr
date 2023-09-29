@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" context="module">
 	import SessionCard from '$lib/components/page/sessions/session-card.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import CardDescription from '$lib/components/ui/card/card-description.svelte';
@@ -8,7 +8,9 @@
 	import { sessionsService } from '$lib/service/sessions.service';
 	import { authStore } from '$lib/stores/auth.store';
 	import type { Session } from '$lib/types/api/entity/session';
+</script>
 
+<script lang="ts">
 	export let sessions: Session[];
 
 	let deleteIsLoading = false;

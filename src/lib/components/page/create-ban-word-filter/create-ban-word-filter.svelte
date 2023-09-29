@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" context="module">
 	import Button from '$lib/components/ui/button/button.svelte';
 	import CardHeader from '$lib/components/ui/card/card-header.svelte';
 	import CardTitle from '$lib/components/ui/card/card-title.svelte';
@@ -11,7 +11,9 @@
 	import { authStore } from '$lib/stores/auth.store';
 	import { goto } from '$app/navigation';
 	import { CreateBanWordFilterRequestSchema } from '$lib/types/api/request/ban-word-filters';
+</script>
 
+<script lang="ts">
 	let name: string = '';
 	let isLoading = false;
 
@@ -41,16 +43,19 @@
 		<div class="flex flex-col gap-2">
 			<Label for="name">Название</Label>
 			<Input id="name" name="name" bind:value={name} />
-			{#if !validationResult.success && validationResult.error.issues.find((v) => v.path.join('.') === 'name')}
-				<span class="text-xs text-destructive">
-					{validationResult.error.issues.find((v) => v.path.join('.') === 'name').message}
-				</span>
+			{#if !validationResult.success}
+				{@const nameIssue = validationResult.error.issues.find((v) => v.path.join('.') === 'name')}
+				{#if nameIssue}
+					<span class="text-xs text-destructive">
+						{nameIssue.message}
+					</span>
+				{/if}
 			{/if}
 		</div>
 	</CardContent>
 	<CardFooter>
-		<Button on:click={handleBanWordFilterClick} disabled={isLoading || !validationResult.success}
-			>Создать</Button
-		>
+		<Button on:click={handleBanWordFilterClick} disabled={isLoading || !validationResult.success}>
+			Создать
+		</Button>
 	</CardFooter>
 </Card>

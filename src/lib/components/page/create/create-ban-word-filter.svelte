@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" context="module">
 	import CardHeader from '$lib/components/ui/card/card-header.svelte';
 	import CardTitle from '$lib/components/ui/card/card-title.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';

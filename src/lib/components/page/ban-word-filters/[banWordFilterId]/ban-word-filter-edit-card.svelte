@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" context="module">
 	import { goto } from '$app/navigation';
 	import {
 		createBanWordFilterEdit,
@@ -18,19 +18,23 @@
 	import type { BanWordFilter } from '$lib/types/api/entity/ban-word-filter';
 	import { UpdateBanWordFilterRequestSchema } from '$lib/types/api/request/ban-word-filters';
 	import { Eye, EyeOff, Plus, Trash } from 'lucide-svelte';
+</script>
 
+<script lang="ts">
 	export let banWordFilter: BanWordFilter;
 	export let banWords: string[];
 
-	$: editStore = createBanWordFilterEdit(banWordFilter, banWords);
 	let newBanWord = '';
 	let showNewBanWord = false;
+	let isSaveLoading = false;
+	let isDeleteLoading = false;
+
+	$: editStore = createBanWordFilterEdit(banWordFilter, banWords);
 
 	$: validationResult = UpdateBanWordFilterRequestSchema.safeParse({
 		name: $editStore.banWordFilter.name,
 	});
 
-	let isSaveLoading = false;
 	const handleSaveClick = async () => {
 		if (!$authStore.accessToken) return;
 		isSaveLoading = true;
@@ -95,7 +99,7 @@
 				});
 		}
 	};
-	let isDeleteLoading = false;
+
 	const handleDeleteClick = async () => {
 		if (!$authStore.accessToken) return;
 		isDeleteLoading = true;
@@ -125,10 +129,13 @@
 				bind:value={$editStore.banWordFilter.name}
 				disabled={isSaveLoading}
 			/>
-			{#if !validationResult.success && validationResult.error.issues.find((v) => v.path.join('.') === 'name')}
-				<span class="text-xs text-destructive">
-					{validationResult.error.issues.find((v) => v.path.join('.') === 'name').message}
-				</span>
+			{#if !validationResult.success}
+				{@const nameIssue = validationResult.error.issues.find((v) => v.path.join('.') === 'name')}
+				{#if nameIssue}
+					<span class="text-xs text-destructive">
+						{nameIssue.message}
+					</span>
+				{/if}
 			{/if}
 		</div>
 		<div class="flex flex-col gap-2">

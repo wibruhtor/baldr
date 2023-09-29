@@ -1,7 +1,9 @@
-<script lang="ts">
+<script lang="ts" context="module">
 	import { Label as LabelPrimitive } from 'bits-ui';
 	import { cn } from '$lib/utils/shadcn';
+</script>
 
+<script lang="ts">
 	type $$Props = LabelPrimitive.Props;
 
 	let className: $$Props['class'] = undefined;
