@@ -10,20 +10,25 @@
 	import { banWordFiltersService } from '$lib/service/ban-word-filters.service';
 	import { authStore } from '$lib/stores/auth.store';
 	import { goto } from '$app/navigation';
-	import { CreateBanWordFilterRequestSchema } from '$lib/types/api/request/ban-word-filters';
+	import {
+		CreateBanWordFilterRequestSchema,
+		UpdateBanWordFilterRequestSchema,
+	} from '$lib/types/api/request/ban-word-filters';
+	import { createForm } from '$lib/utils/createForm';
 </script>
 
 <script lang="ts">
-	let name: string = '';
+	const { data, errors, validate } = createForm({ name: '' }, UpdateBanWordFilterRequestSchema, {
+		validateOnUpdate: true,
+	});
 	let isLoading = false;
 
-	$: validationResult = CreateBanWordFilterRequestSchema.safeParse({ name });
-
 	const handleBanWordFilterClick = () => {
+		if (!validate()) return;
 		if (!$authStore.accessToken) return;
 		isLoading = true;
 		banWordFiltersService
-			.createBanWordFilter({ name }, $authStore.accessToken)
+			.createBanWordFilter({ name: $data.name }, $authStore.accessToken)
 			.then((filter) => {
 				isLoading = false;
 				goto('/ban-word-filters/' + filter.id);
@@ -41,21 +46,21 @@
 	</CardHeader>
 	<CardContent class="grid grid-cols-1 gap-4">
 		<div class="flex flex-col gap-2">
-			<Label for="name">Название</Label>
-			<Input id="name" name="name" bind:value={name} />
-			{#if !validationResult.success}
-				{@const nameIssue = validationResult.error.issues.find((v) => v.path.join('.') === 'name')}
-				{#if nameIssue}
-					<span class="text-xs text-destructive">
-						{nameIssue.message}
-					</span>
-				{/if}
+			<Label for="ban-word-filter-name">Название</Label>
+			<Input
+				id="ban-word-filter-name"
+				name="ban-word-filter-name"
+				autocomplete="ban-word-filter-name"
+				bind:value={$data.name}
+			/>
+			{#if $errors.name}
+				<span class="text-xs text-destructive">
+					{$errors.name}
+				</span>
 			{/if}
 		</div>
 	</CardContent>
 	<CardFooter>
-		<Button on:click={handleBanWordFilterClick} disabled={isLoading || !validationResult.success}>
-			Создать
-		</Button>
+		<Button on:click={handleBanWordFilterClick} disabled={isLoading}>Создать</Button>
 	</CardFooter>
 </Card>
