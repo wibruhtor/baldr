@@ -7,6 +7,13 @@
 <article class="grid grid-cols-1 gap-4">
 	<h2 class="typography-h3">Настройки</h2>
 	<div class="grid grid-cols-4 gap-4">
+		<a href="/ban-word-filters">
+			<Card class="hover:bg-card-foreground/5">
+				<CardHeader class="py-16">
+					<CardTitle class="flex justify-center">Бан Ворд Фильтры</CardTitle>
+				</CardHeader>
+			</Card>
+		</a>
 		<a href="/sessions">
 			<Card class="hover:bg-card-foreground/5">
 				<CardHeader class="py-16">

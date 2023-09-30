@@ -1,6 +1,5 @@
 <script lang="ts">
 	import AuthButton from '$lib/components/layout/header/auth-button.svelte';
-	import Others from '$lib/components/page/others.svelte';
 	import Settings from '$lib/components/page/settings.svelte';
 	import Widgets from '$lib/components/page/widgets.svelte';
 	import CardDescription from '$lib/components/ui/card/card-description.svelte';
@@ -14,7 +13,6 @@
 <section class="container flex flex-col gap-8">
 	{#if $authStore.isLoggedIn}
 		<Widgets />
-		<Others />
 		<Settings />
 	{:else}
 		<Card class="min-w-0 max-w-sm w-full mx-auto">
