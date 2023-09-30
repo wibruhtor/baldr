@@ -53,24 +53,29 @@ export const UpdateChatSettingsRequestSchema = z.object({
 		borderBottomRightRadius: z.number().min(0, 'Минимальное значение 0'),
 		maxMessages: z.number().min(5, 'Минимальное значение 5').max(100, 'Максимальное значение 100'),
 	}),
-  hide: z.object({
-    hideMessagePattern: z.string(),
-    hidePointsRewards: z.string(),
-    hideLinks: z.boolean(),
-    linkReplacement: z.string(),
-    banWordReplacement: z.string(),
-    nicknames: z.array(z
-      .string()
-      .min(4, 'Минимальная длина 4 символа')
-      .max(25, 'Максимальная длина 25 символов')),
-      banWordFilterId: z.string().nullable()
-  }),
-  font: z.object({
-    fontFamily: z.string(),
-    nicknameFontWeight: z.number().min(0, "Минимальное значение 0").max(1000, "Максимальное значение 1000"),
-    textFontWeight: z.number().min(0, "Минимальное значение 0").max(1000, "Максимальное значение 1000"),
-    fontSize: z.number().min(0, "Минимальное значение 0")
-  })
+	hide: z.object({
+		hideMessagePattern: z.string(),
+		hidePointsRewards: z.string(),
+		hideLinks: z.boolean(),
+		linkReplacement: z.string(),
+		banWordReplacement: z.string(),
+		nicknames: z.array(
+			z.string().min(4, 'Минимальная длина 4 символа').max(25, 'Максимальная длина 25 символов'),
+		),
+		banWordFilterId: z.string().nullable(),
+	}),
+	font: z.object({
+		fontFamily: z.string(),
+		nicknameFontWeight: z
+			.number()
+			.min(0, 'Минимальное значение 0')
+			.max(1000, 'Максимальное значение 1000'),
+		textFontWeight: z
+			.number()
+			.min(0, 'Минимальное значение 0')
+			.max(1000, 'Максимальное значение 1000'),
+		fontSize: z.number().min(0, 'Минимальное значение 0'),
+	}),
 });
 
 export type UpdateChatSettingsRequest = z.infer<typeof UpdateChatSettingsRequestSchema>;
