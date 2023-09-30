@@ -6,28 +6,24 @@
 	import CardFooter from '$lib/components/ui/card/card-footer.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
-	import Label from '$lib/components/ui/label/label.svelte';
 	import { banWordFiltersService } from '$lib/service/ban-word-filters.service';
 	import { authStore } from '$lib/stores/auth.store';
 	import { goto } from '$app/navigation';
-	import {
-		CreateBanWordFilterRequestSchema,
-		UpdateBanWordFilterRequestSchema,
-	} from '$lib/types/api/request/ban-word-filters';
+	import { CreateBanWordFilterRequestSchema } from '$lib/types/api/request/ban-word-filters';
 	import { createForm } from '$lib/utils/createForm';
 	import Field from '$lib/components/ui/field/field.svelte';
 </script>
 
 <script lang="ts">
-	const { data, errors, validate } = createForm({ name: '' }, UpdateBanWordFilterRequestSchema);
+	const { data, errors, validate } = createForm({ name: '' }, CreateBanWordFilterRequestSchema);
 	let isLoading = false;
 
-	const handleBanWordFilterClick = () => {
+	const handleCreateClick = () => {
 		if (!validate()) return;
 		if (!$authStore.accessToken) return;
 		isLoading = true;
 		banWordFiltersService
-			.createBanWordFilter({ name: $data.name }, $authStore.accessToken)
+			.createBanWordFilter($data, $authStore.accessToken)
 			.then((filter) => {
 				isLoading = false;
 				goto('/ban-word-filters/edit/' + filter.id);
@@ -49,6 +45,6 @@
 		</Field>
 	</CardContent>
 	<CardFooter>
-		<Button on:click={handleBanWordFilterClick} disabled={isLoading}>Создать</Button>
+		<Button on:click={handleCreateClick} disabled={isLoading}>Создать</Button>
 	</CardFooter>
 </Card>
