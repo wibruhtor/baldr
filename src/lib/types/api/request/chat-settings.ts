@@ -1,3 +1,5 @@
+import { ColorSchema } from '$lib/types/api/color-schema';
+import { NicknameSchema } from '$lib/types/api/nickname-schema';
 import { z } from 'zod';
 
 const ChatTypeSchema = z.enum(['default', 'block']);
@@ -12,11 +14,6 @@ export const CreateChatSettingsRequestSchema = z.object({
 
 export type CreateChatSettingsRequest = z.infer<typeof CreateChatSettingsRequestSchema>;
 
-const ColorSchema = z
-	.number()
-	.min(0, 'Минимальное значение #00000000')
-	.max(4294967295, 'Максимальное значение #FFFFFFFF');
-
 export const UpdateChatSettingsRequestSchema = z.object({
 	name: z
 		.string()
@@ -24,15 +21,11 @@ export const UpdateChatSettingsRequestSchema = z.object({
 		.max(32, { message: 'Максимальная длина 32 символа' }),
 	chatType: ChatTypeSchema,
 	color: z.object({
-		nicknameColor: ColorSchema,
 		backgroundColor: ColorSchema,
 		gradientOnlyForCustomNicknames: z.boolean(),
 		customNicknames: z.array(
 			z.object({
-				nickname: z
-					.string()
-					.min(4, 'Минимальная длина 4 символа')
-					.max(25, 'Максимальная длина 25 символов'),
+				nickname: NicknameSchema,
 				startColor: ColorSchema,
 				endColor: ColorSchema,
 			}),
@@ -59,9 +52,7 @@ export const UpdateChatSettingsRequestSchema = z.object({
 		hideLinks: z.boolean(),
 		linkReplacement: z.string(),
 		banWordReplacement: z.string(),
-		nicknames: z.array(
-			z.string().min(4, 'Минимальная длина 4 символа').max(25, 'Максимальная длина 25 символов'),
-		),
+		nicknames: z.array(NicknameSchema),
 		banWordFilterId: z.string().nullable(),
 	}),
 	font: z.object({

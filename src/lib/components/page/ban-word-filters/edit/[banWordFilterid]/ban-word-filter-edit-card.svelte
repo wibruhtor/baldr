@@ -21,7 +21,6 @@
 	import Field from '$lib/components/ui/field/field.svelte';
 	import { z } from 'zod';
 	import { hash } from '$lib/utils/hash';
-	import { join } from 'tailwind-merge';
 
 	const NewBanWordSchema = z.object({
 		word: BanWordSchema,

@@ -1,6 +1,6 @@
-import { banWordFiltersService } from '$lib/service/ban-word-filters.service';
 import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import { chatSettingsService } from '$lib/service/chat-settings.service';
 
 export const load: PageServerLoad = async ({ params, cookies }) => {
 	const accessToken = cookies.get('at');
@@ -8,8 +8,8 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
 	if (!accessToken) throw redirect(307, '/');
 
 	try {
-		const data = await banWordFiltersService.getBanWordFilter(params.banWordFilterId, accessToken);
-		return { banWordFilter: data.filter, banWords: data.banWords };
+		const chatSettings = await chatSettingsService.getChatSettings(params.chatWidgetId);
+		return { chatSettings };
 	} catch {
 		throw error(404, { message: 'Not Found' });
 	}
