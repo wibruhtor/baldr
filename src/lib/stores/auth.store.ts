@@ -44,9 +44,11 @@ const createAuthStore = () => {
 		subscribe(({ accessToken, refreshToken }) => {
 			if (timeout) clearTimeout(timeout);
 			if (!accessToken || !refreshToken) return;
-			const { exp } = JSON.parse(Buffer.from(accessToken?.split('.')[1], 'base64').toString('utf-8'));
+			const { exp } = JSON.parse(
+				Buffer.from(accessToken?.split('.')[1], 'base64').toString('utf-8'),
+			);
 			const delay = Math.max(new Date(exp * 1000).getTime() - Date.now() - 10000, 10);
-	
+
 			timeout = setTimeout(() => {
 				refreshTokens(refreshToken);
 			}, delay);

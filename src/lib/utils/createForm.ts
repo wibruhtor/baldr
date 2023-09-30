@@ -1,18 +1,44 @@
 import { writable } from 'svelte/store';
-import type { ParseParams } from 'zod';
+import type { ParseParams, ZodError } from 'zod';
 
-export type Errors<Data extends Record<string, unknown>> = {
-	[Key in keyof Data]: string | null;
+type ErrorMessage = string | null;
+
+type ErrorRecordBasic = Record<string, unknown>;
+type ErrorRecord = Record<string, unknown | Errors<ErrorRecordBasic>[]>;
+
+export type Errors<T extends ErrorRecord> = {
+	[Key in keyof T]: T[Key] extends ErrorRecord
+		? Errors<T[Key]>
+		: T[Key] extends ErrorRecord[]
+		? ErrorsArray<T[Key]>
+		: ErrorMessage;
+};
+
+export type ErrorsArray<T extends ErrorRecord[]> = {
+	[Key in keyof T]: T[Key] extends Record<string, unknown> ? Errors<T[Key]> : ErrorMessage;
+};
+
+type NullableRecord = Record<string, null>;
+type NestedNullableRecord = Record<string, null | NullableRecord[]>;
+
+const getNullableObject = (data: NestedNullableRecord): NestedNullableRecord => {
+	const object: NestedNullableRecord = {};
+
+	Object.keys(data).forEach((key) => {
+		if (Array.isArray(data[key])) {
+			object[key] = (data[key] as unknown[]).map((_, i) =>
+				getNullableObject((data[key] as unknown[])[i] as NullableRecord),
+			) as NullableRecord[];
+		} else {
+			object[key] = null;
+		}
+	});
+
+	return object;
 };
 
 const getNullErrors = <Data extends Record<string, unknown>>(data: Data): Errors<Data> => {
-	const object: Record<string, null> = {};
-
-	Object.keys(data).forEach((key) => {
-		object[key] = null;
-	});
-
-	return object as Errors<Data>;
+	return getNullableObject(data as NestedNullableRecord) as Errors<Data>;
 };
 
 export const createForm = <Data extends Record<string, unknown>>(
@@ -25,6 +51,7 @@ export const createForm = <Data extends Record<string, unknown>>(
 ) => {
 	const dataStore = writable(data);
 	const errorsStore = writable(getNullErrors(data));
+	const zodError = writable<ZodError<Data> | null>(null);
 
 	let currentData = data;
 	let currentErrors = getNullErrors(data);
@@ -33,6 +60,7 @@ export const createForm = <Data extends Record<string, unknown>>(
 		const result = schema.safeParse(currentData, params?.parseParams);
 
 		if (!result.success) {
+			zodError.set(result.error);
 			try {
 				const errors = structuredClone(currentErrors);
 				result.error.issues.forEach((issue) => {
@@ -51,6 +79,7 @@ export const createForm = <Data extends Record<string, unknown>>(
 				/* empty */
 			}
 		} else {
+			zodError.set(null);
 			errorsStore.set(getNullErrors(data));
 		}
 
@@ -71,6 +100,9 @@ export const createForm = <Data extends Record<string, unknown>>(
 		data: dataStore,
 		errors: {
 			subscribe: errorsStore.subscribe,
+		},
+		zod: {
+			subscribe: zodError.subscribe,
 		},
 		validate,
 	};

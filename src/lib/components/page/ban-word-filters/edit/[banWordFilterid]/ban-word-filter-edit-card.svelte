@@ -21,6 +21,7 @@
 	import Field from '$lib/components/ui/field/field.svelte';
 	import { z } from 'zod';
 	import { hash } from '$lib/utils/hash';
+	import { join } from 'tailwind-merge';
 
 	const NewBanWordSchema = z.object({
 		word: BanWordSchema,
@@ -195,7 +196,7 @@
 			</p>
 
 			{#each $wordsData.words as banWord, index (banWord.id)}
-				<Field let:id>
+				<Field description={$wordsErrors.words[index]?.word} error let:id>
 					<div class="flex gap-2">
 						<Input
 							{id}
