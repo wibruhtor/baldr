@@ -88,6 +88,7 @@ export const createForm = <Data extends Record<string, unknown>>(
 
 	dataStore.subscribe((v) => {
 		currentData = v;
+		errorsStore.set(getNullErrors(v))
 		if (params?.validateOnUpdate) {
 			validate();
 		}
