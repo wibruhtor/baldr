@@ -1,5 +1,6 @@
 <script lang="ts" context="module">
 	import AuthButton from '$lib/components/layout/header/auth-button.svelte';
+	import ThemeButton from '$lib/components/layout/header/theme-button.svelte';
 </script>
 
 <header class="border-b h-20 flex items-stretch justify-center">
@@ -8,6 +9,9 @@
 			<img src="/favicon.svg" alt="Логотип" width="48" height="48" />
 			<h1 class="typography-h3">WiBruhTor</h1>
 		</a>
-		<AuthButton />
+		<div class="flex gap-2">
+			<ThemeButton />
+			<AuthButton />
+		</div>
 	</section>
 </header>
