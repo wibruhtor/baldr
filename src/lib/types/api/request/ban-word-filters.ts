@@ -22,6 +22,7 @@ export type UpdateBanWordsOfFilterRequest = {
 	banWords: string[];
 };
 
-export const BanWordSchema = z.string()
-	.min(1, { message: "Минимальная длина 1 символ"})
-	.max(32, { message: "Максимальная длина 32 символа"})
+export const BanWordSchema = z
+	.string()
+	.min(1, { message: 'Минимальная длина 1 символ' })
+	.max(32, { message: 'Максимальная длина 32 символа' });

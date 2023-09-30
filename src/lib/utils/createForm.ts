@@ -29,7 +29,7 @@ export const createForm = <Data extends Record<string, unknown>>(
 	let currentData = data;
 	let currentErrors = getNullErrors(data);
 
-  const validate = (): boolean => {
+	const validate = (): boolean => {
 		const result = schema.safeParse(currentData, params?.parseParams);
 
 		if (!result.success) {
@@ -47,10 +47,12 @@ export const createForm = <Data extends Record<string, unknown>>(
 					}
 				});
 				errorsStore.set(errors);
-			} catch { /* empty */ }
+			} catch {
+				/* empty */
+			}
 		} else {
-      errorsStore.set(getNullErrors(data))
-    }
+			errorsStore.set(getNullErrors(data));
+		}
 
 		return result.success;
 	};
