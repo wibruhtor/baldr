@@ -200,6 +200,7 @@
 						<Input
 							{id}
 							name={id}
+							autocomplete="off"
 							class="w-0 flex-1"
 							bind:value={banWord.word}
 							type={showAllBanWords || banWord.show ? 'text' : 'password'}
@@ -235,7 +236,7 @@
 						name={id}
 						class="w-0 flex-1"
 						bind:value={$newWordData.word}
-						autocomplete={id}
+						autocomplete="off"
 						type={showAllBanWords || $newWordData.show ? 'text' : 'password'}
 						disabled={isSaveLoading}
 					/>

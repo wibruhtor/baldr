@@ -14,8 +14,6 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Session } from '$lib/types/api/entity/session';
 
-	const dispatch = createEventDispatcher();
-
 	const dtf = new Intl.DateTimeFormat(undefined, {
 		dateStyle: 'short',
 		timeStyle: 'short',
@@ -23,7 +21,11 @@
 </script>
 
 <script lang="ts">
+	import Field from '$lib/components/ui/field/field.svelte';
+
 	export let session: Session;
+
+	const dispatch = createEventDispatcher();
 
 	let isCurrentSession = session.id == $authStore.sessionId;
 	let showIp = false;
@@ -57,18 +59,14 @@
 		</CardTitle>
 	</CardHeader>
 	<CardContent class="grid grid-cols-1 gap-4">
-		<div class="flex flex-col gap-2">
-			<Label for="id">ID</Label>
-			<div class="flex gap-2">
-				<Input id="id" name="id" value={session.id} readonly />
-			</div>
-		</div>
-		<div class="flex flex-col gap-2">
-			<Label for="ip">IP</Label>
+		<Field for={`id-${session.id}`} label="ID" let:id>
+			<Input {id} name={id} value={session.id} readonly />
+		</Field>
+		<Field for={`ip-${session.id}`} label="IP" let:id>
 			<div class="flex gap-2">
 				<Input
-					id="ip"
-					name="ip"
+					{id}
+					name={id}
 					class="w-0 flex-1"
 					value={session.ip}
 					type={showIp ? 'text' : 'password'}
@@ -82,54 +80,35 @@
 					{/if}
 				</Button>
 			</div>
-		</div>
-		<div class="flex flex-col gap-2">
-			<Label for="user-agent">User Agent</Label>
-			<Input id="user-agent" name="user-agent" value={session.userAgent} readonly />
-		</div>
+		</Field>
+
+		<Field for={`user-agent-${session.id}`} label="User Agent" let:id>
+			<Input {id} name={id} value={session.userAgent} readonly />
+		</Field>
 		{#if ua.browser.name}
-			<div class="flex flex-col gap-2">
-				<Label for="browser">Браузер</Label>
+			<Field for={`browser-${session.id}`} label="Браузер" let:id>
 				{#if ua.browser.version}
-					<Input
-						id="browser"
-						name="browser"
-						value={`${ua.browser.name}/${ua.browser.version}`}
-						readonly
-					/>
+					<Input {id} name={id} value={`${ua.browser.name}/${ua.browser.version}`} readonly />
 				{:else}
-					<Input id="browser" name="browser" value={ua.browser.name} readonly />
+					<Input {id} name={id} value={ua.browser.name} readonly />
 				{/if}
-			</div>
+			</Field>
 		{/if}
 		{#if ua.os.name}
-			<div class="flex flex-col gap-2">
-				<Label for="os">Операционная система</Label>
+			<Field for={`os-${session.id}`} label="Операционная система" let:id>
 				{#if ua.os.version}
-					<Input id="os" name="os" value={`${ua.os.name} ${ua.os.version}`} readonly />
+					<Input {id} name={id} value={`${ua.os.name} ${ua.os.version}`} readonly />
 				{:else}
-					<Input id="os" name="os" value={ua.os.name} readonly />
+					<Input {id} name={id} value={ua.os.name} readonly />
 				{/if}
-			</div>
+			</Field>
 		{/if}
-		<div class="flex flex-col gap-2">
-			<Label for="authorizedAt">Авторизован</Label>
-			<Input
-				id="authorizedAt"
-				name="authorizedAt"
-				value={dtf.format(new Date(session.authorizedAt))}
-				readonly
-			/>
-		</div>
-		<div class="flex flex-col gap-2">
-			<Label for="refreshedAt">Последнее обновление</Label>
-			<Input
-				id="refreshedAt"
-				name="refreshedAt"
-				value={dtf.format(new Date(session.refreshedAt))}
-				readonly
-			/>
-		</div>
+		<Field for={`authorized-at-${session.id}`} label="Авторизован" let:id>
+			<Input {id} name={id} value={dtf.format(new Date(session.authorizedAt))} readonly />
+		</Field>
+		<Field for={`refreshed-at-${session.id}`} label="Последнее обновление" let:id>
+			<Input {id} name={id} value={dtf.format(new Date(session.refreshedAt))} readonly />
+		</Field>
 	</CardContent>
 	{#if !isCurrentSession}
 		<CardFooter>
