@@ -9,7 +9,7 @@ export const POST: RequestHandler = async ({ request, cookies, url }) => {
 			'utf-8',
 		);
 		const { iat: iatOfAccessToken, exp: expOfAccessToken } = JSON.parse(accessTokenPayloadInString);
-		const accessTokenMaxAge = expOfAccessToken - iatOfAccessToken - 10;
+		const accessTokenMaxAge = expOfAccessToken - iatOfAccessToken - 5;
 
 		const refreshTokenPayloadInBase64 = refreshToken.split('.')[1];
 		const refreshTokenPayloadInString = Buffer.from(refreshTokenPayloadInBase64, 'base64').toString(
@@ -18,7 +18,7 @@ export const POST: RequestHandler = async ({ request, cookies, url }) => {
 		const { iat: iatOfRefreshToken, exp: expOfRefreshToken } = JSON.parse(
 			refreshTokenPayloadInString,
 		);
-		const refreshTokenMaxAge = expOfRefreshToken - iatOfRefreshToken - 10;
+		const refreshTokenMaxAge = expOfRefreshToken - iatOfRefreshToken - 5;
 
 		cookies.set('at', accessToken, {
 			httpOnly: true,
