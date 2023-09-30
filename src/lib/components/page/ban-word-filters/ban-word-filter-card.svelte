@@ -9,7 +9,7 @@
 	export let banWordFilter: BanWordFilter;
 </script>
 
-<a href={'/ban-word-filters/' + banWordFilter.id}>
+<a href={'/ban-word-filters/edit/' + banWordFilter.id}>
 	<Card class="hover:bg-card-foreground/5">
 		<CardHeader class="py-16">
 			<CardTitle class="flex justify-center">{banWordFilter.name}</CardTitle>

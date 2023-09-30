@@ -30,7 +30,7 @@
 			.createBanWordFilter({ name: $data.name }, $authStore.accessToken)
 			.then((filter) => {
 				isLoading = false;
-				goto('/ban-word-filters/' + filter.id);
+				goto('/ban-word-filters/edit/' + filter.id);
 			})
 			.catch((e) => {
 				console.error(e);

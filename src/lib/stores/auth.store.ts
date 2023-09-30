@@ -46,6 +46,7 @@ const createAuthStore = () => {
 		const { exp } = JSON.parse(Buffer.from(accessToken?.split('.')[1], 'base64').toString('utf-8'));
 		const delay = Math.max(new Date(exp * 1000).getTime() - Date.now() - 5000, 10);
 
+		console.log(`${(delay/1000).toFixed(2)}s`)
 		timeout = setTimeout(() => {
 			refreshTokens(refreshToken);
 		}, delay);

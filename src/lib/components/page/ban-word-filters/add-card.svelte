@@ -5,7 +5,7 @@
 	import Card from '$lib/components/ui/card/card.svelte';
 </script>
 
-<a href="/create-ban-word-filter" class="grid grid-cols-1">
+<a href="/ban-word-filters/create" class="grid grid-cols-1">
 	<Card class="hover:bg-card-foreground/5 flex items-center cursor-pointer">
 		<CardHeader class="py-12 w-full">
 			<CardTitle class="flex justify-center"><Plus class="h-10 w-10" /></CardTitle>
