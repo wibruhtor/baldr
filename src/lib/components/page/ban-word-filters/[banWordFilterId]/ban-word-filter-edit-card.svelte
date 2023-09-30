@@ -156,7 +156,7 @@
 
 <Card class="min-w-0 max-w-3xl w-full mx-auto">
 	<CardHeader>
-		<CardTitle>Бан Ворд Фильтр {isSaveLoading} {isDeleteLoading}</CardTitle>
+		<CardTitle>Бан Ворд Фильтр</CardTitle>
 		<CardDescription>{banWordFilter.name}</CardDescription>
 	</CardHeader>
 	<CardContent class="grid grid-cols-1 gap-4">
