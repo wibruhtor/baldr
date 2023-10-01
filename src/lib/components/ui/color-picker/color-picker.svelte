@@ -11,11 +11,24 @@
 
 <script lang="ts">
 	export let color: number;
+	export let placement:
+		| 'top'
+		| 'top-start'
+		| 'top-end'
+		| 'right'
+		| 'right-start'
+		| 'right-end'
+		| 'bottom'
+		| 'bottom-start'
+		| 'bottom-end'
+		| 'left'
+		| 'left-start'
+		| 'left-end' = 'bottom-start';
 
 	$: hex = numberToHex(color);
 </script>
 
-<Popover>
+<Popover positioning={{ placement }}>
 	<PopoverTrigger asChild let:builder>
 		<Button builders={[builder]} size="icon" variant="outline">
 			<div class="w-4 h-4 rounded-full border" style={`background: ${hex}`} />

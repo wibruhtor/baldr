@@ -11,8 +11,8 @@
 
 	let isPicking = false;
 	let picker: HTMLElement;
-	let circleX = 50;
-	let circleY = 50;
+	let circleX = numberToHsv(color).s;
+	let circleY = 100 - numberToHsv(color).v;
 
 	$: hsv = numberToHsv(color);
 	$: hex = colord(hsv).toHex();

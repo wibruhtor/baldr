@@ -10,10 +10,13 @@
 </script>
 
 <script lang="ts">
+	import ColorInput from '$lib/components/ui/color-picker/color-input.svelte';
 	import ColorPicker from '$lib/components/ui/color-picker/color-picker.svelte';
 	import Field from '$lib/components/ui/field/field.svelte';
 
 	export let chatSettings: ChatSettings;
+
+	let color = 0xf0f000ff;
 </script>
 
 <Card class="min-w-0 max-w-3xl w-full mx-auto">
@@ -24,7 +27,8 @@
 	<CardContent class="grid grid-cols-1 gap-4">
 		<Field>
 			<div class="flex gap-2">
-				<ColorPicker color={0xf0f000ff} />
+				<ColorPicker bind:color />
+				<ColorInput bind:value={color} />
 			</div>
 		</Field>
 		<pre>{JSON.stringify(chatSettings, null, 2)}</pre>
