@@ -22,10 +22,13 @@
 	import BorderTopRight from '$lib/components/ui/icon/border-top-right.svelte';
 	import BorderBottomLeft from '$lib/components/ui/icon/border-bottom-left.svelte';
 	import BorderBottomRight from '$lib/components/ui/icon/border-bottom-right.svelte';
+	import type { Errors } from '$lib/utils/createForm';
+	import type { UpdateChatSettingsRequest } from '$lib/types/api/request/chat-settings';
 </script>
 
 <script lang="ts">
 	export let sizeSettings: ChatSizeSettings;
+	export let errors: Errors<UpdateChatSettingsRequest>['size'];
 	export let isLoading: boolean;
 
 	let showMargin: 'all' | 'axis' | 'every' = 'every';
@@ -190,81 +193,144 @@
 			{/if}
 		</Button>
 	</div>
-	<div class="flex flex-col gap-2">
-		{#if showMargin === 'all'}
-			<div class="flex items-center justify-center gap-2">
+	{#if showMargin === 'all'}
+		<Field
+			for="margin"
+			description={errors.marginTop ||
+				errors.marginRight ||
+				errors.marginBottom ||
+				errors.marginLeft}
+			error
+			let:id
+		>
+			<div class="flex items-center gap-2">
 				<Margin class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="margin"
-					autocomplete="margin"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={margin}
 				/>
 			</div>
-		{:else if showMargin === 'axis'}
-			<div class="flex items-center justify-center gap-2">
+		</Field>
+	{:else if showMargin === 'axis'}
+		<div class="flex gap-2">
+			<Field
+				for="margin-x"
+				class="flex-1 flex items-center gap-2"
+				description={errors.marginRight || errors.marginLeft}
+				error
+				let:id
+			>
 				<MarginX class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="margin-x"
-					autocomplete="margin"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={marginX}
 				/>
+			</Field>
+			<Field
+				for="margin-y"
+				class="flex-1 flex items-center gap-2"
+				description={errors.marginTop || errors.marginBottom}
+				error
+				let:id
+			>
 				<MarginY class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="margin-y"
-					autocomplete="margin"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={marginY}
 				/>
-			</div>
-		{:else}
-			<div class="flex items-center justify-center gap-2">
+			</Field>
+		</div>
+	{:else}
+		<div class="flex items-center gap-2">
+			<Field
+				for="margin-top"
+				class="flex-1 flex items-center gap-2"
+				description={errors.marginTop}
+				error
+				let:id
+			>
 				<MarginTop class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="margin-top"
-					autocomplete="margin"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={sizeSettings.marginTop}
 				/>
+			</Field>
+			<Field
+				for="margin-left"
+				class="flex-1 flex items-center gap-2"
+				description={errors.marginLeft}
+				error
+				let:id
+			>
 				<MarginLeft class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="margin-left"
-					autocomplete="margin"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={sizeSettings.marginLeft}
 				/>
+			</Field>
+			<Field
+				for="margin-right"
+				class="flex-1 flex items-center gap-2"
+				description={errors.marginRight}
+				error
+				let:id
+			>
 				<MarginRight class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="margin-right"
-					autocomplete="margin"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={sizeSettings.marginRight}
 				/>
+			</Field>
+			<Field
+				for="margin-bottom"
+				class="flex-1 flex items-center gap-2"
+				description={errors.marginBottom}
+				error
+				let:id
+			>
 				<MarginBottom class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="margin-bottom"
-					autocomplete="margin"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={sizeSettings.marginBottom}
 				/>
-			</div>
-		{/if}
-	</div>
+			</Field>
+		</div>
+	{/if}
 </div>
 <div class="flex flex-col gap-2">
 	<div class="flex items-center gap-2">
@@ -279,81 +345,144 @@
 			{/if}
 		</Button>
 	</div>
-	<div class="flex flex-col gap-2">
-		{#if showPadding === 'all'}
-			<div class="flex items-center justify-center gap-2">
+	{#if showPadding === 'all'}
+		<Field
+			for="padding"
+			description={errors.paddingTop ||
+				errors.paddingRight ||
+				errors.paddingBottom ||
+				errors.paddingLeft}
+			error
+			let:id
+		>
+			<div class="flex items-center gap-2">
 				<Padding class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="padding"
-					autocomplete="padding"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={padding}
 				/>
 			</div>
-		{:else if showPadding === 'axis'}
-			<div class="flex items-center justify-center gap-2">
+		</Field>
+	{:else if showPadding === 'axis'}
+		<div class="flex gap-2">
+			<Field
+				for="padding-x"
+				class="flex-1 flex items-center gap-2"
+				description={errors.paddingRight || errors.paddingLeft}
+				error
+				let:id
+			>
 				<PaddingX class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="padding-x"
-					autocomplete="padding"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={paddingX}
 				/>
+			</Field>
+			<Field
+				for="padding-y"
+				class="flex-1 flex items-center gap-2"
+				description={errors.paddingTop || errors.paddingBottom}
+				error
+				let:id
+			>
 				<PaddingY class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="padding-y"
-					autocomplete="padding"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={paddingY}
 				/>
-			</div>
-		{:else}
-			<div class="flex items-center justify-center gap-2">
+			</Field>
+		</div>
+	{:else}
+		<div class="flex gap-2">
+			<Field
+				for="padding-top"
+				class="flex-1 flex items-center gap-2"
+				description={errors.paddingTop}
+				error
+				let:id
+			>
 				<PaddingTop class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="padding-top"
-					autocomplete="padding"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={sizeSettings.paddingTop}
 				/>
+			</Field>
+			<Field
+				for="padding-left"
+				class="flex-1 flex items-center gap-2"
+				description={errors.paddingLeft}
+				error
+				let:id
+			>
 				<PaddingLeft class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="padding-left"
-					autocomplete="padding"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={sizeSettings.paddingLeft}
 				/>
+			</Field>
+			<Field
+				for="padding-right"
+				class="flex-1 flex items-center gap-2"
+				description={errors.paddingRight}
+				error
+				let:id
+			>
 				<PaddingRight class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="padding-right"
-					autocomplete="padding"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={sizeSettings.paddingRight}
 				/>
+			</Field>
+			<Field
+				for="padding-bottom"
+				class="flex-1 flex items-center gap-2"
+				description={errors.paddingBottom}
+				error
+				let:id
+			>
 				<PaddingBottom class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="padding-bottom"
-					autocomplete="padding"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={sizeSettings.paddingBottom}
 				/>
-			</div>
-		{/if}
-	</div>
+			</Field>
+		</div>
+	{/if}
 </div>
 <div class="flex flex-col gap-2">
 	<div class="flex items-center gap-2">
@@ -366,62 +495,113 @@
 			{/if}
 		</Button>
 	</div>
-	<div class="flex flex-col gap-2">
-		{#if showRadius === 'all'}
-			<div class="flex items-center justify-center gap-2">
+	{#if showRadius === 'all'}
+		<Field
+			for="radius"
+			description={errors.borderTopLeftRadius ||
+				errors.borderTopRightRadius ||
+				errors.borderBottomLeftRadius ||
+				errors.borderBottomRightRadius}
+			error
+			let:id
+		>
+			<div class="flex items-center gap-2">
 				<BorderTopLeft class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="radius"
-					autocomplete="radius"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={radius}
 				/>
 			</div>
-		{:else}
-			<div class="flex items-center justify-center gap-2">
+		</Field>
+	{:else}
+		<div class="flex gap-2">
+			<Field
+				for="radius-top-left"
+				class="flex-1 flex items-center gap-2"
+				description={errors.borderTopLeftRadius}
+				error
+				let:id
+			>
 				<BorderTopLeft class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="radius-top-left"
-					autocomplete="radius"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={sizeSettings.borderTopLeftRadius}
 				/>
+			</Field>
+			<Field
+				for="radius-top-right"
+				class="flex-1 flex items-center gap-2"
+				description={errors.borderTopRightRadius}
+				error
+				let:id
+			>
 				<BorderTopRight class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="radius-top-right"
-					autocomplete="radius"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={sizeSettings.borderTopRightRadius}
 				/>
+			</Field>
+			<Field
+				for="radius-bottom-left"
+				class="flex-1 flex items-center gap-2"
+				description={errors.borderBottomLeftRadius}
+				error
+				let:id
+			>
 				<BorderBottomLeft class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="radius-bottom-left"
-					autocomplete="radius"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={sizeSettings.borderBottomLeftRadius}
 				/>
+			</Field>
+			<Field
+				for="radius-bottom-right"
+				class="flex-1 flex items-center gap-2"
+				description={errors.borderBottomRightRadius}
+				error
+				let:id
+			>
 				<BorderBottomRight class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="radius-bottom-right"
-					autocomplete="radius"
+					{id}
+					name={id}
+					autocomplete={id}
 					type="number"
 					min="0"
 					bind:value={sizeSettings.borderBottomRightRadius}
 				/>
-			</div>
-		{/if}
-	</div>
+			</Field>
+		</div>
+	{/if}
 </div>
-<Field label="Максимальное число сообщений" for="max-messages" let:id>
+<Field
+	for="max-messages"
+	label="Максимальное число сообщений"
+	description={errors.maxMessages}
+	error
+	let:id
+>
 	<Input
 		{id}
 		name={id}

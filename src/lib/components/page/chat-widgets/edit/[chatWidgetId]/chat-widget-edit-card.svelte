@@ -126,7 +126,7 @@
 			</TabsContent>
 			<TabsContent value="size">
 				<div class="grid grid-cols-1 gap-4">
-					<SizeEdit bind:sizeSettings={$data.size} {isLoading} />
+					<SizeEdit bind:sizeSettings={$data.size} errors={$errors.size} {isLoading} />
 				</div>
 			</TabsContent>
 			<TabsContent value="hide">Hide Settings</TabsContent>
