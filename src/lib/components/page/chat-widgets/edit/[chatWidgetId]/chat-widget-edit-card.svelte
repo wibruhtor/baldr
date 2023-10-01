@@ -26,6 +26,7 @@
 	import { chatSettingsService } from '$lib/service/chat-settings.service';
 	import { goto } from '$app/navigation';
 	import SizeEdit from '$lib/components/page/chat-widgets/edit/[chatWidgetId]/size-edit.svelte';
+	import HideEdit from '$lib/components/page/chat-widgets/edit/[chatWidgetId]/hide-edit.svelte';
 
 	const chatTypes: { value: ChatType; label: string }[] = [
 		{ value: 'default', label: 'По умолчанию' },
@@ -130,7 +131,11 @@
 					<SizeEdit bind:sizeSettings={$data.size} errors={$errors.size} {isLoading} />
 				</div>
 			</TabsContent>
-			<TabsContent value="hide">Hide Settings</TabsContent>
+			<TabsContent value="hide">
+				<div class="grid grid-cols-1 gap-4">
+					<HideEdit bind:hideSettings={$data.hide} errors={$errors.hide} {isLoading} />
+				</div>
+			</TabsContent>
 			<TabsContent value="font">Font Settings</TabsContent>
 		</Tabs>
 	</CardContent>
