@@ -14,6 +14,7 @@
 	import { NicknameSchema } from '$lib/types/api/nickname-schema';
 	import { ColorSchema } from '$lib/types/api/color-schema';
 	import { z } from 'zod';
+	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
 
 	const NewCustomNicknameSchema = z.object({
 		nickname: NicknameSchema,
@@ -117,12 +118,13 @@
 		/>
 	</div>
 </Field>
-<Field
-	for="gradient-only-for-custom-nicknames"
-	label="Градиент только для кастомных никнеймов"
-	let:id
->
-	<Switch class="flex" {id} name={id} bind:checked={colorSettings.gradientOnlyForCustomNicknames} />
+<Field for="gradient-only-for-custom-nicknames" label="Градиент для кастомных никнеймов" let:id>
+	<div class="flex items-center gap-2">
+		<Switch {id} name={id} bind:checked={colorSettings.gradientOnlyForCustomNicknames} />
+		<Label for={id} class="typography-muted">
+			Градиент будет применяться только для кастомных никнеймов
+		</Label>
+	</div>
 </Field>
 <Label>Кастомные никнеймы</Label>
 {#each customNicknames as custom, index (custom.id)}
