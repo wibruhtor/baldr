@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>Виджеты | WiBruhTor</title>
+	<title>WiBruhTor</title>
 </svelte:head>
 
 <slot />

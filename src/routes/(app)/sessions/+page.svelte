@@ -5,6 +5,10 @@
 	export let data: PageData;
 </script>
 
+<svelte:head>
+	<title>Сессии | WiBruhTor</title>
+</svelte:head>
+
 <section class="container">
 	<SessionsControl sessions={data.sessions} />
 </section>

@@ -5,6 +5,10 @@
 	export let data: PageData;
 </script>
 
+<svelte:head>
+	<title>Редактирование Виджета чата "{data.chatSettings.name}" | WiBruhTor</title>
+</svelte:head>
+
 <section class="container">
 	<ChatWidgetEditCard chatSettings={data.chatSettings} />
 </section>

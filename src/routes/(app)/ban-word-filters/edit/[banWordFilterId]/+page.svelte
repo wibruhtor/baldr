@@ -5,6 +5,10 @@
 	export let data: PageData;
 </script>
 
+<svelte:head>
+	<title>Редактирование Бан Ворд Фильтра "{data.banWordFilter.name}" | WiBruhTor</title>
+</svelte:head>
+
 <section class="container">
 	<BanWordFilterEditCard banWordFilter={data.banWordFilter} banWords={data.banWords} />
 </section>

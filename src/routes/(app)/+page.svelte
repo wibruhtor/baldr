@@ -10,6 +10,10 @@
 	import { authStore } from '$lib/stores/auth.store';
 </script>
 
+<svelte:head>
+	<title>Главная | WiBruhTor</title>
+</svelte:head>
+
 <section class="container flex flex-col gap-8">
 	{#if $authStore.isLoggedIn}
 		<Widgets />
