@@ -88,8 +88,16 @@
 	const toggleMargin = () => {
 		if (showMargin === 'all') {
 			showMargin = 'axis';
+			margin = Math.max(
+				sizeSettings.marginTop,
+				sizeSettings.marginBottom,
+				sizeSettings.marginLeft,
+				sizeSettings.marginRight,
+			);
 		} else if (showMargin === 'axis') {
 			showMargin = 'every';
+			marginX = Math.max(sizeSettings.marginLeft, sizeSettings.marginRight);
+			marginY = Math.max(sizeSettings.marginTop, sizeSettings.marginBottom);
 		} else {
 			showMargin = 'all';
 		}
@@ -98,8 +106,16 @@
 	const togglePadding = () => {
 		if (showPadding === 'all') {
 			showPadding = 'axis';
+			padding = Math.max(
+				sizeSettings.paddingTop,
+				sizeSettings.paddingBottom,
+				sizeSettings.paddingLeft,
+				sizeSettings.paddingRight,
+			);
 		} else if (showPadding === 'axis') {
 			showPadding = 'every';
+			paddingX = Math.max(sizeSettings.paddingLeft, sizeSettings.paddingRight);
+			paddingY = Math.max(sizeSettings.paddingTop, sizeSettings.paddingBottom);
 		} else {
 			showPadding = 'all';
 		}
@@ -108,6 +124,12 @@
 	const toggleRadius = () => {
 		if (showRadius === 'all') {
 			showRadius = 'every';
+			radius = Math.max(
+				sizeSettings.borderTopLeftRadius,
+				sizeSettings.borderTopRightRadius,
+				sizeSettings.borderBottomLeftRadius,
+				sizeSettings.borderBottomRightRadius,
+			);
 		} else {
 			showRadius = 'all';
 		}
