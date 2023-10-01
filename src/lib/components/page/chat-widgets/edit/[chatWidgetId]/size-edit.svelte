@@ -1,6 +1,9 @@
 <script lang="ts" context="module">
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Field from '$lib/components/ui/field/field.svelte';
+	import MarginLeft from '$lib/components/ui/icon/margin-left.svelte';
+	import MarginTop from '$lib/components/ui/icon/margin-top.svelte';
+	import Margin from '$lib/components/ui/icon/margin.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import type { ChatSizeSettings } from '$lib/types/api/entity/chat-settings';
@@ -9,52 +12,67 @@
 </script>
 
 <script lang="ts">
+	import MarginBottom from '$lib/components/ui/icon/margin-bottom.svelte';
+	import MarginRight from '$lib/components/ui/icon/margin-right.svelte';
+	import MarginX from '$lib/components/ui/icon/margin-x.svelte';
+	import MarginY from '$lib/components/ui/icon/margin-y.svelte';
+
 	export let sizeSettings: ChatSizeSettings;
 	export let isLoading: boolean;
 
-	let allMargins = false;
-	let margin = sizeSettings.marginTop;
-	let allPaddings = false;
-	let padding = sizeSettings.paddingTop;
-	let allRadius = false;
-	let radius = sizeSettings.borderTopLeftRadius;
+	let showMargin: 'all' | 'axis' | 'every' = 'every';
+	let margin = Math.max(
+		sizeSettings.marginTop,
+		sizeSettings.marginBottom,
+		sizeSettings.marginLeft,
+		sizeSettings.marginRight,
+	);
+	let marginX = Math.max(sizeSettings.marginLeft, sizeSettings.marginRight);
+	let marginY = Math.max(sizeSettings.marginTop, sizeSettings.marginBottom);
 
-	$: if (allMargins) {
+	$: if (showMargin === 'all') {
 		sizeSettings.marginTop = margin;
 		sizeSettings.marginRight = margin;
 		sizeSettings.marginBottom = margin;
 		sizeSettings.marginLeft = margin;
 	}
-	$: if (allPaddings) {
-		sizeSettings.paddingTop = padding;
-		sizeSettings.paddingRight = padding;
-		sizeSettings.paddingBottom = padding;
-		sizeSettings.paddingLeft = padding;
+	$: if (showMargin === 'every') {
+		sizeSettings.marginTop = marginY;
+		sizeSettings.marginRight = marginX;
+		sizeSettings.marginBottom = marginY;
+		sizeSettings.marginLeft = marginX;
 	}
-	$: if (allRadius) {
-		sizeSettings.borderTopLeftRadius = radius;
-		sizeSettings.borderTopRightRadius = radius;
-		sizeSettings.borderBottomLeftRadius = radius;
-		sizeSettings.borderBottomRightRadius = radius;
-	}
+
+	const toggleMargin = () => {
+		if (showMargin === 'all') {
+			showMargin = 'axis';
+		} else if (showMargin === 'axis') {
+			showMargin = 'every';
+		} else {
+			showMargin = 'all';
+		}
+	};
 </script>
 
 <div class="flex flex-col gap-2">
 	<div class="flex items-center gap-2">
 		<Label>Внешние отступы</Label>
-		<Button on:click={() => (allMargins = !allMargins)} variant="secondary" size="sm">
-			{#if allMargins}
-				Каждый отступ
+		<Button on:click={toggleMargin} variant="secondary" size="sm">
+			{#if showMargin === 'all'}
+				Все
+			{:else if showMargin === 'axis'}
+				Оси
 			{:else}
-				Все отступы
+				Каждый
 			{/if}
 		</Button>
 	</div>
 	<div class="flex flex-col gap-2">
-		{#if allMargins}
-			<div class="flex justify-center gap-2">
+		{#if showMargin === 'all'}
+			<div class="flex items-center justify-center gap-2">
+				<Margin class="h-4 w-4" />
 				<Input
-					class="w-24"
+					class="w-0 flex-1"
 					name="margin"
 					autocomplete="margin"
 					type="number"
@@ -62,38 +80,59 @@
 					bind:value={margin}
 				/>
 			</div>
-		{:else}
-			<div class="flex justify-center gap-2">
+		{:else if showMargin === 'axis'}
+			<div class="flex items-center justify-center gap-2">
+				<MarginX class="h-4 w-4" />
 				<Input
-					class="w-24"
+					class="w-0 flex-1"
+					name="margin"
+					autocomplete="margin"
+					type="number"
+					min="0"
+					bind:value={marginX}
+				/>
+				<MarginY class="h-4 w-4" />
+				<Input
+					class="w-0 flex-1"
+					name="margin"
+					autocomplete="margin"
+					type="number"
+					min="0"
+					bind:value={marginY}
+				/>
+			</div>
+		{:else}
+			<div class="flex items-center justify-center gap-2">
+				<MarginTop class="h-4 w-4" />
+				<Input
+					class="w-0 flex-1"
 					name="margin-top"
 					autocomplete="margin"
 					type="number"
 					min="0"
 					bind:value={sizeSettings.marginTop}
 				/>
-			</div>
-			<div class="flex justify-center gap-24">
+				<MarginLeft class="h-4 w-4" />
 				<Input
-					class="w-24"
+					class="w-0 flex-1"
 					name="margin-left"
 					autocomplete="margin"
 					type="number"
 					min="0"
 					bind:value={sizeSettings.marginLeft}
 				/>
+				<MarginRight class="h-4 w-4" />
 				<Input
-					class="w-24"
+					class="w-0 flex-1"
 					name="margin-right"
 					autocomplete="margin"
 					type="number"
 					min="0"
 					bind:value={sizeSettings.marginRight}
 				/>
-			</div>
-			<div class="flex justify-center gap-2">
+				<MarginBottom class="h-4 w-4" />
 				<Input
-					class="w-24"
+					class="w-0 flex-1"
 					name="margin-bottom"
 					autocomplete="margin"
 					type="number"
@@ -104,7 +143,7 @@
 		{/if}
 	</div>
 </div>
-<div class="flex flex-col gap-2">
+<!-- <div class="flex flex-col gap-2">
 	<div class="flex items-center gap-2">
 		<Label>Внутренние отступы</Label>
 		<Button on:click={() => (allPaddings = !allPaddings)} variant="secondary" size="sm">
@@ -218,7 +257,7 @@
 			</div>
 		{/if}
 	</div>
-</div>
+</div> -->
 <Field label="Максимальное число сообщений" for="max-messages" let:id>
 	<Input
 		{id}

@@ -1,0 +1,15 @@
+<script lang="ts" context="module">
+	import type { HTMLAttributes } from 'svelte/elements';
+</script>
+
+<script lang="ts">
+	type $$Props = HTMLAttributes<SVGElement>;
+</script>
+
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" {...$$restProps}>
+	<path
+		fill-rule="evenodd"
+		clip-rule="evenodd"
+		d="M9 6C7.34315 6 6 7.34315 6 9V15C6 16.6569 7.34315 18 9 18H15C16.6569 18 18 16.6569 18 15V9C18 7.34315 16.6569 6 15 6H9ZM8 9C8 8.44772 8.44772 8 9 8H15C15.5523 8 16 8.44772 16 9V15C16 15.5523 15.5523 16 15 16H9C8.44772 16 8 15.5523 8 15V9ZM21 18C21.5523 18 22 17.5523 22 17C22 16.4477 21.5523 16 21 16C20.4477 16 20 16.4477 20 17C20 17.5523 20.4477 18 21 18ZM22 7C22 7.55228 21.5523 8 21 8C20.4477 8 20 7.55228 20 7C20 6.44772 20.4477 6 21 6C21.5523 6 22 6.44772 22 7ZM22 11C22 10.4477 21.5523 10 21 10C20.4477 10 20 10.4477 20 11V13C20 13.5523 20.4477 14 21 14C21.5523 14 22 13.5523 22 13V11Z"
+	/>
+</svg>
