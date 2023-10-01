@@ -130,51 +130,55 @@
 <div class="flex flex-col gap-2">
 	<Label>Кастомные никнеймы</Label>
 	{#each customNicknames as custom, index (custom.id)}
-		<Field description={errors.customNicknames[index]?.nickname} error let:id>
-			<div class="flex gap-2">
-				<ColorPicker class="flex-1" bind:color={custom.startColor} />
-				<ColorInput class="w-0 flex-1" autocomplete="off" bind:value={custom.startColor} />
-				<ColorPicker class="flex-1" bind:color={custom.endColor} />
-				<ColorInput class="w-0 flex-1" autocomplete="off" bind:value={custom.endColor} />
-				<Input
-					{id}
-					name={id}
-					autocomplete="nickname"
-					class="w-0 flex-1"
-					bind:value={custom.nickname}
-				/>
-				<Button
-					on:click={() => handleRemoveCustomNicknameClick(custom.id)}
-					variant="destructive"
-					size="icon"
-					disabled={isLoading}
-				>
-					<Trash class="h-4 w-4" />
-				</Button>
-			</div>
-		</Field>
-	{/each}
-	<Field for="new-custom-nickname" description={$newErrors.nickname} error let:id>
 		<div class="flex gap-2">
-			<ColorPicker class="flex-1" bind:color={$newData.startColor} />
-			<ColorInput class="w-0 flex-1" autocomplete="off" bind:value={$newData.startColor} />
-			<ColorPicker class="flex-1" bind:color={$newData.endColor} />
-			<ColorInput class="w-0 flex-1" autocomplete="off" bind:value={$newData.endColor} />
-			<Input
-				{id}
-				name={id}
-				autocomplete="nickname"
-				class="w-0 flex-1"
-				bind:value={$newData.nickname}
-			/>
+			<Field class="flex-1" description={errors.customNicknames[index]?.startColor} error>
+				<div class="flex gap-2">
+					<ColorPicker class="flex-1" bind:color={custom.startColor} />
+					<ColorInput class="w-0 flex-1" autocomplete="off" bind:value={custom.startColor} />
+				</div>
+			</Field>
+			<Field class="flex-1" description={errors.customNicknames[index]?.endColor} error>
+				<div class="flex gap-2">
+					<ColorPicker class="flex-1" bind:color={custom.endColor} />
+					<ColorInput class="w-0 flex-1" autocomplete="off" bind:value={custom.endColor} />
+				</div>
+			</Field>
+			<Field class="flex-1" description={errors.customNicknames[index]?.nickname} error let:id>
+				<Input {id} name={id} autocomplete="nickname" bind:value={custom.nickname} />
+			</Field>
 			<Button
-				on:click={handleAddNewCustomNicknameClick}
-				variant="outline"
+				on:click={() => handleRemoveCustomNicknameClick(custom.id)}
+				variant="destructive"
 				size="icon"
 				disabled={isLoading}
 			>
-				<Plus class="h-4 w-4" />
+				<Trash class="h-4 w-4" />
 			</Button>
 		</div>
-	</Field>
+	{/each}
+	<div class="flex gap-2">
+		<Field class="flex-1" description={$newErrors.startColor} error>
+			<div class="flex gap-2">
+				<ColorPicker class="flex-1" bind:color={$newData.startColor} />
+				<ColorInput class="w-0 flex-1" autocomplete="off" bind:value={$newData.startColor} />
+			</div>
+		</Field>
+		<Field class="flex-1" description={$newErrors.endColor} error>
+			<div class="flex gap-2">
+				<ColorPicker class="flex-1" bind:color={$newData.endColor} />
+				<ColorInput class="w-0 flex-1" autocomplete="off" bind:value={$newData.endColor} />
+			</div>
+		</Field>
+		<Field class="flex-1" for="new-custom-nickname" description={$newErrors.nickname} error let:id>
+			<Input {id} name={id} autocomplete="nickname" bind:value={$newData.nickname} />
+		</Field>
+		<Button
+			on:click={handleAddNewCustomNicknameClick}
+			variant="outline"
+			size="icon"
+			disabled={isLoading}
+		>
+			<Plus class="h-4 w-4" />
+		</Button>
+	</div>
 </div>
