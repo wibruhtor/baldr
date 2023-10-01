@@ -54,6 +54,47 @@
 		sizeSettings.borderBottomRightRadius,
 	);
 
+	$: {
+		if (typeof sizeSettings.marginTop === 'string') {
+			sizeSettings.marginTop = Number.parseInt(sizeSettings.marginTop);
+		}
+		if (typeof sizeSettings.marginRight === 'string') {
+			sizeSettings.marginRight = Number.parseInt(sizeSettings.marginRight);
+		}
+		if (typeof sizeSettings.marginBottom === 'string') {
+			sizeSettings.marginBottom = Number.parseInt(sizeSettings.marginBottom);
+		}
+		if (typeof sizeSettings.marginLeft === 'string') {
+			sizeSettings.marginLeft = Number.parseInt(sizeSettings.marginLeft);
+		}
+		if (typeof sizeSettings.paddingTop === 'string') {
+			sizeSettings.paddingTop = Number.parseInt(sizeSettings.paddingTop);
+		}
+		if (typeof sizeSettings.paddingRight === 'string') {
+			sizeSettings.paddingRight = Number.parseInt(sizeSettings.paddingRight);
+		}
+		if (typeof sizeSettings.paddingBottom === 'string') {
+			sizeSettings.paddingBottom = Number.parseInt(sizeSettings.paddingBottom);
+		}
+		if (typeof sizeSettings.paddingLeft === 'string') {
+			sizeSettings.paddingLeft = Number.parseInt(sizeSettings.paddingLeft);
+		}
+		if (typeof sizeSettings.borderTopLeftRadius === 'string') {
+			sizeSettings.borderTopLeftRadius = Number.parseInt(sizeSettings.borderTopLeftRadius);
+		}
+		if (typeof sizeSettings.borderBottomRightRadius === 'string') {
+			sizeSettings.borderBottomRightRadius = Number.parseInt(sizeSettings.borderBottomRightRadius);
+		}
+		if (typeof sizeSettings.borderBottomLeftRadius === 'string') {
+			sizeSettings.borderBottomLeftRadius = Number.parseInt(sizeSettings.borderBottomLeftRadius);
+		}
+		if (typeof sizeSettings.borderBottomRightRadius === 'string') {
+			sizeSettings.borderBottomRightRadius = Number.parseInt(sizeSettings.borderBottomRightRadius);
+		}
+		if (typeof sizeSettings.maxMessages === 'string') {
+			sizeSettings.maxMessages = Number.parseInt(sizeSettings.maxMessages);
+		}
+	}
 	$: if (showMargin === 'all') {
 		sizeSettings.marginTop = margin;
 		sizeSettings.marginRight = margin;
