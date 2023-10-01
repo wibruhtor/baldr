@@ -43,8 +43,7 @@
 	export let banWords: string[];
 
 	let showAllBanWords = false;
-	let isSaveLoading = false;
-	let isDeleteLoading = false;
+	let isLoading = false;
 
 	const {
 		data: filterData,
@@ -111,7 +110,7 @@
 	const handleSaveClick = async () => {
 		if (!filterValidate() || !wordsValidate()) return;
 		if (!$authStore.accessToken) return;
-		isSaveLoading = true;
+		isLoading = true;
 		const [filterResult, wordsResult] = await Promise.allSettled([
 			banWordFiltersService.updateBanWordFilter(
 				banWordFilter.id,
@@ -136,21 +135,21 @@
 		} else {
 			console.error(wordsResult.reason);
 		}
-		isSaveLoading = false;
+		isLoading = false;
 	};
 
 	const handleDeleteClick = async () => {
 		if (!$authStore.accessToken) return;
-		isDeleteLoading = true;
+		isLoading = true;
 		banWordFiltersService
 			.deleteBanWordFilter(banWordFilter.id, $authStore.accessToken)
 			.then(() => {
-				isDeleteLoading = false;
+				isLoading = false;
 				goto('/ban-word-filters');
 			})
 			.catch((e) => {
 				console.error(e);
-				isDeleteLoading = false;
+				isLoading = false;
 			});
 	};
 </script>
@@ -168,13 +167,7 @@
 			error
 			let:id
 		>
-			<Input
-				{id}
-				name={id}
-				autocomplete={id}
-				bind:value={$filterData.name}
-				disabled={isSaveLoading}
-			/>
+			<Input {id} name={id} autocomplete={id} bind:value={$filterData.name} disabled={isLoading} />
 		</Field>
 		<div class="flex flex-col gap-2">
 			<div class="flex items-center gap-2">
@@ -205,7 +198,7 @@
 							class="w-0 flex-1"
 							bind:value={banWord.word}
 							type={showAllBanWords || banWord.show ? 'text' : 'password'}
-							disabled={isSaveLoading}
+							disabled={isLoading}
 						/>
 						<Button
 							on:click={() => (banWord.show = !banWord.show)}
@@ -223,7 +216,7 @@
 							on:click={() => handleRemoveBanWordClick(banWord.id)}
 							variant="destructive"
 							size="icon"
-							disabled={isSaveLoading}
+							disabled={isLoading}
 						>
 							<Trash class="h-4 w-4" />
 						</Button>
@@ -239,7 +232,7 @@
 						bind:value={$newWordData.word}
 						autocomplete="off"
 						type={showAllBanWords || $newWordData.show ? 'text' : 'password'}
-						disabled={isSaveLoading}
+						disabled={isLoading}
 					/>
 					<Button
 						on:click={() => ($newWordData.show = !$newWordData.show)}
@@ -257,7 +250,7 @@
 						on:click={handleAddNewBanWordClick}
 						variant="outline"
 						size="icon"
-						disabled={isSaveLoading}
+						disabled={isLoading}
 					>
 						<Plus class="h-4 w-4" />
 					</Button>
@@ -266,13 +259,7 @@
 		</div>
 	</CardContent>
 	<CardFooter class="flex gap-2">
-		<Button on:click={handleSaveClick} disabled={!isChanged || isSaveLoading}>Сохранить</Button>
-		<Button
-			on:click={handleDeleteClick}
-			disabled={isDeleteLoading || isSaveLoading}
-			variant="destructive"
-		>
-			Удалить
-		</Button>
+		<Button on:click={handleSaveClick} disabled={!isChanged || isLoading}>Сохранить</Button>
+		<Button on:click={handleDeleteClick} disabled={isLoading} variant="destructive">Удалить</Button>
 	</CardFooter>
 </Card>

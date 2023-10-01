@@ -25,6 +25,7 @@
 	import TabsTrigger from '$lib/components/ui/tabs/tabs-trigger.svelte';
 	import { chatSettingsService } from '$lib/service/chat-settings.service';
 	import { goto } from '$app/navigation';
+	import SizeEdit from '$lib/components/page/chat-widgets/edit/[chatWidgetId]/size-edit.svelte';
 
 	const chatTypes: { value: ChatType; label: string }[] = [
 		{ value: 'default', label: 'По умолчанию' },
@@ -35,8 +36,7 @@
 <script lang="ts">
 	export let chatSettings: ChatSettings;
 
-	let isSaveLoading = false;
-	let isDeleteLoading = false;
+	let isLoading = false;
 
 	const { data, errors, validate } = createForm(chatSettings, UpdateChatSettingsRequestSchema);
 
@@ -48,30 +48,30 @@
 	const handleSaveClick = async () => {
 		if (!validate()) return;
 		if (!$authStore.accessToken) return;
-		isSaveLoading = true;
+		isLoading = true;
 		chatSettingsService
 			.updateChatSettings(chatSettings.id, $data, $authStore.accessToken)
 			.then(() => {
-				isSaveLoading = false;
+				isLoading = false;
 			})
 			.catch((e) => {
 				console.error(e);
-				isSaveLoading = false;
+				isLoading = false;
 			});
 	};
 
 	const handleDeleteClick = async () => {
 		if (!$authStore.accessToken) return;
-		isDeleteLoading = true;
+		isLoading = true;
 		chatSettingsService
 			.deleteBanWordFilter(chatSettings.id, $authStore.accessToken)
 			.then(() => {
-				isDeleteLoading = false;
+				isLoading = false;
 				goto('/chat-widgets');
 			})
 			.catch((e) => {
 				console.error(e);
-				isDeleteLoading = false;
+				isLoading = false;
 			});
 	};
 </script>
@@ -83,7 +83,7 @@
 	</CardHeader>
 	<CardContent class="grid grid-cols-1 gap-4">
 		<Field label="Название" for="chat-widget-name" description={$errors.name} error let:id>
-			<Input {id} name={id} autocomplete={id} bind:value={$data.name} />
+			<Input {id} name={id} autocomplete={id} bind:value={$data.name} disabled={isLoading} />
 		</Field>
 		<Field
 			label="Тип чата"
@@ -95,6 +95,7 @@
 			<Select
 				selected={chatTypes.find((v) => v.value === $data.chatType)}
 				onSelectedChange={handleChangeChatTypeSelect}
+				disabled={isLoading}
 			>
 				<SelectTrigger>
 					<SelectValue placeholder="Выберите тип чата" />
@@ -120,27 +121,20 @@
 			</TabsList>
 			<TabsContent value="color">
 				<div class="grid grid-cols-1 gap-4">
-					<ColorEdit
-						bind:colorSettings={$data.color}
-						errors={$errors.color}
-						isLoading={isSaveLoading || isDeleteLoading}
-					/>
+					<ColorEdit bind:colorSettings={$data.color} errors={$errors.color} {isLoading} />
 				</div>
 			</TabsContent>
-			<TabsContent value="size">Size Settings</TabsContent>
+			<TabsContent value="size">
+				<div class="grid grid-cols-1 gap-4">
+					<SizeEdit bind:sizeSettings={$data.size} {isLoading} />
+				</div>
+			</TabsContent>
 			<TabsContent value="hide">Hide Settings</TabsContent>
 			<TabsContent value="font">Font Settings</TabsContent>
 		</Tabs>
-		<pre>{JSON.stringify($data, null, 2)}</pre>
 	</CardContent>
 	<CardFooter class="flex gap-2">
-		<Button on:click={handleSaveClick} disabled={isSaveLoading}>Сохранить</Button>
-		<Button
-			on:click={handleDeleteClick}
-			disabled={isDeleteLoading || isSaveLoading}
-			variant="destructive"
-		>
-			Удалить
-		</Button>
+		<Button on:click={handleSaveClick} disabled={isLoading}>Сохранить</Button>
+		<Button on:click={handleDeleteClick} disabled={isLoading} variant="destructive">Удалить</Button>
 	</CardFooter>
 </Card>
