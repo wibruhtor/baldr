@@ -6,17 +6,74 @@
 	import CardHeader from '$lib/components/ui/card/card-header.svelte';
 	import CardTitle from '$lib/components/ui/card/card-title.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
-	import type { ChatSettings } from '$lib/types/api/entity/chat-settings';
+	import type { ChatSettings, ChatType } from '$lib/types/api/entity/chat-settings';
+	import Field from '$lib/components/ui/field/field.svelte';
+	import Input from '$lib/components/ui/input/input.svelte';
+	import { createForm } from '$lib/utils/createForm';
+	import { UpdateChatSettingsRequestSchema } from '$lib/types/api/request/chat-settings';
+	import { authStore } from '$lib/stores/auth.store';
+	import Select from '$lib/components/ui/select/select.svelte';
+	import SelectTrigger from '$lib/components/ui/select/select-trigger.svelte';
+	import { SelectGroup, SelectValue } from '$lib/components/ui/select';
+	import SelectContent from '$lib/components/ui/select/select-content.svelte';
+	import SelectLabel from '$lib/components/ui/select/select-label.svelte';
+	import SelectItem from '$lib/components/ui/select/select-item.svelte';
+	import ColorEdit from '$lib/components/page/chat-widgets/edit/[chatWidgetId]/color-edit.svelte';
+	import { Tabs } from '$lib/components/ui/tabs';
+	import TabsContent from '$lib/components/ui/tabs/tabs-content.svelte';
+	import TabsList from '$lib/components/ui/tabs/tabs-list.svelte';
+	import TabsTrigger from '$lib/components/ui/tabs/tabs-trigger.svelte';
+	import { chatSettingsService } from '$lib/service/chat-settings.service';
+	import { goto } from '$app/navigation';
+
+	const chatTypes: { value: ChatType; label: string }[] = [
+		{ value: 'default', label: 'По умолчанию' },
+		{ value: 'block', label: 'Блоки' },
+	];
 </script>
 
 <script lang="ts">
-	import ColorInput from '$lib/components/ui/color-picker/color-input.svelte';
-	import ColorPicker from '$lib/components/ui/color-picker/color-picker.svelte';
-	import Field from '$lib/components/ui/field/field.svelte';
-
 	export let chatSettings: ChatSettings;
 
-	let color = 0xf0f000ff;
+	let isSaveLoading = false;
+	let isDeleteLoading = false;
+
+	const { data, errors, validate } = createForm(chatSettings, UpdateChatSettingsRequestSchema);
+
+	const handleChangeChatTypeSelect = (e?: { value: unknown }) => {
+		if (!e) return;
+		$data.chatType = e.value as ChatType;
+	};
+
+	const handleSaveClick = async () => {
+		if (!validate()) return;
+		if (!$authStore.accessToken) return;
+		isSaveLoading = true;
+		chatSettingsService
+			.updateChatSettings(chatSettings.id, $data, $authStore.accessToken)
+			.then(() => {
+				isSaveLoading = false;
+			})
+			.catch((e) => {
+				console.error(e);
+				isSaveLoading = false;
+			});
+	};
+
+	const handleDeleteClick = async () => {
+		if (!$authStore.accessToken) return;
+		isDeleteLoading = true;
+		chatSettingsService
+			.deleteBanWordFilter(chatSettings.id, $authStore.accessToken)
+			.then(() => {
+				isDeleteLoading = false;
+				goto('/chat-widgets');
+			})
+			.catch((e) => {
+				console.error(e);
+				isDeleteLoading = false;
+			});
+	};
 </script>
 
 <Card class="min-w-0 max-w-3xl w-full mx-auto">
@@ -25,16 +82,65 @@
 		<CardDescription>{chatSettings.name}</CardDescription>
 	</CardHeader>
 	<CardContent class="grid grid-cols-1 gap-4">
-		<Field>
-			<div class="flex gap-2">
-				<ColorPicker bind:color />
-				<ColorInput bind:value={color} />
-			</div>
+		<Field label="Название" for="chat-widget-name" description={$errors.name} error let:id>
+			<Input {id} name={id} autocomplete={id} bind:value={$data.name} />
 		</Field>
-		<pre>{JSON.stringify(chatSettings, null, 2)}</pre>
+		<Field
+			label="Тип чата"
+			for="chat-type"
+			description={$errors.chatType && 'Неверный тип чата'}
+			error
+			let:id
+		>
+			<Select
+				selected={chatTypes.find((v) => v.value === $data.chatType)}
+				onSelectedChange={handleChangeChatTypeSelect}
+			>
+				<SelectTrigger>
+					<SelectValue placeholder="Выберите тип чата" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectGroup>
+						<SelectLabel>Типы чата</SelectLabel>
+						{#each chatTypes as chatType (chatType.value)}
+							<SelectItem value={chatType.value} label={chatType.label}>
+								{chatType.label}
+							</SelectItem>
+						{/each}
+					</SelectGroup>
+				</SelectContent>
+			</Select>
+		</Field>
+		<Tabs value="color">
+			<TabsList class="w-full">
+				<TabsTrigger class="flex-1" value="color">Цвет</TabsTrigger>
+				<TabsTrigger class="flex-1" value="size">Размер</TabsTrigger>
+				<TabsTrigger class="flex-1" value="hide">Скрытие</TabsTrigger>
+				<TabsTrigger class="flex-1" value="font">Текст</TabsTrigger>
+			</TabsList>
+			<TabsContent value="color">
+				<div class="grid grid-cols-1 gap-4">
+					<ColorEdit
+						bind:colorSettings={$data.color}
+						errors={$errors.color}
+						isLoading={isSaveLoading || isDeleteLoading}
+					/>
+				</div>
+			</TabsContent>
+			<TabsContent value="size">Size Settings</TabsContent>
+			<TabsContent value="hide">Hide Settings</TabsContent>
+			<TabsContent value="font">Font Settings</TabsContent>
+		</Tabs>
+		<pre>{JSON.stringify($data, null, 2)}</pre>
 	</CardContent>
 	<CardFooter class="flex gap-2">
-		<Button>Сохранить</Button>
-		<Button variant="destructive">Удалить</Button>
+		<Button on:click={handleSaveClick} disabled={isSaveLoading}>Сохранить</Button>
+		<Button
+			on:click={handleDeleteClick}
+			disabled={isDeleteLoading || isSaveLoading}
+			variant="destructive"
+		>
+			Удалить
+		</Button>
 	</CardFooter>
 </Card>

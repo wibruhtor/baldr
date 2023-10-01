@@ -27,7 +27,9 @@ export const UpdateChatSettingsRequestSchema = z.object({
 		.max(32, { message: 'Максимальная длина 32 символа' }),
 	chatType: ChatTypeSchema,
 	color: z.object({
+		nicknameColor: ColorSchema,
 		backgroundColor: ColorSchema,
+		textColor: ColorSchema,
 		gradientOnlyForCustomNicknames: z.boolean(),
 		customNicknames: z.array(CustomNicknameSchema),
 	}),
@@ -48,7 +50,7 @@ export const UpdateChatSettingsRequestSchema = z.object({
 	}),
 	hide: z.object({
 		hideMessagePattern: z.string(),
-		hidePointsRewards: z.boolean(),
+		hidePointRewards: z.boolean(),
 		hideLinks: z.boolean(),
 		linkReplacement: z.string(),
 		banWordReplacement: z.string(),

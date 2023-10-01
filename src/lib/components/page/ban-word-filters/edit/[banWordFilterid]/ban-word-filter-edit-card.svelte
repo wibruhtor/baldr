@@ -80,7 +80,7 @@
 			.map((v) => v.toLowerCase().trim())
 			.every((v) => $wordsData.words.map((v) => v.word.toLowerCase().trim()).includes(v));
 
-	const handleAddNewClick = () => {
+	const handleAddNewBanWordClick = () => {
 		if (!newWordValidate()) return;
 		if (
 			$wordsData.words
@@ -148,7 +148,8 @@
 				isDeleteLoading = false;
 				goto('/ban-word-filters');
 			})
-			.catch(() => {
+			.catch((e) => {
+				console.error(e);
 				isDeleteLoading = false;
 			});
 	};
@@ -195,7 +196,7 @@
 			</p>
 
 			{#each $wordsData.words as banWord, index (banWord.id)}
-				<Field description={$wordsErrors.words[index]?.word} error let:id>
+				<Field description={$wordsErrors.words[index].word} error let:id>
 					<div class="flex gap-2">
 						<Input
 							{id}
@@ -253,7 +254,7 @@
 						{/if}
 					</Button>
 					<Button
-						on:click={handleAddNewClick}
+						on:click={handleAddNewBanWordClick}
 						variant="outline"
 						size="icon"
 						disabled={isSaveLoading}

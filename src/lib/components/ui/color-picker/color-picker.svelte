@@ -10,6 +10,8 @@
 </script>
 
 <script lang="ts">
+	let className: string | undefined = undefined;
+	export { className as class };
 	export let color: number;
 	export let placement:
 		| 'top'
@@ -29,7 +31,7 @@
 </script>
 
 <Popover positioning={{ placement }}>
-	<PopoverTrigger asChild let:builder>
+	<PopoverTrigger class={className} asChild let:builder>
 		<Button builders={[builder]} size="icon" variant="outline">
 			<div class="w-4 h-4 rounded-full border" style={`background: ${hex}`} />
 		</Button>

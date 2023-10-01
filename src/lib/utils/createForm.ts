@@ -1,45 +1,39 @@
 import { writable } from 'svelte/store';
 import type { ParseParams, ZodError } from 'zod';
 
-type ErrorMessage = string | null;
+export type ErrorMessage = string | null
 
-type ErrorRecordBasic = Record<string, unknown>;
-type ErrorRecord = Record<string, unknown | Errors<ErrorRecordBasic>[]>;
+export type Errors<T> = T extends Record<string, unknown> 
+    ? {
+        [Key in keyof T]: Errors<T[Key]>
+    }
+    : T extends unknown[] 
+        ? {[Key in keyof T]: Errors<T[Key]>}
+        : ErrorMessage;
 
-export type Errors<T extends ErrorRecord> = {
-	[Key in keyof T]: T[Key] extends ErrorRecord
-		? Errors<T[Key]>
-		: T[Key] extends ErrorRecord[]
-		? ErrorsArray<T[Key]>
-		: ErrorMessage;
-};
+const getNullableArray = <T extends unknown[],>(data: T): Errors<T> => {
+	return data.map(v => getNullableInstanse(v)) as Errors<T>
+}
 
-export type ErrorsArray<T extends ErrorRecord[]> = {
-	[Key in keyof T]: T[Key] extends Record<string, unknown> ? Errors<T[Key]> : ErrorMessage;
-};
+const getNullableObject = <T extends Record<string |number, unknown>,>(data: T): Errors<T> => {
+  const obj: Record<string |number, unknown> = {}
 
-type NullableRecord = Record<string, null>;
-type NestedNullableRecord = Record<string, null | NullableRecord[]>;
+	Object.keys(data).forEach(key => {
+		obj[key] = getNullableInstanse(data[key])
+	})
 
-const getNullableObject = (data: NestedNullableRecord): NestedNullableRecord => {
-	const object: NestedNullableRecord = {};
+	return obj as Errors<T>
+}
 
-	Object.keys(data).forEach((key) => {
-		if (Array.isArray(data[key])) {
-			object[key] = (data[key] as unknown[]).map((_, i) =>
-				getNullableObject((data[key] as unknown[])[i] as NullableRecord),
-			) as NullableRecord[];
-		} else {
-			object[key] = null;
-		}
-	});
-
-	return object;
-};
-
-const getNullErrors = <Data extends Record<string, unknown>>(data: Data): Errors<Data> => {
-	return getNullableObject(data as NestedNullableRecord) as Errors<Data>;
-};
+const getNullableInstanse = <T,>(data: T): Errors<T> => {
+		if (data === null || data === undefined) return null as Errors<T>
+    if (Array.isArray(data)) {
+        return getNullableArray(data)
+    } else if (typeof data === "object") {
+        return getNullableObject(data as Record<string | number, unknown>) as Errors<T>
+    }
+    return null as Errors<T>;
+}
 
 export const createForm = <Data extends Record<string, unknown>>(
 	data: Data,
@@ -50,11 +44,11 @@ export const createForm = <Data extends Record<string, unknown>>(
 	},
 ) => {
 	const dataStore = writable(data);
-	const errorsStore = writable(getNullErrors(data));
+	const errorsStore = writable(getNullableInstanse(data));
 	const zodError = writable<ZodError<Data> | null>(null);
 
 	let currentData = data;
-	let currentErrors = getNullErrors(data);
+	let currentErrors = getNullableInstanse(data);
 
 	const validate = (): boolean => {
 		const result = schema.safeParse(currentData, params?.parseParams);
@@ -80,7 +74,7 @@ export const createForm = <Data extends Record<string, unknown>>(
 			}
 		} else {
 			zodError.set(null);
-			errorsStore.set(getNullErrors(data));
+			errorsStore.set(getNullableInstanse(data));
 		}
 
 		return result.success;
@@ -88,7 +82,7 @@ export const createForm = <Data extends Record<string, unknown>>(
 
 	dataStore.subscribe((v) => {
 		currentData = v;
-		errorsStore.set(getNullErrors(v));
+		errorsStore.set(getNullableInstanse(v));
 		if (params?.validateOnUpdate) {
 			validate();
 		}
@@ -101,6 +95,7 @@ export const createForm = <Data extends Record<string, unknown>>(
 		data: dataStore,
 		errors: {
 			subscribe: errorsStore.subscribe,
+			set: errorsStore.set
 		},
 		zod: {
 			subscribe: zodError.subscribe,

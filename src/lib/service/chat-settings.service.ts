@@ -53,7 +53,7 @@ class ChatSettingsService {
 		accessToken: string,
 	): Promise<UpdateBanWordFilterResponse> {
 		return wetch<UpdateBanWordFilterResponse>('/v1/chat-settings/' + id, {
-			method: 'POST',
+			method: 'PUT',
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 				'Content-Type': 'application/json',
