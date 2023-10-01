@@ -7,16 +7,20 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import type { ChatSizeSettings } from '$lib/types/api/entity/chat-settings';
-	import type { UpdateChatSettingsRequest } from '$lib/types/api/request/chat-settings';
-	import type { Errors } from '$lib/utils/createForm';
-</script>
-
-<script lang="ts">
 	import MarginBottom from '$lib/components/ui/icon/margin-bottom.svelte';
 	import MarginRight from '$lib/components/ui/icon/margin-right.svelte';
 	import MarginX from '$lib/components/ui/icon/margin-x.svelte';
 	import MarginY from '$lib/components/ui/icon/margin-y.svelte';
+	import Padding from '$lib/components/ui/icon/padding.svelte';
+	import PaddingX from '$lib/components/ui/icon/padding-x.svelte';
+	import PaddingY from '$lib/components/ui/icon/padding-y.svelte';
+	import PaddingTop from '$lib/components/ui/icon/padding-top.svelte';
+	import PaddingLeft from '$lib/components/ui/icon/padding-left.svelte';
+	import PaddingRight from '$lib/components/ui/icon/padding-right.svelte';
+	import PaddingBottom from '$lib/components/ui/icon/padding-bottom.svelte';
+</script>
 
+<script lang="ts">
 	export let sizeSettings: ChatSizeSettings;
 	export let isLoading: boolean;
 
@@ -29,6 +33,15 @@
 	);
 	let marginX = Math.max(sizeSettings.marginLeft, sizeSettings.marginRight);
 	let marginY = Math.max(sizeSettings.marginTop, sizeSettings.marginBottom);
+	let showPadding: 'all' | 'axis' | 'every' = 'every';
+	let padding = Math.max(
+		sizeSettings.paddingTop,
+		sizeSettings.paddingBottom,
+		sizeSettings.paddingLeft,
+		sizeSettings.paddingRight,
+	);
+	let paddingX = Math.max(sizeSettings.paddingLeft, sizeSettings.paddingRight);
+	let paddingY = Math.max(sizeSettings.paddingTop, sizeSettings.paddingBottom);
 
 	$: if (showMargin === 'all') {
 		sizeSettings.marginTop = margin;
@@ -42,6 +55,18 @@
 		sizeSettings.marginBottom = marginY;
 		sizeSettings.marginLeft = marginX;
 	}
+	$: if (showPadding === 'all') {
+		sizeSettings.paddingTop = padding;
+		sizeSettings.paddingRight = padding;
+		sizeSettings.paddingBottom = padding;
+		sizeSettings.paddingLeft = padding;
+	}
+	$: if (showPadding === 'every') {
+		sizeSettings.paddingTop = paddingY;
+		sizeSettings.paddingRight = paddingX;
+		sizeSettings.paddingBottom = paddingY;
+		sizeSettings.paddingLeft = paddingX;
+	}
 
 	const toggleMargin = () => {
 		if (showMargin === 'all') {
@@ -50,6 +75,16 @@
 			showMargin = 'every';
 		} else {
 			showMargin = 'all';
+		}
+	};
+
+	const togglePadding = () => {
+		if (showPadding === 'all') {
+			showPadding = 'axis';
+		} else if (showPadding === 'axis') {
+			showPadding = 'every';
+		} else {
+			showPadding = 'all';
 		}
 	};
 </script>
@@ -85,7 +120,7 @@
 				<MarginX class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="margin"
+					name="margin-x"
 					autocomplete="margin"
 					type="number"
 					min="0"
@@ -94,7 +129,7 @@
 				<MarginY class="h-4 w-4" />
 				<Input
 					class="w-0 flex-1"
-					name="margin"
+					name="margin-y"
 					autocomplete="margin"
 					type="number"
 					min="0"
@@ -143,22 +178,25 @@
 		{/if}
 	</div>
 </div>
-<!-- <div class="flex flex-col gap-2">
+<div class="flex flex-col gap-2">
 	<div class="flex items-center gap-2">
 		<Label>Внутренние отступы</Label>
-		<Button on:click={() => (allPaddings = !allPaddings)} variant="secondary" size="sm">
-			{#if allPaddings}
-				Каждый отступ
+		<Button on:click={togglePadding} variant="secondary" size="sm">
+			{#if showPadding === 'all'}
+				Все
+			{:else if showPadding === 'axis'}
+				Оси
 			{:else}
-				Все отступы
+				Каждый
 			{/if}
 		</Button>
 	</div>
 	<div class="flex flex-col gap-2">
-		{#if allPaddings}
-			<div class="flex justify-center gap-2">
+		{#if showPadding === 'all'}
+			<div class="flex items-center justify-center gap-2">
+				<Padding class="h-4 w-4" />
 				<Input
-					class="w-24"
+					class="w-0 flex-1"
 					name="padding"
 					autocomplete="padding"
 					type="number"
@@ -166,38 +204,59 @@
 					bind:value={padding}
 				/>
 			</div>
-		{:else}
-			<div class="flex justify-center gap-2">
+		{:else if showPadding === 'axis'}
+			<div class="flex items-center justify-center gap-2">
+				<PaddingX class="h-4 w-4" />
 				<Input
-					class="w-24"
+					class="w-0 flex-1"
+					name="padding-x"
+					autocomplete="padding"
+					type="number"
+					min="0"
+					bind:value={paddingX}
+				/>
+				<PaddingY class="h-4 w-4" />
+				<Input
+					class="w-0 flex-1"
+					name="padding-y"
+					autocomplete="padding"
+					type="number"
+					min="0"
+					bind:value={paddingY}
+				/>
+			</div>
+		{:else}
+			<div class="flex items-center justify-center gap-2">
+				<PaddingTop class="h-4 w-4" />
+				<Input
+					class="w-0 flex-1"
 					name="padding-top"
 					autocomplete="padding"
 					type="number"
 					min="0"
 					bind:value={sizeSettings.paddingTop}
 				/>
-			</div>
-			<div class="flex justify-center gap-24">
+				<PaddingLeft class="h-4 w-4" />
 				<Input
-					class="w-24"
+					class="w-0 flex-1"
 					name="padding-left"
 					autocomplete="padding"
 					type="number"
 					min="0"
 					bind:value={sizeSettings.paddingLeft}
 				/>
+				<PaddingRight class="h-4 w-4" />
 				<Input
-					class="w-24"
+					class="w-0 flex-1"
 					name="padding-right"
 					autocomplete="padding"
 					type="number"
 					min="0"
 					bind:value={sizeSettings.paddingRight}
 				/>
-			</div>
-			<div class="flex justify-center gap-2">
+				<PaddingBottom class="h-4 w-4" />
 				<Input
-					class="w-24"
+					class="w-0 flex-1"
 					name="padding-bottom"
 					autocomplete="padding"
 					type="number"
@@ -208,6 +267,7 @@
 		{/if}
 	</div>
 </div>
+<!--
 <div class="flex flex-col gap-2">
 	<div class="flex items-center gap-2">
 		<Label>Скругления углов</Label>
