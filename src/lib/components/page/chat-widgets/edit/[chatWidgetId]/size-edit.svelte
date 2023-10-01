@@ -18,6 +18,10 @@
 	import PaddingLeft from '$lib/components/ui/icon/padding-left.svelte';
 	import PaddingRight from '$lib/components/ui/icon/padding-right.svelte';
 	import PaddingBottom from '$lib/components/ui/icon/padding-bottom.svelte';
+	import BorderTopLeft from '$lib/components/ui/icon/border-top-left.svelte';
+	import BorderTopRight from '$lib/components/ui/icon/border-top-right.svelte';
+	import BorderBottomLeft from '$lib/components/ui/icon/border-bottom-left.svelte';
+	import BorderBottomRight from '$lib/components/ui/icon/border-bottom-right.svelte';
 </script>
 
 <script lang="ts">
@@ -42,6 +46,13 @@
 	);
 	let paddingX = Math.max(sizeSettings.paddingLeft, sizeSettings.paddingRight);
 	let paddingY = Math.max(sizeSettings.paddingTop, sizeSettings.paddingBottom);
+	let showRadius: 'all' | 'every' = 'every';
+	let radius = Math.max(
+		sizeSettings.borderTopLeftRadius,
+		sizeSettings.borderTopRightRadius,
+		sizeSettings.borderBottomLeftRadius,
+		sizeSettings.borderBottomRightRadius,
+	);
 
 	$: if (showMargin === 'all') {
 		sizeSettings.marginTop = margin;
@@ -67,6 +78,12 @@
 		sizeSettings.paddingBottom = paddingY;
 		sizeSettings.paddingLeft = paddingX;
 	}
+	$: if (showRadius === 'every') {
+		sizeSettings.paddingTop = radius;
+		sizeSettings.paddingRight = radius;
+		sizeSettings.paddingBottom = radius;
+		sizeSettings.paddingLeft = radius;
+	}
 
 	const toggleMargin = () => {
 		if (showMargin === 'all') {
@@ -85,6 +102,14 @@
 			showPadding = 'every';
 		} else {
 			showPadding = 'all';
+		}
+	};
+
+	const toggleRadius = () => {
+		if (showRadius === 'all') {
+			showRadius = 'every';
+		} else {
+			showRadius = 'all';
 		}
 	};
 </script>
@@ -262,6 +287,72 @@
 					type="number"
 					min="0"
 					bind:value={sizeSettings.paddingBottom}
+				/>
+			</div>
+		{/if}
+	</div>
+</div>
+<div class="flex flex-col gap-2">
+	<div class="flex items-center gap-2">
+		<Label>Закругления</Label>
+		<Button on:click={toggleRadius} variant="secondary" size="sm">
+			{#if showRadius === 'all'}
+				Все
+			{:else}
+				Каждый
+			{/if}
+		</Button>
+	</div>
+	<div class="flex flex-col gap-2">
+		{#if showRadius === 'all'}
+			<div class="flex items-center justify-center gap-2">
+				<BorderTopLeft class="h-4 w-4" />
+				<Input
+					class="w-0 flex-1"
+					name="radius"
+					autocomplete="radius"
+					type="number"
+					min="0"
+					bind:value={radius}
+				/>
+			</div>
+		{:else}
+			<div class="flex items-center justify-center gap-2">
+				<BorderTopLeft class="h-4 w-4" />
+				<Input
+					class="w-0 flex-1"
+					name="radius-top-left"
+					autocomplete="radius"
+					type="number"
+					min="0"
+					bind:value={sizeSettings.borderTopLeftRadius}
+				/>
+				<BorderTopRight class="h-4 w-4" />
+				<Input
+					class="w-0 flex-1"
+					name="radius-top-right"
+					autocomplete="radius"
+					type="number"
+					min="0"
+					bind:value={sizeSettings.borderTopRightRadius}
+				/>
+				<BorderBottomLeft class="h-4 w-4" />
+				<Input
+					class="w-0 flex-1"
+					name="radius-bottom-left"
+					autocomplete="radius"
+					type="number"
+					min="0"
+					bind:value={sizeSettings.borderBottomLeftRadius}
+				/>
+				<BorderBottomRight class="h-4 w-4" />
+				<Input
+					class="w-0 flex-1"
+					name="radius-bottom-right"
+					autocomplete="radius"
+					type="number"
+					min="0"
+					bind:value={sizeSettings.borderBottomRightRadius}
 				/>
 			</div>
 		{/if}
