@@ -51,8 +51,9 @@
 		isLoading = true;
 		chatSettingsService
 			.updateChatSettings(chatSettings.id, $data, $authStore.accessToken)
-			.then(() => {
+			.then((newChatSettings) => {
 				isLoading = false;
+				chatSettings = newChatSettings;
 			})
 			.catch((e) => {
 				console.error(e);

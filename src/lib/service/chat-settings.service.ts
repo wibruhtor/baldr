@@ -2,13 +2,13 @@ import type {
 	CreateChatSettingsRequest,
 	UpdateChatSettingsRequest,
 } from '$lib/types/api/request/chat-settings';
-import type { UpdateBanWordFilterResponse } from '$lib/types/api/response/ban-word-filters';
 import type {
 	CreateChatSettingsResponse,
 	DeleteChatSettingsResponse,
 	GetAllChatSettingsInfoResponse,
 	GetAllChatSettingsResponse,
 	GetChatSettingsResponse,
+	UpdateChatSettingsResponse,
 } from '$lib/types/api/response/chat-settings';
 import { wetch } from '$lib/utils/wetch';
 
@@ -51,8 +51,8 @@ class ChatSettingsService {
 		id: string,
 		req: UpdateChatSettingsRequest,
 		accessToken: string,
-	): Promise<UpdateBanWordFilterResponse> {
-		return wetch<UpdateBanWordFilterResponse>('/v1/chat-settings/' + id, {
+	): Promise<UpdateChatSettingsResponse> {
+		return wetch<UpdateChatSettingsResponse>('/v1/chat-settings/' + id, {
 			method: 'PUT',
 			headers: {
 				Authorization: `Bearer ${accessToken}`,

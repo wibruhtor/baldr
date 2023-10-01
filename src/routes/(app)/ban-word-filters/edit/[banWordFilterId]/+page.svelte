@@ -10,5 +10,5 @@
 </svelte:head>
 
 <section class="container">
-	<BanWordFilterEditCard banWordFilter={data.banWordFilter} banWords={data.banWords} />
+	<BanWordFilterEditCard bind:banWordFilter={data.banWordFilter} banWords={data.banWords} />
 </section>

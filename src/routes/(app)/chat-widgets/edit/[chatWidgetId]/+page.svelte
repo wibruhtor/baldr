@@ -10,5 +10,5 @@
 </svelte:head>
 
 <section class="container">
-	<ChatWidgetEditCard chatSettings={data.chatSettings} />
+	<ChatWidgetEditCard bind:chatSettings={data.chatSettings} />
 </section>
