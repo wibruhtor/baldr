@@ -1,6 +1,6 @@
-export const protectedRoutes = ['/sessions', '/ban-word-filters', '/create-ban-word-filter'];
-export const protectedRouteIds = [
-	'/(app)/sessions',
-	'/(app)/ban-word-filters',
-	'/(app)/create-ban-word-filter',
+export const protectedRoutes = [
+	'/ban-word-filters',
+	'/chat-widgets',
+	'/sessions',
 ];
+export const protectedRouteIds = protectedRoutes.map(v => `/(app)${v}`);
