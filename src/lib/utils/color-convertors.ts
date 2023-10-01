@@ -1,11 +1,11 @@
-import { colord, type HsvaColor, type RgbaColor } from "colord";
+import { colord, type HsvaColor, type RgbaColor } from 'colord';
 
 export const numberToRgba = (color: number): RgbaColor => {
 	const r = (color >> 24) & 0xff;
 	const g = (color >> 16) & 0xff;
 	const b = (color >> 8) & 0xff;
 	const a = (color & 0xff) / 0xff;
-	return { r,g,b,a };
+	return { r, g, b, a };
 };
 
 export const numberToHex = (color: number): string => {
@@ -15,7 +15,7 @@ export const numberToHex = (color: number): string => {
 
 export const numberToHsv = (color: number): HsvaColor => {
 	const rgba = numberToRgba(color);
-	return colord(rgba).toHsv()
+	return colord(rgba).toHsv();
 };
 
 export const hexToNumber = (color: string): number => {
@@ -51,7 +51,6 @@ export const hexToRgba = (color: string): RgbaColor => {
 	}
 	return { r: 0, g: 0, b: 0, a: 1 };
 };
-
 
 export const rgbaToNumber = (color: RgbaColor): number => {
 	const r = (color.r & 0xff).toString(16).padStart(2, '0');
