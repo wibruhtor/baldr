@@ -101,10 +101,10 @@
 		@apply border-border transition ease-in-out duration-150;
 	}
 
-	html,
+	/*html,
 	body {
 		scrollbar-gutter: stable;
-	}
+	}*/
 
 	body {
 		@apply bg-background text-foreground typography-p;

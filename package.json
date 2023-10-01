@@ -15,6 +15,7 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.20.4",
+		"@types/deep-equal": "^1.0.2",
 		"@types/ua-parser-js": "^0.7.37",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
@@ -38,6 +39,7 @@
 		"bits-ui": "^0.5.7",
 		"buffer": "^6.0.3",
 		"clsx": "^2.0.0",
+		"deep-equal": "^2.2.2",
 		"lucide-svelte": "^0.279.0",
 		"radix-icons-svelte": "^1.2.1",
 		"tailwind-merge": "^1.14.0",

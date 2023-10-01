@@ -22,20 +22,20 @@
 	import SelectLabel from '$lib/components/ui/select/select-label.svelte';
 	import SelectTrigger from '$lib/components/ui/select/select-trigger.svelte';
 	import type { ChatType } from '$lib/types/api/entity/chat-settings';
-</script>
-
-<script lang="ts">
 	import SelectItem from '$lib/components/ui/select/select-item.svelte';
 	import { string } from 'zod';
 
-	const { data, errors, validate } = createForm(
-		{ name: '', chatType: 'default' },
-		CreateChatSettingsRequestSchema,
-	);
 	const chatTypes: { value: ChatType; label: string }[] = [
 		{ value: 'default', label: 'По умолчанию' },
 		{ value: 'block', label: 'Блоки' },
 	];
+</script>
+
+<script lang="ts">
+	const { data, errors, validate } = createForm(
+		{ name: '', chatType: 'default' },
+		CreateChatSettingsRequestSchema,
+	);
 	let isLoading = false;
 
 	const handleChangeSelect = (e?: { value: unknown }) => {

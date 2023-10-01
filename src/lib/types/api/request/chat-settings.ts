@@ -14,6 +14,12 @@ export const CreateChatSettingsRequestSchema = z.object({
 
 export type CreateChatSettingsRequest = z.infer<typeof CreateChatSettingsRequestSchema>;
 
+export const CustomNicknameSchema =z.object({
+	nickname: NicknameSchema,
+	startColor: ColorSchema,
+	endColor: ColorSchema,
+})
+
 export const UpdateChatSettingsRequestSchema = z.object({
 	name: z
 		.string()
@@ -23,13 +29,7 @@ export const UpdateChatSettingsRequestSchema = z.object({
 	color: z.object({
 		backgroundColor: ColorSchema,
 		gradientOnlyForCustomNicknames: z.boolean(),
-		customNicknames: z.array(
-			z.object({
-				nickname: NicknameSchema,
-				startColor: ColorSchema,
-				endColor: ColorSchema,
-			}),
-		),
+		customNicknames: z.array(CustomNicknameSchema),
 	}),
 	size: z.object({
 		marginTop: z.number().min(0, 'Минимальное значение 0'),
@@ -48,7 +48,7 @@ export const UpdateChatSettingsRequestSchema = z.object({
 	}),
 	hide: z.object({
 		hideMessagePattern: z.string(),
-		hidePointsRewards: z.string(),
+		hidePointsRewards: z.boolean(),
 		hideLinks: z.boolean(),
 		linkReplacement: z.string(),
 		banWordReplacement: z.string(),

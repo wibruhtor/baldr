@@ -33,10 +33,10 @@ export type ChatCustomNickname = {
 };
 
 export type ChatSizeSettings = {
-	maringTop: number;
-	maringRight: number;
-	maringBottom: number;
-	maringLeft: number;
+	marginTop: number;
+	marginRight: number;
+	marginBottom: number;
+	marginLeft: number;
 	paddingTop: number;
 	paddingRight: number;
 	paddingBottom: number;
