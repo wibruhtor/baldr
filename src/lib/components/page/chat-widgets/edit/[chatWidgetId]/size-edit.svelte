@@ -224,6 +224,9 @@
 		{id}
 		name={id}
 		autocomplete={id}
+		type="number"
+		min="5"
+		max="100"
 		bind:value={sizeSettings.maxMessages}
 		disabled={isLoading}
 	/>
