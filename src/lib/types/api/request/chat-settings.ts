@@ -14,11 +14,11 @@ export const CreateChatSettingsRequestSchema = z.object({
 
 export type CreateChatSettingsRequest = z.infer<typeof CreateChatSettingsRequestSchema>;
 
-export const CustomNicknameSchema =z.object({
+export const CustomNicknameSchema = z.object({
 	nickname: NicknameSchema,
 	startColor: ColorSchema,
 	endColor: ColorSchema,
-})
+});
 
 export const UpdateChatSettingsRequestSchema = z.object({
 	name: z

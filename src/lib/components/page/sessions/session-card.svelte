@@ -13,6 +13,7 @@
 	import { authStore } from '$lib/stores/auth.store';
 	import { createEventDispatcher } from 'svelte';
 	import type { Session } from '$lib/types/api/entity/session';
+	import Field from '$lib/components/ui/field/field.svelte';
 
 	const dtf = new Intl.DateTimeFormat(undefined, {
 		dateStyle: 'short',
@@ -21,8 +22,6 @@
 </script>
 
 <script lang="ts">
-	import Field from '$lib/components/ui/field/field.svelte';
-
 	export let session: Session;
 
 	const dispatch = createEventDispatcher();
