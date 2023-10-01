@@ -60,7 +60,7 @@
 		sizeSettings.marginBottom = margin;
 		sizeSettings.marginLeft = margin;
 	}
-	$: if (showMargin === 'every') {
+	$: if (showMargin === 'axis') {
 		sizeSettings.marginTop = marginY;
 		sizeSettings.marginRight = marginX;
 		sizeSettings.marginBottom = marginY;
@@ -72,66 +72,66 @@
 		sizeSettings.paddingBottom = padding;
 		sizeSettings.paddingLeft = padding;
 	}
-	$: if (showPadding === 'every') {
+	$: if (showPadding === 'axis') {
 		sizeSettings.paddingTop = paddingY;
 		sizeSettings.paddingRight = paddingX;
 		sizeSettings.paddingBottom = paddingY;
 		sizeSettings.paddingLeft = paddingX;
 	}
-	$: if (showRadius === 'every') {
-		sizeSettings.paddingTop = radius;
-		sizeSettings.paddingRight = radius;
-		sizeSettings.paddingBottom = radius;
-		sizeSettings.paddingLeft = radius;
+	$: if (showRadius === 'all') {
+		sizeSettings.borderTopLeftRadius = radius;
+		sizeSettings.borderTopRightRadius = radius;
+		sizeSettings.borderBottomLeftRadius = radius;
+		sizeSettings.borderBottomRightRadius = radius;
 	}
 
 	const toggleMargin = () => {
 		if (showMargin === 'all') {
 			showMargin = 'axis';
+			marginX = Math.max(sizeSettings.marginLeft, sizeSettings.marginRight);
+			marginY = Math.max(sizeSettings.marginTop, sizeSettings.marginBottom);
+		} else if (showMargin === 'axis') {
+			showMargin = 'every';
+		} else {
+			showMargin = 'all';
 			margin = Math.max(
 				sizeSettings.marginTop,
 				sizeSettings.marginBottom,
 				sizeSettings.marginLeft,
 				sizeSettings.marginRight,
 			);
-		} else if (showMargin === 'axis') {
-			showMargin = 'every';
-			marginX = Math.max(sizeSettings.marginLeft, sizeSettings.marginRight);
-			marginY = Math.max(sizeSettings.marginTop, sizeSettings.marginBottom);
-		} else {
-			showMargin = 'all';
 		}
 	};
 
 	const togglePadding = () => {
 		if (showPadding === 'all') {
 			showPadding = 'axis';
+			paddingX = Math.max(sizeSettings.paddingLeft, sizeSettings.paddingRight);
+			paddingY = Math.max(sizeSettings.paddingTop, sizeSettings.paddingBottom);
+		} else if (showPadding === 'axis') {
+			showPadding = 'every';
+		} else {
+			showPadding = 'all';
 			padding = Math.max(
 				sizeSettings.paddingTop,
 				sizeSettings.paddingBottom,
 				sizeSettings.paddingLeft,
 				sizeSettings.paddingRight,
 			);
-		} else if (showPadding === 'axis') {
-			showPadding = 'every';
-			paddingX = Math.max(sizeSettings.paddingLeft, sizeSettings.paddingRight);
-			paddingY = Math.max(sizeSettings.paddingTop, sizeSettings.paddingBottom);
-		} else {
-			showPadding = 'all';
 		}
 	};
 
 	const toggleRadius = () => {
 		if (showRadius === 'all') {
 			showRadius = 'every';
+		} else {
+			showRadius = 'all';
 			radius = Math.max(
 				sizeSettings.borderTopLeftRadius,
 				sizeSettings.borderTopRightRadius,
 				sizeSettings.borderBottomLeftRadius,
 				sizeSettings.borderBottomRightRadius,
 			);
-		} else {
-			showRadius = 'all';
 		}
 	};
 </script>
@@ -380,57 +380,6 @@
 		{/if}
 	</div>
 </div>
-<!--
-<div class="flex flex-col gap-2">
-	<div class="flex items-center gap-2">
-		<Label>Скругления углов</Label>
-		<Button on:click={() => (allRadius = !allRadius)} variant="secondary" size="sm">
-			{#if allPaddings}
-				Каждый угол
-			{:else}
-				Все углы
-			{/if}
-		</Button>
-	</div>
-	<div class="flex flex-col gap-2">
-		{#if allRadius}
-			<Input name="radius" autocomplete="radius" type="number" min="0" bind:value={radius} />
-		{:else}
-			<div class="flex gap-2">
-				<Input
-					name="radius-top-left"
-					autocomplete="radius"
-					type="number"
-					min="0"
-					bind:value={sizeSettings.borderTopLeftRadius}
-				/>
-				<Input
-					name="radius-top-right"
-					autocomplete="radius"
-					type="number"
-					min="0"
-					bind:value={sizeSettings.borderTopRightRadius}
-				/>
-			</div>
-			<div class="flex gap-2">
-				<Input
-					name="radius-bottom-left"
-					autocomplete="radius"
-					type="number"
-					min="0"
-					bind:value={sizeSettings.borderBottomLeftRadius}
-				/>
-				<Input
-					name="radius-bottom-right"
-					autocomplete="radius"
-					type="number"
-					min="0"
-					bind:value={sizeSettings.borderBottomRightRadius}
-				/>
-			</div>
-		{/if}
-	</div>
-</div> -->
 <Field label="Максимальное число сообщений" for="max-messages" let:id>
 	<Input
 		{id}
