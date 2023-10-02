@@ -1,9 +1,9 @@
 import { browser } from '$app/environment';
 import { AppError } from '$lib/utils/app-error';
 
-const origin = browser ? 'http://api.wibruhtor.localhost' : 'http://localhost:8000';
+const apiOrigin = browser ? 'http://api.wibruhtor.localhost' : 'http://localhost:8000';
 
-export const wetch = async <T = void>(path: string, init?: RequestInit): Promise<T> => {
+export const wetch = async <T = void>(path: string, init?: RequestInit, origin: string = apiOrigin): Promise<T> => {
 	const r = await fetch(`${origin}${path}`, {
 		mode: 'cors',
 		...init,
