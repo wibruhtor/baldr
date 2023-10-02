@@ -99,7 +99,7 @@
 				onSelectedChange={handleChangeChatTypeSelect}
 				disabled={isLoading}
 			>
-				<SelectTrigger>
+				<SelectTrigger {id} name={id}>
 					<SelectValue placeholder="Выберите тип чата" />
 				</SelectTrigger>
 				<SelectContent>
