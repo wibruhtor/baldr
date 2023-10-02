@@ -2,7 +2,6 @@
 	import Header from '$lib/components/layout/header/header.svelte';
 	import { authStore } from '$lib/stores/auth.store';
 	import type { LayoutData } from './$types';
-	import '../../app.css';
 
 	export let data: LayoutData;
 

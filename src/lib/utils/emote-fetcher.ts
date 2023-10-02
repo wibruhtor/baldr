@@ -1,3 +1,4 @@
+import { browser } from "$app/environment";
 import type { BetterTtvEmote, Emote, FrankerFaceZEmote, SevenTvEmote, TwitchEmote } from "$lib/types/emote"
 import { wetch } from "$lib/utils/wetch"
 
@@ -52,6 +53,7 @@ class EmoteFetcher {
   }
 
   async fetch(channelId: string): Promise<Emote[]> {
+    if (!browser) return []
     const [
       twitchGlobal,
       twitchChannel,

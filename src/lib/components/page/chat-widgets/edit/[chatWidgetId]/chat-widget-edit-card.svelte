@@ -28,6 +28,7 @@
 	import SizeEdit from '$lib/components/page/chat-widgets/edit/[chatWidgetId]/size-edit.svelte';
 	import HideEdit from '$lib/components/page/chat-widgets/edit/[chatWidgetId]/hide-edit.svelte';
 	import FontEdit from '$lib/components/page/chat-widgets/edit/[chatWidgetId]/font-edit.svelte';
+	import LinkCreate from '$lib/components/page/chat-widgets/edit/[chatWidgetId]/link-create.svelte';
 
 	const chatTypes: { value: ChatType; label: string }[] = [
 		{ value: 'default', label: 'По умолчанию' },
@@ -121,6 +122,7 @@
 				<TabsTrigger class="flex-1" value="size">Размер</TabsTrigger>
 				<TabsTrigger class="flex-1" value="hide">Скрытие</TabsTrigger>
 				<TabsTrigger class="flex-1" value="font">Текст</TabsTrigger>
+				<TabsTrigger class="flex-1" value="link">Ссылка</TabsTrigger>
 			</TabsList>
 			<TabsContent value="color">
 				<div class="grid grid-cols-1 gap-4">
@@ -140,6 +142,11 @@
 			<TabsContent value="font">
 				<div class="grid grid-cols-1 gap-4">
 					<FontEdit bind:fontSettings={$data.font} errors={$errors.font} {isLoading} />
+				</div>
+			</TabsContent>
+			<TabsContent value="link">
+				<div class="grid grid-cols-1 gap-4">
+					<LinkCreate chatSettingsId={chatSettings.id} />
 				</div>
 			</TabsContent>
 		</Tabs>
