@@ -59,7 +59,7 @@
 
 <div
 	class={cn(
-		'fixed flex',
+		'fixed flex overflow-hidden',
 		isDefault ? 'gap-[0.5vh]' : 'gap-[1vh]',
 		isReversed ? 'flex-col-reverse' : 'flex-col',
 	)}

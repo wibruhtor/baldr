@@ -1,6 +1,6 @@
 {
 	"name": "baldr",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev --port 3000",
@@ -37,7 +37,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@kararty/dank-twitch-irc": "^6.0.0",
 		"bits-ui": "^0.5.7",
 		"buffer": "^6.0.3",
 		"clsx": "^2.0.0",

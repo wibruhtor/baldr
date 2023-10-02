@@ -1,4 +1,5 @@
 import type { ChatSettings } from "$lib/types/api/entity/chat-settings"
+import type { TwitchBadge } from "$lib/types/api/entity/twitch-badge"
 import type { TwitchUserInfo } from "$lib/types/api/entity/twitch-user-info"
 import type { ChatMessage } from "$lib/types/chat/chat-message"
 import type { Emote } from "$lib/types/emote"
@@ -13,6 +14,7 @@ export type ChatStore = {
   userInfo: TwitchUserInfo
   settings: ChatSettings,
   emotes: Emote[]
+  badges: TwitchBadge[]
   messages: ChatMessage[]
   banWords: string[]
 }

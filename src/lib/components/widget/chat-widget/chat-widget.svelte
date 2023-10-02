@@ -10,12 +10,14 @@
 	} from '$lib/components/widget/chat-widget/chat-store';
 	import { Client } from 'tmi.js';
 	import { hash } from '$lib/utils/hash';
+	import type { TwitchBadge } from '$lib/types/api/entity/twitch-badge';
 </script>
 
 <script lang="ts">
 	export let userInfo: TwitchUserInfo;
 	export let chatSettings: ChatSettings;
 	export let emotes: Emote[];
+	export let badges: TwitchBadge[];
 	export let banWords: string[];
 	export let isLoading: boolean;
 
@@ -23,6 +25,7 @@
 		userInfo,
 		settings: chatSettings,
 		emotes,
+		badges,
 		banWords,
 		messages: [],
 	});
@@ -40,12 +43,23 @@
 			if (self) return;
 			if (!tags['display-name']) return;
 			if ('custom-reward-id' in tags && $chatStore.settings.hide.hidePointRewards) return;
+			const badges: TwitchBadge[] = [];
+			if (tags.badges) {
+				Object.keys(tags.badges).forEach((set) => {
+					const id = tags.badges![set];
+					if (!$chatStore.badges) return;
+					const badge = $chatStore.badges.find((v) => v.id === id && v.set === set);
+					if (!badge) return;
+					badges.push(badge);
+				});
+			}
+
 			chatStore.addMessage({
 				id: tags.id || hash(),
 				timestamp: Date.now(),
 				color: tags.color || null,
 				nickname: tags['display-name'],
-				badges: [],
+				badges,
 				text: message,
 			});
 		});

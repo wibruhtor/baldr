@@ -4,6 +4,7 @@
 	import Nickname from '$lib/components/widget/chat-widget/nickname.svelte';
 	import Text from '$lib/components/widget/chat-widget/text.svelte';
 	import { numberToHex } from '$lib/utils/color-convertors';
+	import Badges from '$lib/components/widget/chat-widget/badges.svelte';
 </script>
 
 <script lang="ts">
@@ -40,7 +41,8 @@
 </script>
 
 <p class={isColumn ? 'flex flex-col' : undefined} {style}>
-	<Nickname {settings} nickname={chatMessage.nickname} color={chatMessage.color} /><Text
-		text={chatMessage.text}
-	/>
+	<span
+		><Badges badges={chatMessage.badges} />
+		<Nickname {settings} nickname={chatMessage.nickname} color={chatMessage.color} /></span
+	><Text text={chatMessage.text} />
 </p>
