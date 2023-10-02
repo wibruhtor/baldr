@@ -1,5 +1,6 @@
 <script lang="ts" context="module">
 	import AuthButton from '$lib/components/layout/header/auth-button.svelte';
+	import Info from '$lib/components/layout/header/info.svelte';
 	import ThemeButton from '$lib/components/layout/header/theme-button.svelte';
 	import Logo from '$lib/components/ui/icon/logo.svelte';
 </script>
@@ -10,7 +11,8 @@
 			<Logo class="h-12 w-12" />
 			<h1 class="typography-h3">WiBruhTor</h1>
 		</a>
-		<div class="flex gap-2">
+		<div class="flex items-center gap-2">
+			<Info />
 			<ThemeButton />
 			<AuthButton />
 		</div>
