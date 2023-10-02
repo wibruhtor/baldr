@@ -1,13 +1,11 @@
 <script lang="ts" context="module">
 	import { numberToHex } from '$lib/utils/color-convertors';
 	import ChatMessages from '$lib/components/widget/chat-widget/chat-messages.svelte';
-	import { chatStore } from '$lib/components/widget/chat-widget/chat-store';
 	import type { ChatSettings } from '$lib/types/api/entity/chat-settings';
 </script>
 
 <script lang="ts">
-	$: settings = $chatStore.settings as ChatSettings;
-
+	export let settings: ChatSettings;
 	let style = '';
 
 	$: fontStyle = [

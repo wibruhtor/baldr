@@ -4,8 +4,11 @@
 	import type { Emote } from '$lib/types/emote';
 	import ChatContainer from '$lib/components/widget/chat-widget/chat-container.svelte';
 	import { hash } from '$lib/utils/hash';
-	import { chatStore } from '$lib/components/widget/chat-widget/chat-store';
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
+	import {
+		chatStoreContextKey,
+		createChatStore,
+	} from '$lib/components/widget/chat-widget/chat-store';
 </script>
 
 <script lang="ts">
@@ -13,11 +16,17 @@
 	export let chatSettings: ChatSettings;
 	export let emotes: Emote[];
 	export let banWords: string[];
+	export let isLoading: boolean;
 
-	$: chatStore.setUserInfo(userInfo);
-	$: chatStore.setChatSettings(chatSettings);
-	$: chatStore.setEmotes(emotes);
-	$: chatStore.setBanWords(banWords);
+	const chatStore = createChatStore({
+		userInfo,
+		settings: chatSettings,
+		emotes,
+		banWords,
+		messages: [],
+	});
+
+	setContext(chatStoreContextKey, chatStore);
 
 	onMount(() => {
 		chatStore.addMessage({
@@ -68,11 +77,19 @@
 			color: '#664ec7',
 			text: '!команда',
 		});
+		chatStore.addMessage({
+			id: hash(),
+			timestamp: Date.now(),
+			badges: [],
+			nickname: 'BruhaBruh',
+			color: '#386FA4',
+			text: 'А я приготовил славный о:м\\Л%е т в testовом соусе из qwertyлов',
+		});
 	});
 </script>
 
-{#if $chatStore.userInfo !== null && $chatStore.settings !== null}
-	<ChatContainer />
-{:else}
+{#if isLoading}
 	Loading...
+{:else}
+	<ChatContainer settings={$chatStore.settings} />
 {/if}
