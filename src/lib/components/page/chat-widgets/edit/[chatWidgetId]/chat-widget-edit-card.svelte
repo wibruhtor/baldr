@@ -9,7 +9,7 @@
 	import type { ChatSettings, ChatType } from '$lib/types/api/entity/chat-settings';
 	import Field from '$lib/components/ui/field/field.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
-	import { createForm } from '$lib/utils/createForm';
+	import { createForm } from '$lib/utils/create-form';
 	import { UpdateChatSettingsRequestSchema } from '$lib/types/api/request/chat-settings';
 	import { authStore } from '$lib/stores/auth.store';
 	import Select from '$lib/components/ui/select/select.svelte';

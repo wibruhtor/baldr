@@ -22,7 +22,7 @@
 	import BorderTopRight from '$lib/components/ui/icon/border-top-right.svelte';
 	import BorderBottomLeft from '$lib/components/ui/icon/border-bottom-left.svelte';
 	import BorderBottomRight from '$lib/components/ui/icon/border-bottom-right.svelte';
-	import type { Errors } from '$lib/utils/createForm';
+	import type { Errors } from '$lib/utils/create-form';
 	import type { UpdateChatSettingsRequest } from '$lib/types/api/request/chat-settings';
 </script>
 

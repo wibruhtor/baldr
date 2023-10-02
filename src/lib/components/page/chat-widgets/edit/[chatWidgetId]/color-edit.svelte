@@ -8,7 +8,7 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { Plus, Trash } from 'lucide-svelte';
-	import { createForm, type Errors } from '$lib/utils/createForm';
+	import { createForm, type Errors } from '$lib/utils/create-form';
 	import type { UpdateChatSettingsRequest } from '$lib/types/api/request/chat-settings';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import { NicknameSchema } from '$lib/types/api/nickname-schema';

@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 import { Buffer } from 'buffer';
-import { protectedRoutes } from '$lib/utils/protectionRoutes';
+import { protectedRoutes } from '$lib/utils/protection-routes';
 import { goto } from '$app/navigation';
 import { browser } from '$app/environment';
 import { authService } from '$lib/service/auth.service';

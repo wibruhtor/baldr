@@ -16,7 +16,7 @@
 		BanWordSchema,
 		UpdateBanWordFilterRequestSchema,
 	} from '$lib/types/api/request/ban-word-filters';
-	import { createForm } from '$lib/utils/createForm';
+	import { createForm } from '$lib/utils/create-form';
 	import { Eye, EyeOff, Plus, Trash } from 'lucide-svelte';
 	import Field from '$lib/components/ui/field/field.svelte';
 	import { z } from 'zod';

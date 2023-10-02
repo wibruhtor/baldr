@@ -1,4 +1,4 @@
-import { protectedRouteIds } from '$lib/utils/protectionRoutes';
+import { protectedRouteIds } from '$lib/utils/protection-routes';
 import { redirect, type Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {

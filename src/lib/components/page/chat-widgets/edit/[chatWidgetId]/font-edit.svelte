@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import type { Errors } from '$lib/utils/createForm';
+	import type { Errors } from '$lib/utils/create-form';
 	import type { UpdateChatSettingsRequest } from '$lib/types/api/request/chat-settings';
 	import type { ChatFontSettings } from '$lib/types/api/entity/chat-settings';
 	import Field from '$lib/components/ui/field/field.svelte';

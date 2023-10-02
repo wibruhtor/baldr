@@ -10,7 +10,7 @@
 	import { authStore } from '$lib/stores/auth.store';
 	import { goto } from '$app/navigation';
 	import { CreateBanWordFilterRequestSchema } from '$lib/types/api/request/ban-word-filters';
-	import { createForm } from '$lib/utils/createForm';
+	import { createForm } from '$lib/utils/create-form';
 	import Field from '$lib/components/ui/field/field.svelte';
 </script>
 

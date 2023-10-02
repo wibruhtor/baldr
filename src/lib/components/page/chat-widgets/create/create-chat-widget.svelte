@@ -9,7 +9,7 @@
 	import { banWordFiltersService } from '$lib/service/ban-word-filters.service';
 	import { authStore } from '$lib/stores/auth.store';
 	import { goto } from '$app/navigation';
-	import { createForm } from '$lib/utils/createForm';
+	import { createForm } from '$lib/utils/create-form';
 	import Field from '$lib/components/ui/field/field.svelte';
 	import {
 		CreateChatSettingsRequestSchema,

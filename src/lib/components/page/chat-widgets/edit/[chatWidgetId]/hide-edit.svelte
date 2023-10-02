@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import type { ChatHideSettings } from '$lib/types/api/entity/chat-settings';
-	import { createForm, type Errors } from '$lib/utils/createForm';
+	import { createForm, type Errors } from '$lib/utils/create-form';
 	import type { UpdateChatSettingsRequest } from '$lib/types/api/request/chat-settings';
 	import Field from '$lib/components/ui/field/field.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
