@@ -1,18 +1,30 @@
 import type { Emote } from "$lib/types/emote";
 
-export const replaceEmotes = (value: string, emotes: Emote[]) => {
-  const sanitized = value.replaceAll('<', '&lt;').replaceAll('>', '&gt;');
-  const split = sanitized.split(' ').map(v => v.trim())
-  const emoteNames = emotes.map(v => v.name);
-  
-  return split.map(v => {
-    if (!emoteNames.includes(v)) return v
-    return replaceEmote(v, emotes)
-  }).filter(Boolean)
+class EmoteReplacer {
+  replace(value: string, emotes: Emote[]) {
+    const sanitized = this.sanitize(value);
+    const split = this.split(sanitized);
+    const replaced = this.replaceEmotes(split, emotes);
+    return replaced.filter(Boolean);
+  }
+
+  private sanitize(value: string) {
+    return value.replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+  }
+
+  private split(value: string) {
+    return value.split(' ').map(v => v.trim())
+  }
+
+  private replaceEmotes(value: string[], emotes: Emote[]) {
+    const emoteNames = emotes.map(v => v.name);
+    return value.map(v => {
+      if (!emoteNames.includes(v)) return v
+      const emote = emotes.find(e => e.name === v);
+      if (!emote) return null
+      return `<img class="emote" src="${emote.image}" alt="${emote.name}"/>`
+    })
+  }
 }
 
-const replaceEmote = (value: string, emotes: Emote[]) => {
-  const emote = emotes.find(v => v.name === value);
-  if (!emote) return null
-  return `<img class="emote" src="${emote.image}" alt="${emote.name}"/>`
-}
+export const emoteReplacer = new EmoteReplacer()
