@@ -8,9 +8,9 @@
 		color-scheme: light;
 	}
 
-	:global(html),
-	:global(body),
-	:global(body) > :global(*) {
-		all: initial;
+	:global(body) {
+		line-height: initial !important;
+		color: initial !important;
+		background-color: transparent !important;
 	}
 </style>

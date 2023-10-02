@@ -1,11 +1,11 @@
 import type { Emote } from "$lib/types/emote";
 
 class EmoteReplacer {
-  replace(value: string, emotes: Emote[]) {
+  replace(value: string, emotes: Emote[] = []) {
     const sanitized = this.sanitize(value);
     const split = this.split(sanitized);
     const replaced = this.replaceEmotes(split, emotes);
-    return replaced.filter(Boolean);
+    return replaced.filter(Boolean) as string[];
   }
 
   private sanitize(value: string) {
@@ -17,10 +17,10 @@ class EmoteReplacer {
   }
 
   private replaceEmotes(value: string[], emotes: Emote[]) {
-    const emoteNames = emotes.map(v => v.name);
+    const emoteNames = emotes.map(v => this.sanitize(v.name));
     return value.map(v => {
       if (!emoteNames.includes(v)) return v
-      const emote = emotes.find(e => e.name === v);
+      const emote = emotes.find(e => this.sanitize(e.name) === v);
       if (!emote) return null
       return `<img class="emote" src="${emote.image}" alt="${emote.name}"/>`
     })

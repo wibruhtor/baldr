@@ -19,7 +19,7 @@
 			fontSettings.textFontWeight = Number.parseInt(fontSettings.textFontWeight);
 		}
 		if (typeof fontSettings.fontSize === 'string') {
-			fontSettings.fontSize = Number.parseInt(fontSettings.fontSize);
+			fontSettings.fontSize = Number.parseFloat(fontSettings.fontSize);
 		}
 	}
 </script>
@@ -47,6 +47,7 @@
 		type="number"
 		min="0"
 		max="1000"
+		step="50"
 		bind:value={fontSettings.nicknameFontWeight}
 		disabled={isLoading}
 	/>
@@ -65,6 +66,7 @@
 		type="number"
 		min="0"
 		max="1000"
+		step="50"
 		bind:value={fontSettings.textFontWeight}
 		disabled={isLoading}
 	/>
@@ -76,6 +78,7 @@
 		autocomplete={id}
 		type="number"
 		min="0"
+		step="0.25"
 		bind:value={fontSettings.fontSize}
 		disabled={isLoading}
 	/>
