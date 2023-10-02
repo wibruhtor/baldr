@@ -1,12 +1,22 @@
 <script lang="ts" context="module">
 	import { numberToHex } from '$lib/utils/color-convertors';
 	import ChatMessages from '$lib/components/widget/chat-widget/chat-messages.svelte';
-	import type { ChatSettings } from '$lib/types/api/entity/chat-settings';
+	import type { ChatSettings, ChatType } from '$lib/types/api/entity/chat-settings';
+	import { cn } from '$lib/utils/shadcn';
+
+	const reversedChatTypes: ChatType[] = [
+		'default-reverse',
+		'block-reverse',
+		'alternative-block-reverse',
+	];
 </script>
 
 <script lang="ts">
 	export let settings: ChatSettings;
 	let style = '';
+
+	let isDefault = settings.chatType === 'default' || settings.chatType === 'default-reverse';
+	let isReversed = reversedChatTypes.includes(settings.chatType);
 
 	$: fontStyle = [
 		`font-family: ${settings.font.fontFamily}${settings.font.fontFamily && ', '}Inter, sans-serif`,
@@ -15,7 +25,7 @@
 		`font-weight: ${settings.font.textFontWeight}`,
 	];
 	$: colorStyle =
-		settings.chatType === 'default'
+		settings.chatType === 'default' || settings.chatType === 'default-reverse'
 			? [
 					`color:${numberToHex(settings.color.textColor)}`,
 					`background-color:${numberToHex(settings.color.backgroundColor)}`,
@@ -27,12 +37,15 @@
 		`border-bottom-left-radius:${settings.size.borderBottomLeftRadius}vh`,
 		`border-bottom-right-radius:${settings.size.borderBottomRightRadius}vh`,
 	];
-	$: paddingStyle = [
-		`padding-top:${settings.size.paddingTop}vh`,
-		`padding-right:${settings.size.paddingRight}vh`,
-		`padding-bottom:${settings.size.paddingBottom}vh`,
-		`padding-left:${settings.size.paddingLeft}vh`,
-	];
+	$: paddingStyle =
+		settings.chatType === 'default' || settings.chatType === 'default-reverse'
+			? [
+					`padding-top:${settings.size.paddingTop}vh`,
+					`padding-right:${settings.size.paddingRight}vh`,
+					`padding-bottom:${settings.size.paddingBottom}vh`,
+					`padding-left:${settings.size.paddingLeft}vh`,
+			  ]
+			: [];
 	$: marginStyle = [
 		`top:${settings.size.marginTop}vh`,
 		`right:${settings.size.marginRight}vh`,
@@ -44,6 +57,13 @@
 	);
 </script>
 
-<div class="fixed flex flex-col gap-[0.5vh]" {style}>
+<div
+	class={cn(
+		'fixed flex',
+		isDefault ? 'gap-[0.5vh]' : 'gap-[1vh]',
+		isReversed ? 'flex-col-reverse' : 'flex-col',
+	)}
+	{style}
+>
 	<ChatMessages />
 </div>
