@@ -105,10 +105,15 @@
 		@apply border-border transition ease-in-out duration-150;
 	}
 
-	/*html,
+	html,
 	body {
 		scrollbar-gutter: stable;
-	}*/
+	}
+
+	html[style="--scrollbar-width: 17px;"],
+	body[data-melt-scroll-lock=""] {
+		scrollbar-gutter: auto;
+	}
 
 	body {
 		@apply bg-background text-foreground typography-p;
