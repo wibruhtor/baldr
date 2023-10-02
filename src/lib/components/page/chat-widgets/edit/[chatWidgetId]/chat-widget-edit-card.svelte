@@ -32,7 +32,11 @@
 
 	const chatTypes: { value: ChatType; label: string }[] = [
 		{ value: 'default', label: 'По умолчанию' },
+		{ value: 'default-reverse', label: 'По умолчанию (развернутый)' },
 		{ value: 'block', label: 'Блоки' },
+		{ value: 'block-reverse', label: 'Блоки (развернутый)' },
+		{ value: 'alternative-block', label: 'Альтернативыне блоки' },
+		{ value: 'alternative-block-reverse', label: 'Альтернативыне блоки (развернутый)' },
 	];
 </script>
 

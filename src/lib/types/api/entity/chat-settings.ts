@@ -16,7 +16,7 @@ export type ChatSettings = {
 	userId: string;
 };
 
-export type ChatType = 'default' | 'block';
+export type ChatType = 'default' | 'default-reverse' | 'block' | 'block-reverse' | 'alternative-block' | 'alternative-block-reverse';
 
 export type ChatColorSettings = {
 	nicknameColor: number;
