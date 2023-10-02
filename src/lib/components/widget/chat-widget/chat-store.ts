@@ -51,6 +51,15 @@ export const createChatStore = (initialState: ChatStore) => {
 
           return { ...v, messages }
         })
+    },
+    removeMessage(id: string) {
+      update(v => ({...v, messages: v.messages.filter(m => m.id !== id)}))
+    },
+    removeMessagesOfUser(nickname: string) {
+      update(v => ({...v, messages: v.messages.filter(m => m.nickname !== nickname)}))
+    },
+    clear() {
+      update(v => ({...v, messages: []}))
     }
   }
 }

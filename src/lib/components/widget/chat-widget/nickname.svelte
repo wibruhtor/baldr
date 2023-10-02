@@ -23,9 +23,10 @@
 		} else if (settings.color.gradientOnlyForCustomNicknames) {
 			nicknameColor = color || numberToHex(settings.color.nicknameColor);
 		} else {
-			let startColor = color || numberToHex(settings.color.nicknameColor);
+			let startColor = colord(color || numberToHex(settings.color.nicknameColor))
+				.lighten(0.1)
+				.toHex();
 			const endColor = colord(startColor).lighten(0.1).toHex();
-			startColor = colord(startColor).darken(0.1).toHex();
 			nicknameColor = `linear-gradient(to right, ${startColor}, ${endColor})`;
 		}
 	}

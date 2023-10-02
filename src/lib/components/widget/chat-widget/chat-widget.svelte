@@ -3,12 +3,13 @@
 	import type { TwitchUserInfo } from '$lib/types/api/entity/twitch-user-info';
 	import type { Emote } from '$lib/types/emote';
 	import ChatContainer from '$lib/components/widget/chat-widget/chat-container.svelte';
-	import { hash } from '$lib/utils/hash';
 	import { onMount, setContext } from 'svelte';
 	import {
 		chatStoreContextKey,
 		createChatStore,
 	} from '$lib/components/widget/chat-widget/chat-store';
+	import { Client } from 'tmi.js';
+	import { hash } from '$lib/utils/hash';
 </script>
 
 <script lang="ts">
@@ -26,64 +27,44 @@
 		messages: [],
 	});
 
+	const client = new Client({
+		channels: [userInfo.login],
+	});
+
 	setContext(chatStoreContextKey, chatStore);
 
 	onMount(() => {
-		chatStore.addMessage({
-			id: hash(),
-			timestamp: Date.now(),
-			badges: [],
-			nickname: 'BruhaBruh',
-			color: '#527cd1',
-			text: 'Привет <3',
+		client.connect().catch(console.error);
+
+		client.on('message', (_, tags, message, self) => {
+			if (self) return;
+			if (!tags['display-name']) return;
+			if ('custom-reward-id' in tags && $chatStore.settings.hide.hidePointRewards) return;
+			chatStore.addMessage({
+				id: tags.id || hash(),
+				timestamp: Date.now(),
+				color: tags.color || null,
+				nickname: tags['display-name'],
+				badges: [],
+				text: message,
+			});
 		});
-		chatStore.addMessage({
-			id: hash(),
-			timestamp: Date.now(),
-			badges: [],
-			nickname: 'Toolki1',
-			color: '#CC001B',
-			text: 'Ого Pog KEKW :)',
+
+		client.on('messagedeleted', (_, _1, _2, tags) => {
+			if (!tags['target-msg-id']) return;
+			chatStore.removeMessage(tags['target-msg-id']);
 		});
-		chatStore.addMessage({
-			id: hash(),
-			timestamp: Date.now(),
-			badges: [],
-			nickname: 'Rikonyameow',
-			color: '#7B47FF',
-			text: 'Кусь',
+
+		client.on('ban', (_, username) => {
+			chatStore.removeMessagesOfUser(username);
 		});
-		chatStore.addMessage({
-			id: hash(),
-			timestamp: Date.now(),
-			badges: [],
-			nickname: 'BruhaBruh',
-			color: null,
-			text: 'Что делаешь?',
+
+		client.on('timeout', (_, username) => {
+			chatStore.removeMessagesOfUser(username);
 		});
-		chatStore.addMessage({
-			id: hash(),
-			timestamp: Date.now(),
-			badges: [],
-			nickname: 'nightbot',
-			color: '#664ec7',
-			text: 'Какая-то хрень',
-		});
-		chatStore.addMessage({
-			id: hash(),
-			timestamp: Date.now(),
-			badges: [],
-			nickname: 'BruhaBruh',
-			color: '#664ec7',
-			text: '!команда',
-		});
-		chatStore.addMessage({
-			id: hash(),
-			timestamp: Date.now(),
-			badges: [],
-			nickname: 'BruhaBruh',
-			color: '#386FA4',
-			text: 'А я приготовил славный о:м\\Л%е т в testовом соусе из qwertyлов. Смотри здесь https://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url',
+
+		client.on('clearchat', () => {
+			chatStore.clear();
 		});
 	});
 </script>

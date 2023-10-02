@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { AppError } from '$lib/utils/app-error';
+import { PUBLIC_API_ORIGIN, PUBLIC_SERVER_ORIGIN } from '$env/static/public';
 
 const apiOrigin = browser ? 'http://api.wibruhtor.localhost' : 'http://localhost:8000';
 
