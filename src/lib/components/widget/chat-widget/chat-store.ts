@@ -4,6 +4,7 @@ import type { ChatMessage } from "$lib/types/chat/chat-message"
 import type { Emote } from "$lib/types/emote"
 import { banWordReplacer } from "$lib/utils/ban-word-replacer"
 import { emoteReplacer } from "$lib/utils/emote-replacer"
+import { linkReplacer } from "$lib/utils/link-replacer"
 import { writable } from "svelte/store"
 
 export const chatStoreContextKey = 'chat-widget-store'
@@ -32,7 +33,11 @@ export const createChatStore = (initialState: ChatStore) => {
             v.settings.hide.banWordReplacement,
             v.banWords,
           )
-          const parsed = emoteReplacer.replace(banWordFree, v.emotes).join(' ')
+          let linkFree = banWordFree;
+          if (v.settings.hide.hideLinks) {
+            linkFree = linkReplacer.replace(linkFree, v.settings.hide.linkReplacement);
+          }
+          const parsed = emoteReplacer.replace(linkFree, v.emotes).join(' ')
             
           if (parsed.trim().length === 0) return v
           message.text = parsed;

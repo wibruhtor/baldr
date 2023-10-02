@@ -83,7 +83,7 @@
 			badges: [],
 			nickname: 'BruhaBruh',
 			color: '#386FA4',
-			text: 'А я приготовил славный о:м\\Л%е т в testовом соусе из qwertyлов',
+			text: 'А я приготовил славный о:м\\Л%е т в testовом соусе из qwertyлов. Смотри здесь https://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url',
 		});
 	});
 </script>
