@@ -31,18 +31,20 @@ export const createChatStore = (initialState: ChatStore) => {
           if (message.text.startsWith(v.settings.hide.hideMessagePattern)) return v
           if (v.settings.hide.nicknames.map(v => v.toLowerCase()).includes(message.nickname.toLowerCase())) return v
           
-          const banWordFree = banWordReplacer.replace(message.text,
-            v.settings.hide.banWordReplacement,
-            v.banWords,
-          )
-          let linkFree = banWordFree;
-          if (v.settings.hide.hideLinks) {
-            linkFree = linkReplacer.replace(linkFree, v.settings.hide.linkReplacement);
+          let text = message.text;
+          if (v.banWords.length > 0) {
+            text = banWordReplacer.replace(message.text,
+              v.settings.hide.banWordReplacement,
+              v.banWords,
+            )
           }
-          const parsed = emoteReplacer.replace(linkFree, v.emotes).join(' ')
+          if (v.settings.hide.hideLinks) {
+            text = linkReplacer.replace(text, v.settings.hide.linkReplacement);
+          }
+          text = emoteReplacer.replace(text, v.emotes).join(' ')
             
-          if (parsed.trim().length === 0) return v
-          message.text = parsed;
+          if (text.trim().length === 0) return v
+          message.text = text;
 
           let messages = [
             ...v.messages,
