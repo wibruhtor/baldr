@@ -5,6 +5,8 @@
 	import Text from '$lib/components/widget/chat-widget/text.svelte';
 	import { numberToHex } from '$lib/utils/color-convertors';
 	import Badges from '$lib/components/widget/chat-widget/badges.svelte';
+	import { fade } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
 </script>
 
 <script lang="ts">
@@ -40,7 +42,11 @@
 	$: style = [...paddingStyle, ...colorStyle, ...radiusStyle].join(';');
 </script>
 
-<p class={isColumn ? 'flex flex-col' : undefined} {style}>
+<p
+	class={isColumn ? 'flex flex-col' : undefined}
+	{style}
+	transition:fade={{ duration: 200, easing: quintOut }}
+>
 	<span
 		><Badges badges={chatMessage.badges} />
 		<Nickname {settings} nickname={chatMessage.nickname} color={chatMessage.color} /></span

@@ -38,7 +38,7 @@
 {#if error}
 	{error}
 {:else if isLoading}
-	Loading...
+	Загрузка...
 {:else}
 	{#key isLoading || emotes || badges || data.banWords}
 		<ChatWidget

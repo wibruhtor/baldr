@@ -3,6 +3,8 @@
 	import ChatMessages from '$lib/components/widget/chat-widget/chat-messages.svelte';
 	import type { ChatSettings, ChatType } from '$lib/types/api/entity/chat-settings';
 	import { cn } from '$lib/utils/shadcn';
+	import { fade } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
 
 	const reversedChatTypes: ChatType[] = [
 		'default-reverse',
@@ -47,10 +49,10 @@
 			  ]
 			: [];
 	$: marginStyle = [
-		`top:${settings.size.marginTop}vh`,
-		`right:${settings.size.marginRight}vh`,
-		`bottom:${settings.size.marginBottom}vh`,
-		`left:${settings.size.marginLeft}vh`,
+		`margin-top:${settings.size.marginTop}vh`,
+		`margin-right:${settings.size.marginRight}vh`,
+		`margin-bottom:${settings.size.marginBottom}vh`,
+		`margin-left:${settings.size.marginLeft}vh`,
 	];
 	$: style = [...fontStyle, ...colorStyle, ...radiusStyle, ...paddingStyle, ...marginStyle].join(
 		';',
@@ -59,11 +61,12 @@
 
 <div
 	class={cn(
-		'fixed flex overflow-hidden',
+		'flex overflow-hidden',
 		isDefault ? 'gap-[0.5vh]' : 'gap-[1vh]',
 		isReversed ? 'flex-col-reverse' : 'flex-col',
 	)}
 	{style}
+	transition:fade={{ duration: 200, easing: quintOut }}
 >
 	<ChatMessages />
 </div>

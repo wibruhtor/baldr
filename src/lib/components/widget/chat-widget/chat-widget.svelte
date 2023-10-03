@@ -83,4 +83,8 @@
 	});
 </script>
 
-<ChatContainer settings={$chatStore.settings} />
+<div class="fixed top-0 left-0 bottom-0 right-0 overflow-hidden">
+	{#if $chatStore.messages.length > 0}
+		<ChatContainer settings={$chatStore.settings} />
+	{/if}
+</div>
