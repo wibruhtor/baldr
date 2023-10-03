@@ -3,6 +3,7 @@
 	import { Info } from 'lucide-svelte';
 	import HoverCardContent from '$lib/components/ui/hover-card/hover-card-content.svelte';
 	import { PUBLIC_SITE_VERSION, PUBLIC_SERVER_VERSION } from '$env/static/public';
+	import Button from '$lib/components/ui/button/button.svelte';
 </script>
 
 <script lang="ts">
@@ -10,9 +11,9 @@
 
 <HoverCard>
 	<HoverCardTrigger>
-		<a href="/about">
+		<Button variant="ghost" size="icon" href="/about">
 			<Info class="h-4 w-4" />
-		</a>
+		</Button>
 	</HoverCardTrigger>
 	<HoverCardContent class="w-max">
 		<div class="flex justify-between gap-2">
