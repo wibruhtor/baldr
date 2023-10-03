@@ -33,12 +33,14 @@
 					`background-color:${numberToHex(settings.color.backgroundColor)}`,
 			  ]
 			: [];
-	$: radiusStyle = [
+	$: radiusStyle = settings.chatType === 'default' || settings.chatType === 'default-reverse'  
+	?[
 		`border-top-left-radius:${settings.size.borderTopLeftRadius}vh`,
 		`border-top-right-radius:${settings.size.borderTopRightRadius}vh`,
 		`border-bottom-left-radius:${settings.size.borderBottomLeftRadius}vh`,
 		`border-bottom-right-radius:${settings.size.borderBottomRightRadius}vh`,
-	];
+	]
+	: [];
 	$: paddingStyle =
 		settings.chatType === 'default' || settings.chatType === 'default-reverse'
 			? [

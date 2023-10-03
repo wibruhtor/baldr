@@ -85,10 +85,8 @@
 		if (typeof sizeSettings.borderTopLeftRadius === 'string') {
 			sizeSettings.borderTopLeftRadius = Number.parseFloat(sizeSettings.borderTopLeftRadius);
 		}
-		if (typeof sizeSettings.borderBottomRightRadius === 'string') {
-			sizeSettings.borderBottomRightRadius = Number.parseFloat(
-				sizeSettings.borderBottomRightRadius,
-			);
+		if (typeof sizeSettings.borderTopRightRadius === 'string') {
+			sizeSettings.borderTopRightRadius = Number.parseFloat(sizeSettings.borderTopRightRadius);
 		}
 		if (typeof sizeSettings.borderBottomLeftRadius === 'string') {
 			sizeSettings.borderBottomLeftRadius = Number.parseFloat(sizeSettings.borderBottomLeftRadius);
