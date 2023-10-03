@@ -13,6 +13,7 @@
 	let emotes: Emote[];
 	let badges: TwitchBadge[];
 	let isLoading = true;
+	let error: string | null = null;
 
 	onMount(async () => {
 		const [emotesResult, badgesResult] = await Promise.allSettled([
@@ -34,13 +35,19 @@
 	});
 </script>
 
-{#key isLoading || emotes || badges || data.banWords}
-	<ChatWidget
-		chatSettings={data.chatSettings}
-		userInfo={data.userInfo}
-		banWords={data.banWords}
-		{emotes}
-		{badges}
-		{isLoading}
-	/>
-{/key}
+{#if error}
+	{error}
+{:else if isLoading}
+	Loading...
+{:else}
+	{#key isLoading || emotes || badges || data.banWords}
+		<ChatWidget
+			chatSettings={data.chatSettings}
+			userInfo={data.userInfo}
+			banWords={data.banWords}
+			bind:error
+			{emotes}
+			{badges}
+		/>
+	{/key}
+{/if}

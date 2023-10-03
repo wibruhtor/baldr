@@ -44,12 +44,12 @@ export const createChatStore = (initialState: ChatStore) => {
           if (parsed.trim().length === 0) return v
           message.text = parsed;
 
-          const messages = [
+          let messages = [
             ...v.messages,
             message
           ]
-          .toSorted((a, b) => b.timestamp - a.timestamp)
-          .slice(0, v.settings?.size.maxMessages || 50);
+          messages.sort((a, b) => b.timestamp - a.timestamp)
+          messages = messages.slice(0, v.settings?.size.maxMessages || 50);
 
           return { ...v, messages }
         })

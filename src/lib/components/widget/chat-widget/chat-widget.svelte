@@ -19,7 +19,7 @@
 	export let emotes: Emote[];
 	export let badges: TwitchBadge[];
 	export let banWords: string[];
-	export let isLoading: boolean;
+	export let error: string | null;
 
 	const chatStore = createChatStore({
 		userInfo,
@@ -37,7 +37,7 @@
 	setContext(chatStoreContextKey, chatStore);
 
 	onMount(() => {
-		client.connect().catch(console.error);
+		client.connect().catch((e) => (error = (e as Error).message));
 
 		client.on('message', (_, tags, message, self) => {
 			if (self) return;
@@ -83,8 +83,4 @@
 	});
 </script>
 
-{#if isLoading}
-	Loading...
-{:else}
-	<ChatContainer settings={$chatStore.settings} />
-{/if}
+<ChatContainer settings={$chatStore.settings} />

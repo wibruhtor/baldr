@@ -11,6 +11,6 @@
 	:global(body) {
 		line-height: initial !important;
 		color: initial !important;
-		background-color: transparent !important;
+		background-color: rgba(0, 0, 0, 0) !important;
 	}
 </style>

@@ -23,10 +23,8 @@
 		} else if (settings.color.gradientOnlyForCustomNicknames) {
 			nicknameColor = color || numberToHex(settings.color.nicknameColor);
 		} else {
-			let startColor = colord(color || numberToHex(settings.color.nicknameColor))
-				.lighten(0.1)
-				.toHex();
-			const endColor = colord(startColor).lighten(0.1).toHex();
+			let startColor = color || numberToHex(settings.color.nicknameColor);
+			const endColor = colord(startColor).lighten(0.2).toHex();
 			nicknameColor = `linear-gradient(to right, ${startColor}, ${endColor})`;
 		}
 	}
@@ -34,6 +32,6 @@
 
 <span
 	class="decoration-clone whitespace-normal"
-	style={`color: transparent; background: ${nicknameColor}; background-clip: text; font-weight: ${settings.font.nicknameFontWeight}`}
+	style={`color: transparent; background: ${nicknameColor}; background-clip: text; -webkit-background-clip: text; font-weight: ${settings.font.nicknameFontWeight}`}
 	>{nickname}</span
 >
