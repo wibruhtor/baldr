@@ -11,11 +11,12 @@ class AuthService {
 		return wetch<AuthorizeUrlResponse>('/auth/authorize');
 	}
 
-	async exchangeCode(code: string): Promise<ExchangeCodeResponse> {
+	async exchangeCode(code: string, headers?: HeadersInit): Promise<ExchangeCodeResponse> {
 		return wetch<ExchangeCodeResponse>('/auth/exchange', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				...headers
 			},
 			body: JSON.stringify({ code }),
 		});
