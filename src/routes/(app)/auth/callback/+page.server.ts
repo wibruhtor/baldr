@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 import { authService } from '$lib/service/auth.service';
 import { AppError } from '$lib/utils/app-error';
 
-export const load: PageServerLoad = async ({ url, cookies, request }) => {
+export const load: PageServerLoad = async ({ url, cookies, request, getClientAddress }) => {
 	const code = url.searchParams.get('code');
 
 	if (!code) {
@@ -14,7 +14,8 @@ export const load: PageServerLoad = async ({ url, cookies, request }) => {
 
 	try {
 		const data = await authService.exchangeCode(code, {
-			'User-Agent': request.headers.get('User-Agent') || 'unknown'
+			'User-Agent': request.headers.get('User-Agent') || 'unknown',
+			'X-Forwarded-For': getClientAddress()
 		});
 
 		const accessTokenPayloadInBase64 = data.accessToken.split('.')[1];
