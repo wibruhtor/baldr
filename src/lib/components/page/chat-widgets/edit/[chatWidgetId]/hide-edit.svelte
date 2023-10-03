@@ -151,7 +151,7 @@
 		<SelectContent>
 			<SelectGroup>
 				<SelectLabel>Бан Ворд Фильтры</SelectLabel>
-				<SelectItem value={null} label="Не выбран">Не выбран</SelectItem>
+				<SelectItem value={null} label="Без фильтра">Без фильтра</SelectItem>
 				{#each banWordFilters as banWordFilter (banWordFilter.id)}
 					<SelectItem value={banWordFilter.id} label={banWordFilter.name}>
 						{banWordFilter.name}
