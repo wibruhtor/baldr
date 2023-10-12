@@ -34,12 +34,8 @@ class BanWordFiltersService {
 		});
 	}
 
-	async getBanWordFilter(id: string, accessToken: string): Promise<GetBanWordFilterResponse> {
-		return wetch<GetBanWordFilterResponse>('/v1/ban-word-filters/' + id, {
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-			},
-		});
+	async getBanWordFilter(id: string): Promise<GetBanWordFilterResponse> {
+		return wetch<GetBanWordFilterResponse>('/v1/ban-word-filters/' + id);
 	}
 
 	async updateBanWordFilter(

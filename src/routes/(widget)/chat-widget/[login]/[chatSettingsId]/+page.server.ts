@@ -22,10 +22,10 @@ export const load: PageServerLoad = async ({ params }) => {
 	}
 	try {
 		if (chatSettings.hide.banWordFilterId) {
-			banWords = (await banWordFiltersService.getBanWordsOfFilter(chatSettings.hide.banWordFilterId)).banWords
+			banWords = (await banWordFiltersService.getBanWordFilter(chatSettings.hide.banWordFilterId)).banWords
 		}
 	} catch {
-		throw error(404, { message: 'fail get chat settings' });
+		throw error(404, { message: 'fail get ban words' });
 	}
 	return { userInfo, chatSettings, banWords }
 };
