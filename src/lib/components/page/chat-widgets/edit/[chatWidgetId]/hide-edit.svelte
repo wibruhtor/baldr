@@ -55,7 +55,7 @@
 		banWordFiltersService
 			.getAllBanWordFilters($authStore.accessToken)
 			.then((v) => {
-				banWordFilters = v.filters;
+				banWordFilters = v.banWordFilters;
 			})
 			.catch(console.error);
 	});
@@ -141,7 +141,10 @@
 	<Select
 		selected={banWordFilters
 			.map((v) => ({ value: v.id, label: v.name }))
-			.find((v) => v.value === hideSettings.banWordFilterId)}
+			.find((v) => v.value === hideSettings.banWordFilterId) || {
+			value: null,
+			label: 'Без фильтра',
+		}}
 		onSelectedChange={handleChangeBanWordFilterSelect}
 		disabled={isLoading}
 	>

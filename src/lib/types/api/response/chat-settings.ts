@@ -1,11 +1,7 @@
 import type { ChatSettings, ChatSettingsInfo } from '$lib/types/api/entity/chat-settings';
 
 export type GetAllChatSettingsResponse = {
-	chatSettings: ChatSettings[];
-};
-
-export type GetAllChatSettingsInfoResponse = {
-	chatSettingsInfo: ChatSettingsInfo[];
+	chatSettings: ChatSettingsInfo[];
 };
 
 export type CreateChatSettingsResponse = ChatSettings;

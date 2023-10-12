@@ -6,13 +6,13 @@
 </script>
 
 <script lang="ts">
-	export let chatSettingsInfo: ChatSettingsInfo;
+	export let chatSettings: ChatSettingsInfo;
 </script>
 
-<a href={'/chat-widgets/edit/' + chatSettingsInfo.id}>
+<a href={'/chat-widgets/edit/' + chatSettings.id}>
 	<Card class="hover:bg-card-foreground/5">
 		<CardHeader class="py-16">
-			<CardTitle class="flex justify-center">{chatSettingsInfo.name}</CardTitle>
+			<CardTitle class="flex justify-center">{chatSettings.name}</CardTitle>
 		</CardHeader>
 	</Card>
 </a>

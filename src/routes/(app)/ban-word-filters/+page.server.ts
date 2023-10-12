@@ -8,8 +8,8 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	if (!accessToken) throw redirect(307, '/');
 
 	try {
-		const { filters } = await banWordFiltersService.getAllBanWordFilters(accessToken);
-		return { banWordFilters: filters };
+		const { banWordFilters } = await banWordFiltersService.getAllBanWordFilters(accessToken);
+		return { banWordFilters };
 	} catch {
 		return { banWordFilters: [] };
 	}

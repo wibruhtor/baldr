@@ -10,5 +10,5 @@
 </svelte:head>
 
 <section class="container">
-	<ChatWidgetsControl chatSettingsInfo={data.chatSettingsInfo} />
+	<ChatWidgetsControl chatSettings={data.chatSettings} />
 </section>

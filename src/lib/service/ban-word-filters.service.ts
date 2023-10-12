@@ -1,16 +1,13 @@
 import type {
 	CreateBanWordFilterRequest,
 	UpdateBanWordFilterRequest,
-	UpdateBanWordsOfFilterRequest,
 } from '$lib/types/api/request/ban-word-filters';
 import type {
 	CreateBanWordFilterResponse,
 	DeleteBanWordFilterResponse,
 	GetAllBanWordFiltersResponse,
 	GetBanWordFilterResponse,
-	GetBanWordsOfFilterResponse,
 	UpdateBanWordFilterResponse,
-	UpdateBanWordsOfFilterResponse,
 } from '$lib/types/api/response/ban-word-filters';
 import { wetch } from '$lib/utils/wetch';
 
@@ -66,25 +63,6 @@ class BanWordFiltersService {
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 			},
-		});
-	}
-
-	async getBanWordsOfFilter(id: string): Promise<GetBanWordsOfFilterResponse> {
-		return wetch<GetBanWordsOfFilterResponse>('/v1/ban-word-filters/' + id + '/ban-words');
-	}
-
-	async updateBanWordsOfFilter(
-		id: string,
-		req: UpdateBanWordsOfFilterRequest,
-		accessToken: string,
-	): Promise<UpdateBanWordsOfFilterResponse> {
-		return wetch<UpdateBanWordsOfFilterResponse>('/v1/ban-word-filters/' + id + '/ban-words', {
-			method: 'PUT',
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(req),
 		});
 	}
 }

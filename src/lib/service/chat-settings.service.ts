@@ -5,7 +5,6 @@ import type {
 import type {
 	CreateChatSettingsResponse,
 	DeleteChatSettingsResponse,
-	GetAllChatSettingsInfoResponse,
 	GetAllChatSettingsResponse,
 	GetChatSettingsResponse,
 	UpdateChatSettingsResponse,
@@ -15,14 +14,6 @@ import { wetch } from '$lib/utils/wetch';
 class ChatSettingsService {
 	async getAllChatSettings(accessToken: string): Promise<GetAllChatSettingsResponse> {
 		return wetch<GetAllChatSettingsResponse>('/v1/chat-settings', {
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-			},
-		});
-	}
-
-	async getAllChatSettingsInfo(accessToken: string): Promise<GetAllChatSettingsInfoResponse> {
-		return wetch<GetAllChatSettingsInfoResponse>('/v1/chat-settings/info', {
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 			},

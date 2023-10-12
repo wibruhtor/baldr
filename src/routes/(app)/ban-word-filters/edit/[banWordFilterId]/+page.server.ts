@@ -8,8 +8,8 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
 	if (!accessToken) throw redirect(307, '/');
 
 	try {
-		const data = await banWordFiltersService.getBanWordFilter(params.banWordFilterId, accessToken);
-		return { banWordFilter: data.filter, banWords: data.banWords };
+		const banWordFilter = await banWordFiltersService.getBanWordFilter(params.banWordFilterId, accessToken);
+		return { banWordFilter };
 	} catch {
 		throw error(404, { message: 'Not Found' });
 	}

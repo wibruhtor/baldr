@@ -8,9 +8,9 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	if (!accessToken) throw redirect(307, '/');
 
 	try {
-		const { chatSettingsInfo } = await chatSettingsService.getAllChatSettingsInfo(accessToken);
-		return { chatSettingsInfo };
+		const { chatSettings } = await chatSettingsService.getAllChatSettings(accessToken);
+		return { chatSettings };
 	} catch {
-		return { chatSettingsInfo: [] };
+		return { chatSettings: [] };
 	}
 };

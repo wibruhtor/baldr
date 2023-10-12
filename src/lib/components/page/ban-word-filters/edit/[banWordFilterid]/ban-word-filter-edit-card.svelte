@@ -26,43 +26,25 @@
 		word: BanWordSchema,
 		show: z.boolean(),
 	});
-
-	const BanWordsSchema = z.object({
-		words: z.array(
-			z.object({
-				id: z.string(),
-				word: BanWordSchema,
-				show: z.boolean(),
-			}),
-		),
-	});
 </script>
 
 <script lang="ts">
 	export let banWordFilter: BanWordFilter;
-	export let banWords: string[];
 
 	let showAllBanWords = false;
 	let isLoading = false;
 
-	const {
-		data: filterData,
-		errors: filterErrors,
-		validate: filterValidate,
-	} = createForm({ name: banWordFilter.name }, UpdateBanWordFilterRequestSchema);
-	const {
-		data: wordsData,
-		errors: wordsErrors,
-		validate: wordsValidate,
-	} = createForm(
-		{
-			words: banWords.map((word) => ({
-				id: hash(),
-				word,
-				show: false,
-			})),
-		},
-		BanWordsSchema,
+	let banWords: { id: string; word: string; show: boolean }[] = banWordFilter.banWords.map(
+		(word) => ({
+			id: hash(),
+			word,
+			show: false,
+		}),
+	);
+
+	const { data, errors, validate } = createForm(
+		{ name: banWordFilter.name, banWords: banWordFilter.banWords },
+		UpdateBanWordFilterRequestSchema,
 	);
 	const {
 		data: newWordData,
@@ -71,27 +53,29 @@
 	} = createForm({ word: '', show: false }, NewBanWordSchema);
 
 	$: isChanged =
-		$filterData.name !== banWordFilter.name ||
-		!$wordsData.words
-			.map((v) => v.word.toLowerCase().trim())
-			.every((v) => banWords.includes(v.toLowerCase().trim())) ||
-		!banWords
+		$data.name !== banWordFilter.name ||
+		!$data.banWords
 			.map((v) => v.toLowerCase().trim())
-			.every((v) => $wordsData.words.map((v) => v.word.toLowerCase().trim()).includes(v));
+			.every((v) => banWordFilter.banWords.includes(v.toLowerCase().trim())) ||
+		!banWordFilter.banWords
+			.map((v) => v.toLowerCase().trim())
+			.every((v) => $data.banWords.map((v) => v.toLowerCase().trim()).includes(v));
+
+	$: $data.banWords = banWords.map((v) => v.word.toLowerCase().trim());
 
 	const handleAddNewBanWordClick = () => {
 		if (!newWordValidate()) return;
 		if (
-			$wordsData.words
-				.map((v) => v.word.toLowerCase().trim())
+			$data.banWords
+				.map((v) => v.toLowerCase().trim())
 				.includes($newWordData.word.toLowerCase().trim())
 		) {
 			$newWordErrors.word = 'Бан ворд уже в списке';
 			return;
 		}
-		$wordsData.words = Array.from(
+		banWords = Array.from(
 			new Set([
-				...$wordsData.words,
+				...banWords,
 				{
 					id: hash(),
 					word: $newWordData.word.toLowerCase().trim(),
@@ -104,38 +88,23 @@
 	};
 
 	const handleRemoveBanWordClick = (id: string) => {
-		$wordsData.words = $wordsData.words.filter((v) => v.id !== id);
+		banWords = banWords.filter((v) => v.id !== id);
 	};
 
 	const handleSaveClick = async () => {
-		if (!filterValidate() || !wordsValidate()) return;
+		if (!validate()) return;
 		if (!$authStore.accessToken) return;
 		isLoading = true;
-		const [filterResult, wordsResult] = await Promise.allSettled([
-			banWordFiltersService.updateBanWordFilter(
-				banWordFilter.id,
-				{ name: $filterData.name },
-				$authStore.accessToken,
-			),
-			banWordFiltersService.updateBanWordsOfFilter(
-				banWordFilter.id,
-				{
-					banWords: $wordsData.words.map((v) => v.word.toLowerCase().trim()),
-				},
-				$authStore.accessToken,
-			),
-		]);
-		if (filterResult.status === 'fulfilled') {
-			banWordFilter = filterResult.value;
-		} else {
-			console.error(filterResult.reason);
-		}
-		if (wordsResult.status === 'fulfilled') {
-			banWords = $wordsData.words.map((v) => v.word.toLowerCase().trim());
-		} else {
-			console.error(wordsResult.reason);
-		}
-		isLoading = false;
+		banWordFiltersService
+			.updateBanWordFilter(banWordFilter.id, $data, $authStore.accessToken)
+			.then((newBanWordFilter) => {
+				isLoading = false;
+				banWordFilter = newBanWordFilter;
+			})
+			.catch((e) => {
+				console.error(e);
+				isLoading = false;
+			});
 	};
 
 	const handleDeleteClick = async () => {
@@ -160,14 +129,8 @@
 		<CardDescription>{banWordFilter.name}</CardDescription>
 	</CardHeader>
 	<CardContent class="grid grid-cols-1 gap-4">
-		<Field
-			label="Название"
-			for="ban-word-filter-name"
-			description={$filterErrors.name}
-			error
-			let:id
-		>
-			<Input {id} name={id} autocomplete={id} bind:value={$filterData.name} disabled={isLoading} />
+		<Field label="Название" for="ban-word-filter-name" description={$errors.name} error let:id>
+			<Input {id} name={id} autocomplete={id} bind:value={$data.name} disabled={isLoading} />
 		</Field>
 		<div class="flex flex-col gap-2">
 			<div class="flex items-center gap-2">
@@ -188,8 +151,8 @@
 				Банворд "омлет" будет срабатывать на "о:м\Л%е т" в сообщении "Я сделал о:м\Л%е т"
 			</p>
 
-			{#each $wordsData.words as banWord, index (banWord.id)}
-				<Field description={$wordsErrors.words[index].word} error let:id>
+			{#each banWords as banWord, index (banWord.id)}
+				<Field description={$errors.banWords[index]} error let:id>
 					<div class="flex gap-2">
 						<Input
 							{id}
