@@ -1,3 +1,3 @@
-import type { TwitchUserInfo } from "$lib/types/api/entity/twitch-user-info";
+import type { TwitchUserInfo } from '$lib/types/api/entity/twitch-user-info';
 
-export type GetTwitchUserInfoResponse = TwitchUserInfo
+export type GetTwitchUserInfoResponse = TwitchUserInfo;

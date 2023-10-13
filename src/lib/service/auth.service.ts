@@ -16,7 +16,7 @@ class AuthService {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				...headers
+				...headers,
 			},
 			body: JSON.stringify({ code }),
 		});

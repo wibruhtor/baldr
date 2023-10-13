@@ -5,5 +5,5 @@ export type BanWordFilterInfo = {
 };
 
 export type BanWordFilter = BanWordFilterInfo & {
-	banWords: string[]
+	banWords: string[];
 };

@@ -110,8 +110,8 @@
 		scrollbar-gutter: stable;
 	}
 
-	html[style="--scrollbar-width: 17px;"],
-	body[data-melt-scroll-lock=""] {
+	html[style='--scrollbar-width: 17px;'],
+	body[data-melt-scroll-lock=''] {
 		scrollbar-gutter: auto;
 	}
 

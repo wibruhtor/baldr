@@ -8,9 +8,9 @@ import { banWordFiltersService } from '$lib/service/ban-word-filters.service';
 import { AppError } from '$lib/utils/app-error';
 
 export const load: PageServerLoad = async ({ params }) => {
-	let userInfo: TwitchUserInfo
-	let chatSettings: ChatSettings
-	let banWords: string[] = []
+	let userInfo: TwitchUserInfo;
+	let chatSettings: ChatSettings;
+	let banWords: string[] = [];
 	try {
 		userInfo = await twitchService.getUserInfo(params.login);
 	} catch (e) {
@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		throw error(404, { message: 'fail get user info' });
 	}
 	try {
-		chatSettings = await chatSettingsService.getChatSettings(params.chatSettingsId)
+		chatSettings = await chatSettingsService.getChatSettings(params.chatSettingsId);
 	} catch (e) {
 		if (e instanceof AppError) {
 			throw error(404, { message: 'fail get chat settings', traceId: e.getTraceId() });
@@ -29,7 +29,8 @@ export const load: PageServerLoad = async ({ params }) => {
 	}
 	try {
 		if (chatSettings.hide.banWordFilterId) {
-			banWords = (await banWordFiltersService.getBanWordFilter(chatSettings.hide.banWordFilterId)).banWords
+			banWords = (await banWordFiltersService.getBanWordFilter(chatSettings.hide.banWordFilterId))
+				.banWords;
 		}
 	} catch (e) {
 		if (e instanceof AppError) {
@@ -37,5 +38,5 @@ export const load: PageServerLoad = async ({ params }) => {
 		}
 		throw error(404, { message: 'fail get ban words' });
 	}
-	return { userInfo, chatSettings, banWords }
+	return { userInfo, chatSettings, banWords };
 };

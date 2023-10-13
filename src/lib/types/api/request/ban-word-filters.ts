@@ -19,8 +19,7 @@ export const UpdateBanWordFilterRequestSchema = z.object({
 		.string()
 		.min(2, { message: 'Минимальная длина 2 символа' })
 		.max(32, { message: 'Максимальная длина 32 символа' }),
-		banWords: z.array(BanWordSchema)
+	banWords: z.array(BanWordSchema),
 });
 
 export type UpdateBanWordFilterRequest = z.infer<typeof UpdateBanWordFilterRequestSchema>;
-

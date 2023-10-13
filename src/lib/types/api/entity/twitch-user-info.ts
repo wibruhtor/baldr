@@ -1,4 +1,4 @@
 export type TwitchUserInfo = {
-  id: string,
-  login: string;
-}
+	id: string;
+	login: string;
+};

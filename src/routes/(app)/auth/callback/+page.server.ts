@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ url, cookies, request, getClientAdd
 	try {
 		const data = await authService.exchangeCode(code, {
 			'User-Agent': request.headers.get('User-Agent') || 'unknown',
-			'X-Forwarded-For': getClientAddress()
+			'X-Forwarded-For': getClientAddress(),
 		});
 
 		const accessTokenPayloadInBase64 = data.accessToken.split('.')[1];
@@ -52,7 +52,7 @@ export const load: PageServerLoad = async ({ url, cookies, request, getClientAdd
 		if (e instanceof AppError) {
 			throw error(e.getStatus(), { traceId: e.getTraceId(), message: e.getMessage() });
 		}
-		throw error(500, { message: "Ошибка обработки" })
+		throw error(500, { message: 'Ошибка обработки' });
 	}
 
 	throw redirect(307, '/');

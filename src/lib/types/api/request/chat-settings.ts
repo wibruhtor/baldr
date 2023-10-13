@@ -2,7 +2,14 @@ import { ColorSchema } from '$lib/types/api/color-schema';
 import { NicknameSchema } from '$lib/types/api/nickname-schema';
 import { z } from 'zod';
 
-const ChatTypeSchema = z.enum(['default', 'default-reverse', 'block', 'block-reverse', 'alternative-block', 'alternative-block-reverse']);
+const ChatTypeSchema = z.enum([
+	'default',
+	'default-reverse',
+	'block',
+	'block-reverse',
+	'alternative-block',
+	'alternative-block-reverse',
+]);
 
 export const CreateChatSettingsRequestSchema = z.object({
 	name: z
