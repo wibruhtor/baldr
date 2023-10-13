@@ -7,7 +7,9 @@
 	import Card from '$lib/components/ui/card/card.svelte';
 	import { sessionsService } from '$lib/service/sessions.service';
 	import { authStore } from '$lib/stores/auth.store';
+	import { toastStore } from '$lib/stores/toast.store';
 	import type { Session } from '$lib/types/api/entity/session';
+	import { AppError } from '$lib/utils/app-error';
 </script>
 
 <script lang="ts">
@@ -26,7 +28,22 @@
 				deleteIsLoading = false;
 			})
 			.catch((e) => {
-				console.error(e);
+				if (e instanceof AppError) {
+					toastStore.show(`Ошибка ${e.getTraceId()}`, {
+						variant: 'destructive',
+						description: e.getMessage(),
+						closeButton: true,
+						timeout: 5000,
+					});
+				} else {
+					toastStore.show(`Ошибка`, {
+						variant: 'destructive',
+						description: 'Не удалось удалить сессии',
+						closeButton: true,
+						timeout: 5000,
+					});
+					console.error(e);
+				}
 				deleteIsLoading = false;
 			});
 	};

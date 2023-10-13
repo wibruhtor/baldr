@@ -12,17 +12,17 @@ export const wetch = async <T = void>(path: string, init?: RequestInit, origin: 
 	if (r.status === 204) {
 		return true as T;
 	}
-	const requestId = r.headers.get('Request-Id') || '';
+	const traceId = r.headers.get('traceparent') || undefined;
 	try {
 		const json = await r.json();
 		if (r.ok) {
 			return json;
 		}
-		throw new AppError(r.status, json.message || null, requestId, json.other || {});
+		throw new AppError(r.status, json.message || null, traceId, json.other || {});
 	} catch (e) {
 		if (e instanceof AppError) {
 			throw e;
 		}
-		throw new AppError(r.status, 'message is not json', requestId);
+		throw new AppError(r.status, 'message is not json', traceId);
 	}
 };

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Header from '$lib/components/layout/header/header.svelte';
+	import Toasts from '$lib/components/ui/toasts/toasts.svelte';
 	import { authStore } from '$lib/stores/auth.store';
 	import type { LayoutData } from './$types';
 
@@ -14,3 +15,4 @@
 <main class="grid grid-cols-1 gap-8 py-12">
 	<slot />
 </main>
+<Toasts />

@@ -24,9 +24,11 @@
 	import type { ChatType } from '$lib/types/api/entity/chat-settings';
 	import SelectItem from '$lib/components/ui/select/select-item.svelte';
 	import { string } from 'zod';
+	import { AppError } from '$lib/utils/app-error';
+	import { toastStore } from '$lib/stores/toast.store';
 
 	const chatTypes: { value: ChatType; label: string }[] = [
-		{ value: 'default', label: 'По умолчанию' },
+		{ value: 'default' as ChatType, label: 'По умолчанию' },
 		{ value: 'default-reverse', label: 'По умолчанию (развернутый)' },
 		{ value: 'block', label: 'Блоки' },
 		{ value: 'block-reverse', label: 'Блоки (развернутый)' },
@@ -58,7 +60,22 @@
 				goto('/chat-widgets/edit/' + chatSettings.id);
 			})
 			.catch((e) => {
-				console.error(e);
+				if (e instanceof AppError) {
+					toastStore.show(`Ошибка ${e.getTraceId()}`, {
+						variant: 'destructive',
+						description: e.getMessage(),
+						closeButton: true,
+						timeout: 5000,
+					});
+				} else {
+					toastStore.show(`Ошибка`, {
+						variant: 'destructive',
+						description: 'Не удалось создать виджет чата',
+						closeButton: true,
+						timeout: 5000,
+					});
+					console.error(e);
+				}
 				isLoading = false;
 			});
 	};

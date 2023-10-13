@@ -14,6 +14,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Session } from '$lib/types/api/entity/session';
 	import Field from '$lib/components/ui/field/field.svelte';
+	import { AppError } from '$lib/utils/app-error';
+	import { toastStore } from '$lib/stores/toast.store';
 
 	const dtf = new Intl.DateTimeFormat(undefined, {
 		dateStyle: 'short',
@@ -41,7 +43,22 @@
 				deleteIsLoading = false;
 			})
 			.catch((e) => {
-				console.error(e);
+				if (e instanceof AppError) {
+					toastStore.show(`Ошибка ${e.getTraceId()}`, {
+						variant: 'destructive',
+						description: e.getMessage(),
+						closeButton: true,
+						timeout: 5000,
+					});
+				} else {
+					toastStore.show(`Ошибка`, {
+						variant: 'destructive',
+						description: 'Не удалось удалить сессию ' + session.id,
+						closeButton: true,
+						timeout: 5000,
+					});
+					console.error(e);
+				}
 				deleteIsLoading = false;
 			});
 	};

@@ -50,8 +50,9 @@ export const load: PageServerLoad = async ({ url, cookies, request, getClientAdd
 		});
 	} catch (e) {
 		if (e instanceof AppError) {
-			throw error(e.getStatus(), { requestId: e.getRequestId(), message: e.getMessage() });
+			throw error(e.getStatus(), { traceId: e.getTraceId(), message: e.getMessage() });
 		}
+		throw error(500, { message: "Ошибка обработки" })
 	}
 
 	throw redirect(307, '/');

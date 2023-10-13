@@ -21,6 +21,8 @@
 	import Field from '$lib/components/ui/field/field.svelte';
 	import { z } from 'zod';
 	import { hash } from '$lib/utils/hash';
+	import { AppError } from '$lib/utils/app-error';
+	import { toastStore } from '$lib/stores/toast.store';
 
 	const NewBanWordSchema = z.object({
 		word: BanWordSchema,
@@ -102,7 +104,22 @@
 				banWordFilter = newBanWordFilter;
 			})
 			.catch((e) => {
-				console.error(e);
+				if (e instanceof AppError) {
+					toastStore.show(`Ошибка ${e.getTraceId()}`, {
+						variant: 'destructive',
+						description: e.getMessage(),
+						closeButton: true,
+						timeout: 5000,
+					});
+				} else {
+					toastStore.show(`Ошибка`, {
+						variant: 'destructive',
+						description: 'Не удалось сохранить изменения',
+						closeButton: true,
+						timeout: 5000,
+					});
+					console.error(e);
+				}
 				isLoading = false;
 			});
 	};
@@ -117,7 +134,22 @@
 				goto('/ban-word-filters');
 			})
 			.catch((e) => {
-				console.error(e);
+				if (e instanceof AppError) {
+					toastStore.show(`Ошибка ${e.getTraceId()}`, {
+						variant: 'destructive',
+						description: e.getMessage(),
+						closeButton: true,
+						timeout: 5000,
+					});
+				} else {
+					toastStore.show(`Ошибка`, {
+						variant: 'destructive',
+						description: 'Не удалось удалить бан ворд фильтр',
+						closeButton: true,
+						timeout: 5000,
+					});
+					console.error(e);
+				}
 				isLoading = false;
 			});
 	};

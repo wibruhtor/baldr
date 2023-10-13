@@ -12,6 +12,8 @@
 	import { CreateBanWordFilterRequestSchema } from '$lib/types/api/request/ban-word-filters';
 	import { createForm } from '$lib/utils/create-form';
 	import Field from '$lib/components/ui/field/field.svelte';
+	import { toastStore } from '$lib/stores/toast.store';
+	import { AppError } from '$lib/utils/app-error';
 </script>
 
 <script lang="ts">
@@ -29,7 +31,22 @@
 				goto('/ban-word-filters/edit/' + filter.id);
 			})
 			.catch((e) => {
-				console.error(e);
+				if (e instanceof AppError) {
+					toastStore.show(`Ошибка ${e.getTraceId()}`, {
+						variant: 'destructive',
+						description: e.getMessage(),
+						closeButton: true,
+						timeout: 5000,
+					});
+				} else {
+					toastStore.show(`Ошибка`, {
+						variant: 'destructive',
+						description: 'Не удалось создать бан ворд фильтр',
+						closeButton: true,
+						timeout: 5000,
+					});
+					console.error(e);
+				}
 				isLoading = false;
 			});
 	};

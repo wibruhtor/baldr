@@ -3,14 +3,14 @@ export class AppError extends Error {
 
 	private server_message: string | null;
 
-	private requestId: string;
+	private traceId: string;
 
 	private other: Record<string, unknown>;
 
 	constructor(
 		status: number,
 		server_message: string | null,
-		requestId: string = '',
+		traceId: string = '',
 		other: Record<string, unknown> = {},
 	) {
 		if (server_message) {
@@ -20,7 +20,7 @@ export class AppError extends Error {
 		}
 		this.status = status;
 		this.server_message = server_message;
-		this.requestId = requestId;
+		this.traceId = traceId;
 		this.other = other;
 	}
 
@@ -29,11 +29,11 @@ export class AppError extends Error {
 	}
 
 	getMessage() {
-		return this.message;
+		return this.server_message || undefined;
 	}
 
-	getRequestId() {
-		return this.requestId;
+	getTraceId() {
+		return this.traceId;
 	}
 
 	getOther() {

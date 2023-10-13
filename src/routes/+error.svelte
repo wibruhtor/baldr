@@ -21,9 +21,9 @@
 					Статус код <code class="typography-inline-code">{$page.status}</code>
 				</h4>
 
-				{#if $page.error.requestId}
+				{#if $page.error.traceId}
 					<h4 class="typography-large">
-						ID запроса <code class="typography-inline-code">{$page.error.requestId}</code>
+						ID ошибки <code class="typography-inline-code">{$page.error.traceId}</code>
 					</h4>
 				{/if}
 				{#if $page.error.message}

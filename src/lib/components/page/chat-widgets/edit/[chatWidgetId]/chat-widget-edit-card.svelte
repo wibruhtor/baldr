@@ -29,6 +29,8 @@
 	import HideEdit from '$lib/components/page/chat-widgets/edit/[chatWidgetId]/hide-edit.svelte';
 	import FontEdit from '$lib/components/page/chat-widgets/edit/[chatWidgetId]/font-edit.svelte';
 	import LinkCreate from '$lib/components/page/chat-widgets/edit/[chatWidgetId]/link-create.svelte';
+	import { toastStore } from '$lib/stores/toast.store';
+	import { AppError } from '$lib/utils/app-error';
 
 	const chatTypes: { value: ChatType; label: string }[] = [
 		{ value: 'default', label: 'По умолчанию' },
@@ -63,7 +65,22 @@
 				chatSettings = newChatSettings;
 			})
 			.catch((e) => {
-				console.error(e);
+				if (e instanceof AppError) {
+					toastStore.show(`Ошибка ${e.getTraceId()}`, {
+						variant: 'destructive',
+						description: e.getMessage(),
+						closeButton: true,
+						timeout: 5000,
+					});
+				} else {
+					toastStore.show(`Ошибка`, {
+						variant: 'destructive',
+						description: 'Не удалось сохранить изменения',
+						closeButton: true,
+						timeout: 5000,
+					});
+					console.error(e);
+				}
 				isLoading = false;
 			});
 	};
@@ -78,7 +95,22 @@
 				goto('/chat-widgets');
 			})
 			.catch((e) => {
-				console.error(e);
+				if (e instanceof AppError) {
+					toastStore.show(`Ошибка ${e.getTraceId()}`, {
+						variant: 'destructive',
+						description: e.getMessage(),
+						closeButton: true,
+						timeout: 5000,
+					});
+				} else {
+					toastStore.show(`Ошибка`, {
+						variant: 'destructive',
+						description: 'Не удалось удалить виджет чата',
+						closeButton: true,
+						timeout: 5000,
+					});
+					console.error(e);
+				}
 				isLoading = false;
 			});
 	};

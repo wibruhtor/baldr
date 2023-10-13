@@ -4,6 +4,8 @@ import { protectedRoutes } from '$lib/utils/protection-routes';
 import { goto } from '$app/navigation';
 import { browser } from '$app/environment';
 import { authService } from '$lib/service/auth.service';
+import { AppError } from '$lib/utils/app-error';
+import { toastStore } from '$lib/stores/toast.store';
 
 export type AuthStore = {
 	isLoggedIn: boolean;
@@ -30,7 +32,22 @@ const refreshTokens = async (refreshToken: string) => {
 			authStore.set(accessToken, refreshToken, true);
 		})
 		.catch((e) => {
-			console.error(e);
+			if (e instanceof AppError) {
+				toastStore.show(`Ошибка ${e.getTraceId()}`, {
+					variant: 'destructive',
+					description: e.getMessage(),
+					closeButton: true,
+					timeout: 5000,
+				});
+			} else {
+				toastStore.show(`Ошибка`, {
+					variant: 'destructive',
+					description: 'Не удалось обновить токены',
+					closeButton: true,
+					timeout: 5000,
+				});
+				console.error(e);
+			}
 			authStore.clear();
 		});
 };

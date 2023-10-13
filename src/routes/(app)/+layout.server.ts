@@ -78,7 +78,7 @@ const refreshTokens = async (
 				secure: url.protocol.includes('https'),
 			});
 			if (e.getStatus() !== 403)
-				throw error(e.getStatus(), { requestId: e.getRequestId(), message: e.getMessage() });
+				throw error(e.getStatus(), { traceId: e.getTraceId(), message: e.getMessage() });
 		}
 		return { accessToken: null, refreshToken: null };
 	}

@@ -4,7 +4,7 @@
 declare global {
 	namespace App {
 		interface Error {
-			requestId?: string | null;
+			traceId?: string | null;
 			message: string;
 			description?: string | null;
 		}
