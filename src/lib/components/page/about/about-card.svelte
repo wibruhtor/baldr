@@ -9,8 +9,8 @@
 	import Telegram from '$lib/components/ui/icon/telegram.svelte';
 	import { Mail } from 'lucide-svelte';
 	import Discord from '$lib/components/ui/icon/discord.svelte';
-	import { Tooltip, TooltipTrigger } from '$lib/components/ui/tooltip';
-	import TooltipContent from '$lib/components/ui/tooltip/tooltip-content.svelte';
+	import { HoverCard, HoverCardTrigger } from '$lib/components/ui/hover-card';
+	import HoverCardContent from '$lib/components/ui/hover-card/hover-card-content.svelte';
 </script>
 
 <script lang="ts">
@@ -51,47 +51,42 @@
 	</CardContent>
 	<CardFooter class="flex items-center gap-2">
 		<Button variant="secondary" href="/">Вернуться на главную</Button>
-		<Tooltip>
-			<TooltipTrigger let:builder>
-				<Button builders={[builder]} size="icon" variant="ghost" href="https://t.me/bruhabruh4">
+		<HoverCard>
+			<HoverCardTrigger>
+				<Button size="icon" variant="ghost" href="https://t.me/bruhabruh4">
 					<Telegram class="h-4 w-4 scale-[1.75]" />
 				</Button>
-			</TooltipTrigger>
-			<TooltipContent class="bg-card text-card-foreground border flex flex-col gap-1">
+			</HoverCardTrigger>
+			<HoverCardContent class="w-max">
 				<p class="typography-small">Время ответа до 24 часов</p>
-				<a href="https://t.me/bruhabruh4" class="typography-muted"> @bruhabruh4 </a>
-			</TooltipContent>
-		</Tooltip>
-		<Tooltip>
-			<TooltipTrigger let:builder>
-				<Button
-					builders={[builder]}
-					size="icon"
-					variant="ghost"
-					href="https://discordapp.com/users/319124448068370432"
-				>
+				<a href="https://t.me/bruhabruh4" class="typography-muted">@bruhabruh4</a>
+			</HoverCardContent>
+		</HoverCard>
+		<HoverCard>
+			<HoverCardTrigger>
+				<Button size="icon" variant="ghost" href="https://discordapp.com/users/319124448068370432">
 					<Discord class="h-4 w-4" />
 				</Button>
-			</TooltipTrigger>
-			<TooltipContent class="bg-card text-card-foreground border flex flex-col gap-1">
+			</HoverCardTrigger>
+			<HoverCardContent class="w-max">
 				<p class="typography-small">Время ответа до 72 часов</p>
 				<a href="https://discordapp.com/users/319124448068370432" class="typography-muted">
 					@319124448068370432
 				</a>
-			</TooltipContent>
-		</Tooltip>
-		<Tooltip>
-			<TooltipTrigger let:builder>
-				<Button builders={[builder]} size="icon" variant="ghost" href="mailto:contact@bruhabruh.ru">
+			</HoverCardContent>
+		</HoverCard>
+		<HoverCard>
+			<HoverCardTrigger>
+				<Button size="icon" variant="ghost" href="mailto:contact@bruhabruh.ru">
 					<Mail class="h-4 w-4" />
 				</Button>
-			</TooltipTrigger>
-			<TooltipContent class="bg-card text-card-foreground border flex flex-col gap-1">
+			</HoverCardTrigger>
+			<HoverCardContent class="w-max">
 				<p class="typography-small">Время ответа до 48 часов</p>
 				<a href="mailto:contact@bruhabruh.ru" class="typography-muted">contact@bruhabruh.ru</a>
-			</TooltipContent>
-		</Tooltip>
-		<div class="ml-auto flex flex-col items-end">
+			</HoverCardContent>
+		</HoverCard>
+		<div class="ml-auto flex items-center gap-1">
 			<p class="typography-muted">Версия сайта v{PUBLIC_SITE_VERSION}</p>
 			<p class="typography-muted">Версия сервера v{PUBLIC_SERVER_VERSION}</p>
 		</div>
