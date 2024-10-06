@@ -25,5 +25,6 @@
 		display: inline-block;
 		height: 1.5em;
 		vertical-align: bottom;
+		margin-right: 0.1em;
 	}
 </style>

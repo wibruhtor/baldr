@@ -1,6 +1,8 @@
-import type { Emote } from '$lib/types/emote';
+import { type Emote } from "./emote";
 
 class EmoteReplacer {
+	#twitchEmoteRegExp = /^:(.+?):$/g
+
 	replace(value: string, emotes: Emote[] = []) {
 		const sanitized = this.sanitize(value);
 		const split = this.split(sanitized);
@@ -17,12 +19,12 @@ class EmoteReplacer {
 	}
 
 	private replaceEmotes(value: string[], emotes: Emote[]) {
-		const emoteNames = emotes.map((v) => this.sanitize(v.name));
+		const emoteNames = emotes.map((v) => v.name);
 		return value.map((v) => {
 			if (!emoteNames.includes(v)) return v;
-			const emote = emotes.find((e) => this.sanitize(e.name) === v);
+			const emote = emotes.find((e) => e.name === v);
 			if (!emote) return null;
-			return `<img class="emote" src="${emote.image}" alt="${emote.name}"/>`;
+			return `<img class="emote" src="${emote.toLink()}" alt="${emote.name}"/>`;
 		});
 	}
 }

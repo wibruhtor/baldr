@@ -1,16 +1,16 @@
 <script lang="ts" context="module">
-	import type { ChatSettings } from '$lib/types/api/entity/chat-settings';
-	import type { TwitchUserInfo } from '$lib/types/api/entity/twitch-user-info';
-	import type { Emote } from '$lib/types/emote';
 	import ChatContainer from '$lib/components/widget/chat-widget/chat-container.svelte';
-	import { onMount, setContext } from 'svelte';
 	import {
 		chatStoreContextKey,
 		createChatStore,
 	} from '$lib/components/widget/chat-widget/chat-store';
-	import { Client } from 'tmi.js';
-	import { hash } from '$lib/utils/hash';
+	import type { ChatSettings } from '$lib/types/api/entity/chat-settings';
 	import type { TwitchBadge } from '$lib/types/api/entity/twitch-badge';
+	import type { TwitchUserInfo } from '$lib/types/api/entity/twitch-user-info';
+	import { type Emote } from '$lib/utils/emote';
+	import { hash } from '$lib/utils/hash';
+	import { onMount, setContext } from 'svelte';
+	import { Client } from 'tmi.js';
 </script>
 
 <script lang="ts">
@@ -52,6 +52,19 @@
 					if (!badge) return;
 					badges.push(badge);
 				});
+			}
+
+			if (tags.emotes) {
+				const emoteIds = Object.keys(tags.emotes);
+				emoteIds.forEach((id) => {
+					const emoteRange = tags.emotes![id][0];
+					if (!emoteRange) return;
+					const start = Number.parseInt(emoteRange.split('-')[0]);
+					const end = Number.parseInt(emoteRange.split('-')[1]);
+					if (Number.isNaN(start) || Number.isNaN(end)) return;
+					const name = message.substring(start, end + 1)
+					chatStore.addTwitchEmote(id, name);
+				})
 			}
 
 			chatStore.addMessage({

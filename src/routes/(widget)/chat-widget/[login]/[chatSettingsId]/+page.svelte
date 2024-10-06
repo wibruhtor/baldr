@@ -1,11 +1,11 @@
 <script lang="ts" context="module">
-	import type { Emote } from '$lib/types/emote';
-	import { onMount } from 'svelte';
-	import type { PageData } from './$types';
-	import { emoteFetcher } from '$lib/utils/emote-fetcher';
 	import ChatWidget from '$lib/components/widget/chat-widget/chat-widget.svelte';
 	import type { TwitchBadge } from '$lib/types/api/entity/twitch-badge';
 	import { badgeFetcher } from '$lib/utils/badge-fetcher';
+	import { type Emote } from '$lib/utils/emote';
+	import { emoteFetcher } from '$lib/utils/emote-fetcher';
+	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
 </script>
 
 <script lang="ts">
@@ -17,7 +17,7 @@
 
 	onMount(async () => {
 		const [emotesResult, badgesResult] = await Promise.allSettled([
-			emoteFetcher.fetch(data.userInfo.id),
+			emoteFetcher.fetchEmotes(data.userInfo.id),
 			badgeFetcher.fetch(data.userInfo.id),
 		]);
 
