@@ -1,16 +1,17 @@
 <script lang="ts" context="module">
+	import { PUBLIC_SERVER_VERSION, PUBLIC_SITE_VERSION } from '$env/static/public';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import CardContent from '$lib/components/ui/card/card-content.svelte';
 	import CardFooter from '$lib/components/ui/card/card-footer.svelte';
 	import CardHeader from '$lib/components/ui/card/card-header.svelte';
 	import CardTitle from '$lib/components/ui/card/card-title.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
-	import { PUBLIC_SITE_VERSION, PUBLIC_SERVER_VERSION } from '$env/static/public';
-	import Telegram from '$lib/components/ui/icon/telegram.svelte';
-	import { Mail } from 'lucide-svelte';
-	import Discord from '$lib/components/ui/icon/discord.svelte';
 	import { HoverCard, HoverCardTrigger } from '$lib/components/ui/hover-card';
 	import HoverCardContent from '$lib/components/ui/hover-card/hover-card-content.svelte';
+	import Discord from '$lib/components/ui/icon/discord.svelte';
+	import GitHub from '$lib/components/ui/icon/github.svelte';
+	import Telegram from '$lib/components/ui/icon/telegram.svelte';
+	import { Mail } from 'lucide-svelte';
 </script>
 
 <script lang="ts">
@@ -44,22 +45,24 @@
 		</p>
 		<h2 class="typography-large mb-1">Проект Open Source?</h2>
 		<p class="mb-4 text-muted-foreground">
-			Нет, проект не&nbsp;open source, но&nbsp;я&nbsp;думаю над тем, чтобы сделать его код открытым,
-			зависит от&nbsp;feedback&rsquo;а.
+			Да, с&nbsp;недавнего времени этот проект Open Source, вы&nbsp;можете помочь мне в&nbsp;поддержке.
 		</p>
 		<p class="typography-muted">А&nbsp;ещё я&nbsp;хочу кушать, напиши мне для доната &lt;3</p>
 	</CardContent>
 	<CardFooter class="flex items-center gap-2">
 		<Button variant="secondary" href="/">Вернуться на главную</Button>
+		<Button size="icon" variant="ghost" href="https://github.com/wibruhtor">
+			<GitHub class="h-4 w-4" />
+		</Button>
 		<HoverCard>
 			<HoverCardTrigger>
-				<Button size="icon" variant="ghost" href="https://t.me/bruhabruh4">
+				<Button size="icon" variant="ghost" href="https://t.me/wibruhtor">
 					<Telegram class="h-4 w-4 scale-[1.75]" />
 				</Button>
 			</HoverCardTrigger>
 			<HoverCardContent class="w-max">
 				<p class="typography-small">Время ответа до 24 часов</p>
-				<a href="https://t.me/bruhabruh4" class="typography-muted">@bruhabruh4</a>
+				<a href="https://t.me/wibruhtor" class="typography-muted">@wibruhtor</a>
 			</HoverCardContent>
 		</HoverCard>
 		<HoverCard>
