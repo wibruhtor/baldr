@@ -41,6 +41,10 @@
 		transform: translateX(-50%) translateY(-50%);
 	}
 
+	:global(.emote--cursed) {
+		filter: contrast(3) brightness(0.6) grayscale(1);
+	}
+
 	:global(.emote--rainbow) {
 		animation: rainbow 4s linear infinite;
 	}
