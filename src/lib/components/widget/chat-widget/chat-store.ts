@@ -3,7 +3,7 @@ import type { TwitchBadge } from '$lib/types/api/entity/twitch-badge';
 import type { TwitchUserInfo } from '$lib/types/api/entity/twitch-user-info';
 import type { ChatMessage } from '$lib/types/chat/chat-message';
 import { banWordReplacer } from '$lib/utils/ban-word-replacer';
-import { TwitchEmote, type Emote } from '$lib/utils/emote';
+import { EmojiEmote, TwitchEmote, type Emote } from '$lib/utils/emote';
 import { emoteReplacer } from '$lib/utils/emote-replacer';
 import { linkReplacer } from '$lib/utils/link-replacer';
 import { writable } from 'svelte/store';
@@ -80,6 +80,15 @@ export const createChatStore = (initialState: ChatStore) => {
 				return {
 					...v,
 					emotes: [...v.emotes, new TwitchEmote('__runtime', id, name)]
+				}
+			})
+		},
+		addEmoji(code: string, emoji: string) {
+			update(v => {
+				if (v.emotes.some(e => e.name === emoji)) return v;
+				return {
+					...v,
+					emotes: [...v.emotes, new EmojiEmote(code, emoji)]
 				}
 			})
 		}

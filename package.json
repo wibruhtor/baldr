@@ -42,6 +42,7 @@
 		"clsx": "^2.0.0",
 		"colord": "^2.9.3",
 		"deep-equal": "^2.2.2",
+		"emoji-regex": "^10.4.0",
 		"lucide-svelte": "^0.279.0",
 		"radix-icons-svelte": "^1.2.1",
 		"tailwind-merge": "^1.14.0",

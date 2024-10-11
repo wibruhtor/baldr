@@ -3,10 +3,10 @@ import { BttvEmote, type Emote } from "./emote";
 class EmoteReplacer {
 	#twitchEmoteRegExp = /^:(.+?):$/g
 
-	#overlayTemplate = `<img class="emote__overlay" src="{link}" alt="{name}"/>`
+	#overlayTemplate = `<img class="emote__overlay" src="{link}" alt="{name}" />`
 
 	#emoteTemplate = `<figure class="emote{class}">
-  <img src="{link}" alt="{name}"/>
+  <img src="{link}" alt="{name}" onerror="this.closest('figure').innerHTML = this.alt;" />
   {target}
 </figure>
 `
@@ -14,8 +14,8 @@ class EmoteReplacer {
 	replace(value: string, emotes: Emote[] = []) {
 		const sanitized = this.sanitize(value);
 		const split = this.split(sanitized);
-		const replaced = this.replaceEmotes(split, emotes);
-		return replaced.filter(Boolean) as string[];
+		const replaced = this.replaceEmotes(split.filter(Boolean), emotes);
+		return replaced.filter(Boolean);
 	}
 
 	private sanitize(value: string) {

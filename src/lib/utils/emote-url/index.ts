@@ -1,5 +1,8 @@
 
 export const emoteUrl = {
+  emoji: {
+    cdn: (id: string) => `/api/emoji/${id}`
+  },
   twitch: {
     global: 'https://wibruhtor-api.bruhabruh.ru/v1/twitch/emotes/global',
     channel: (id: string) => `https://wibruhtor-api.bruhabruh.ru/v1/twitch/emotes/${id}`,

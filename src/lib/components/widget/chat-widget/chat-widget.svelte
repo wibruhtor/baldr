@@ -9,6 +9,7 @@
 	import type { TwitchUserInfo } from '$lib/types/api/entity/twitch-user-info';
 	import { type Emote } from '$lib/utils/emote';
 	import { hash } from '$lib/utils/hash';
+	import emojiRegex from 'emoji-regex';
 	import { onMount, setContext } from 'svelte';
 	import { Client } from 'tmi.js';
 </script>
@@ -67,13 +68,20 @@
 				})
 			}
 
+			const messageWithEmojis = message.replaceAll(emojiRegex(), (match) => {
+				const codePoint = match.codePointAt(0)
+				if (!codePoint) return match;
+				chatStore.addEmoji(codePoint.toString(16), match);
+				return ` ${match} `
+			})
+
 			chatStore.addMessage({
 				id: tags.id || hash(),
 				timestamp: Date.now(),
 				color: tags.color || null,
 				nickname: tags['display-name'],
 				badges,
-				text: message,
+				text: messageWithEmojis,
 			});
 		});
 
